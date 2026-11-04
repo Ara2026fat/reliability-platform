@@ -466,13 +466,14 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
         <label>Rated flow Q1 (<u id="u-q">gpm</u>)<input class="num" id="af-q" type="number" min="1" value="300"></label>
         <label>Rated head H1 (<u id="u-h">ft</u>)<input class="num" id="af-h" type="number" min="1" value="60"></label>
         <label>Rated power P1 (kW)<input class="num" id="af-p" type="number" min="0.1" step="0.1" value="6"></label>
+        <label>System static head (<u id="u-s">ft</u>)<input class="num" id="af-s" type="number" min="0" value="20"></label>
         <label>Speed, % of rated <span><i id="af-nv">100%</i></span><input id="af-n" type="range" min="50" max="120" step="1" value="100"></label>
         <label>Impeller diameter, % of full (max trim 5%) <span><i id="af-dv">100%</i></span><input id="af-d" type="range" min="95" max="100" step="0.5" value="100"></label>
       </div>
       <div class="read" id="af-out"></div>
       <div class="msg" id="af-msg" hidden></div>
       <svg id="af-svg" viewBox="0 0 320 200" role="img" aria-label="Head against flow, rated curve and new curve" style="width:100%;height:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:10px"></svg><svg id="af-svg2" viewBox="0 0 320 200" role="img" aria-label="Power against flow, rated curve and new curve" style="width:100%;height:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:10px"></svg><svg id="af-svg3" viewBox="0 0 320 200" role="img" aria-label="Efficiency against flow, rated curve and new curve" style="width:100%;height:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:10px"></svg>
-      <p class="note" style="margin-top:8px">Q2 = Q1 x (N2/N1) x (D2/D1). H2 = H1 x (N2/N1)<sup>2</sup> x (D2/D1)<sup>2</sup>. P2 = P1 x (N2/N1)<sup>3</sup> x (D2/D1)<sup>3</sup>. Speed and diameter laws are applied one after the other. Efficiency at each matching point is held unchanged, which is a simplification: trimming typically makes the pump less efficient. The curve shapes are illustrative (head falls with flow, power rises with flow, efficiency is derived from them and peaks at the rated point); use the manufacturer curves for a real pump.</p>
+      <p class="note" style="margin-top:8px">Q2 = Q1 x (N2/N1) x (D2/D1). H2 = H1 x (N2/N1)<sup>2</sup> x (D2/D1)<sup>2</sup>. P2 = P1 x (N2/N1)<sup>3</sup> x (D2/D1)<sup>3</sup>. Speed and diameter laws are applied one after the other. The system curve is static head plus a flow-squared friction term, set to pass through the rated point; the new operating point is where the new pump curve crosses it, so it differs from the simple affinity-scaled point. Efficiency at each matching point is held unchanged, which is a simplification: trimming typically makes the pump less efficient. The curve shapes are illustrative (head falls with flow, power rises with flow, efficiency is derived from them and peaks at the rated point); use the manufacturer curves for a real pump.</p>
       <p class="note">Sources: <a href="https://www.pumps.org/2022/09/27/trimming-impellers-to-reduce-energy-consumption/" target="_blank" rel="noopener">Pumps.org, trimming impellers</a> (the equations and the Hydraulic Institute 5% statement and the effect on efficiency and power) and <a href="https://www.pumpsandsystems.com/impeller-alterations-better-performance" target="_blank" rel="noopener">Pumps &amp; Systems, impeller alterations</a> (affinity rule is approximate).</p>
     </div>
 
@@ -650,33 +651,39 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
 
   var UI=0;try{UI=localStorage.getItem('rl_units')==='si'?1:0}catch(e){}
   /* affinity law tool */
-  function affUpdate(){var cf=UI?0.2271247:1,hf=UI?0.3048:1,uq=UI?'m³/h':'gpm',uh=UI?'m':'ft',q=+$('af-q').value/cf,h=+$('af-h').value/hf,p=+$('af-p').value,n=+$('af-n').value/100,dEl=$('af-d'),d=+dEl.value/100;
+  function affUpdate(){var cf=UI?0.2271247:1,hf=UI?0.3048:1,uq=UI?'m³/h':'gpm',uh=UI?'m':'ft',q=+$('af-q').value/cf,h=+$('af-h').value/hf,p=+$('af-p').value,hs0=+$('af-s').value/hf,n=+$('af-n').value/100,dEl=$('af-d'),d=+dEl.value/100;
     if(d<0.95){d=0.95;dEl.value=95}
-    $('u-q').textContent=uq;$('u-h').textContent=uh;
+    $('u-q').textContent=uq;$('u-h').textContent=uh;$('u-s').textContent=uh;
     $('af-nv').textContent=Math.round(n*100)+'%';$('af-dv').textContent=(Math.round(d*1000)/10)+'%';
     if(!(q>0&&h>0&&p>0)){$('af-out').textContent='Enter rated flow, head and power.';return}
-    var r=n*d,q2=q*r,h2=h*r*r,p2=p*r*r*r;function ch(a,b){var x=(a/b-1)*100;return (x>=0?'+':'')+x.toFixed(1)+'%'}
-    var hp=p/0.7457,etaB=q*h/(3960*hp),qd=q*cf,hd=h*hf;
-    $('af-out').innerHTML='<div class="kpis"><div><small>Flow</small><b>'+(q2*cf).toFixed(UI?1:0)+' '+uq+'</b><em>'+ch(q2,q)+'</em></div><div><small>Head</small><b>'+(h2*hf).toFixed(1)+' '+uh+'</b><em>'+ch(h2,h)+'</em></div><div><small>Power</small><b>'+p2.toFixed(2)+' kW</b><em>'+ch(p2,p)+'</em></div><div><small>Efficiency</small><b>'+(etaB*100).toFixed(0)+'%</b><em>held</em></div></div>';
+    var r=n*d;function ch(a,b){var x=(a/b-1)*100;return (x>=0?'+':'')+x.toFixed(1)+'%'}
+    var hp=p/0.7457,etaB=q*h/(3960*hp),qd=q*cf,hd=h*hf,Hs=Math.max(0,hs0),sysOk=Hs<h,k=sysOk?(h-Hs)/(q*q):0;
+    function Hu(x){return h*(1.3-0.3*x*x)}function Pc(x){return p*(0.55+0.5*x-0.05*x*x)}function Ef(x){return 100*(q*x*Hu(x)/3960)/(Pc(x)/0.7457)}
+    var num=1.3*h*r*r-Hs,den=k+0.3*h/(q*q),noflow=!sysOk||num<=0,q2=0,h2=0,p2=0,e2=0;
+    if(!noflow){q2=Math.sqrt(num/den);h2=Hs+k*q2*q2;var xo=q2/(q*r);p2=Pc(xo)*r*r*r;e2=Ef(xo)}
+    if(noflow){$('af-out').innerHTML='<div class="kpis"><div><small>Flow</small><b>0 '+uq+'</b><em>no flow</em></div></div>'}
+    else $('af-out').innerHTML='<div class="kpis"><div><small>Flow</small><b>'+(q2*cf).toFixed(UI?1:0)+' '+uq+'</b><em>'+ch(q2,q)+'</em></div><div><small>Head</small><b>'+(h2*hf).toFixed(1)+' '+uh+'</b><em>'+ch(h2,h)+'</em></div><div><small>Power</small><b>'+p2.toFixed(2)+' kW</b><em>'+ch(p2,p)+'</em></div><div><small>Efficiency</small><b>'+e2.toFixed(0)+'%</b><em>'+(e2-etaB*100>=0?'+':'')+(e2-etaB*100).toFixed(1)+' pts</em></div></div>';
     var m=$('af-msg'),w=[];if(d<=0.9501)w.push('Trim limit reached: 5% of full diameter. The Hydraulic Institute allows a 5% reduction in impeller diameter when using affinity rules (as reported by Pumps.org). For more, use the manufacturer curve or trim data and ask them first.');
     if(n>1)w.push('Speed is above rated. Check the manufacturer limits for the pump and the driver.');
+    if(!sysOk)w.push('Static head must be lower than the rated head so the system curve passes through the rated point.');else if(noflow)w.push('At this speed and diameter the pump cannot overcome the static head: no flow.');
     if(etaB>1)w.push('These inputs imply an efficiency above 100% (water, SG 1). Check flow, head and power.');
     m.hidden=!w.length;m.className='msg warn';m.textContent=w.join(' ');
-    function Hc(x){return hd*(1.3-0.3*x*x)}function Pc(x){return p*(0.55+0.5*x-0.05*x*x)}
-    function Ef(x){return 100*(q*x*h*(1.3-0.3*x*x)/3960)/(Pc(x)/0.7457)}
+    function Hc(x){return hd*(1.3-0.3*x*x)}
     var xs=1.6*qd*Math.max(1,r),W=320,H=200,L=40,B=22,T=10,Rr=10,N=40;
-    function chart(id,yl,fy,k3,ymax,dp,pt1,pt2){var ys=ymax,svg=$(id);
+    function chart(id,yl,fy,k3,ymax,dp,pt1,pt2,qx2,sys){var ys=ymax,svg=$(id);
       function X(v){return L+(W-L-Rr)*v/xs}function Y(v){return H-B-(H-B-T)*v/ys}
       function path(kq,ky){var a=[];for(var i=0;i<=N;i++){var x=1.6*i/N;a.push((i?'L':'M')+X(qd*x*kq).toFixed(1)+' '+Y(fy(x)*ky).toFixed(1))}return a.join('')}
       var g='';for(var t=0;t<=4;t++){var v=ys*t/4;g+='<line x1="'+L+'" y1="'+Y(v).toFixed(1)+'" x2="'+(W-Rr)+'" y2="'+Y(v).toFixed(1)+'" stroke="#DAE0F0"/><text x="'+(L-4)+'" y="'+(Y(v)+3).toFixed(1)+'" text-anchor="end" font-size="9" fill="#5a6585">'+(ys>=100?Math.round(v):v.toFixed(dp))+'</text>'}
-      svg.innerHTML=g+'<line x1="'+L+'" y1="'+(H-B)+'" x2="'+(W-Rr)+'" y2="'+(H-B)+'" stroke="#9aa6c4"/><line x1="'+L+'" y1="'+T+'" x2="'+L+'" y2="'+(H-B)+'" stroke="#9aa6c4"/><text x="'+(W-Rr)+'" y="'+(H-6)+'" text-anchor="end" font-size="10" fill="#5a6585">Flow ('+uq+')</text><text x="'+(L+6)+'" y="'+(T+9)+'" font-size="10" fill="#5a6585">'+yl+'</text><path d="'+path(1,1)+'" fill="none" stroke="#2F55C8" stroke-width="2.5"/><path d="'+path(r,k3)+'" fill="none" stroke="#B86A1A" stroke-width="2.5" stroke-dasharray="6 3"/><circle cx="'+X(qd)+'" cy="'+Y(pt1)+'" r="5" fill="#2F55C8"/><circle cx="'+X(qd*r)+'" cy="'+Y(pt2)+'" r="5" fill="#B86A1A"/><text x="'+(W-Rr-4)+'" y="'+(T+22)+'" text-anchor="end" font-size="11" fill="#2F55C8" font-weight="700">Rated</text><text x="'+(W-Rr-4)+'" y="'+(T+36)+'" text-anchor="end" font-size="11" fill="#B86A1A" font-weight="700">New</text>'}
+      var sp='';if(sys&&sysOk){var a2=[];for(var i2=0;i2<=N;i2++){var Q=xs/cf*i2/N,hh=(Hs+k*Q*Q)*hf;if(hh>ys)break;a2.push((i2?'L':'M')+X(Q*cf).toFixed(1)+' '+Y(hh).toFixed(1))}sp='<path d="'+a2.join('')+'" fill="none" stroke="#9C6A06" stroke-width="2.5" stroke-dasharray="2 3"/>'}
+      var leg='<text x="'+(W-Rr-4)+'" y="'+(T+22)+'" text-anchor="end" font-size="11" fill="#2F55C8" font-weight="700">Rated</text><text x="'+(W-Rr-4)+'" y="'+(T+36)+'" text-anchor="end" font-size="11" fill="#B86A1A" font-weight="700">New</text>'+(sys?'<text x="'+(W-Rr-4)+'" y="'+(T+50)+'" text-anchor="end" font-size="11" fill="#9C6A06" font-weight="700">System</text>':'');
+      svg.innerHTML=g+'<line x1="'+L+'" y1="'+(H-B)+'" x2="'+(W-Rr)+'" y2="'+(H-B)+'" stroke="#9aa6c4"/><line x1="'+L+'" y1="'+T+'" x2="'+L+'" y2="'+(H-B)+'" stroke="#9aa6c4"/><text x="'+(W-Rr)+'" y="'+(H-6)+'" text-anchor="end" font-size="10" fill="#5a6585">Flow ('+uq+')</text><text x="'+(L+6)+'" y="'+(T+9)+'" font-size="10" fill="#5a6585">'+yl+'</text><path d="'+path(1,1)+'" fill="none" stroke="#2F55C8" stroke-width="2.5"/>'+sp+'<path d="'+path(r,k3)+'" fill="none" stroke="#B86A1A" stroke-width="2.5" stroke-dasharray="6 3"/><circle cx="'+X(qd)+'" cy="'+Y(pt1)+'" r="5" fill="#2F55C8"/>'+(noflow?'':'<circle cx="'+X(qx2)+'" cy="'+Y(pt2)+'" r="5" fill="#B86A1A"/>')+leg}
     var hm=1.3*hd*Math.max(1,r*r)*1.08,pm=1.1*p*Math.max(1,r*r*r)*1.2,em=Math.max(100,etaB*100*1.1);
-    chart('af-svg','Head ('+uh+')',Hc,r*r,hm,UI?1:0,hd,h2*hf);
-    chart('af-svg2','Power (kW)',Pc,r*r*r,pm,1,p,p2);
-    chart('af-svg3','Efficiency (%)',Ef,1,em,0,etaB*100,etaB*100)}
+    chart('af-svg','Head ('+uh+')',Hc,r*r,hm,UI?1:0,hd,h2*hf,q2*cf,true);
+    chart('af-svg2','Power (kW)',Pc,r*r*r,pm,1,p,p2,q2*cf,false);
+    chart('af-svg3','Efficiency (%)',Ef,1,em,0,etaB*100,e2,q2*cf,false)}
   function setUnits(u){var nu=u==='si'?1:0;if(nu===UI)return;var o=UI?0.2271247:1,oh=UI?0.3048:1,nq=nu?0.2271247:1,nh=nu?0.3048:1,a=$('af-q'),b=$('af-h');
-    var qa=+a.value/o,ha=+b.value/oh;try{localStorage.setItem('rl_units',nu?'si':'us')}catch(e){}UI=nu;
-    a.value=+(qa*nq).toFixed(nu?1:0);b.value=+(ha*nh).toFixed(nu?1:0);unitsUi();affUpdate();pump()}
+    var sEl=$('af-s'),sa=+sEl.value/oh,qa=+a.value/o,ha=+b.value/oh;try{localStorage.setItem('rl_units',nu?'si':'us')}catch(e){}UI=nu;
+    a.value=+(qa*nq).toFixed(nu?1:0);b.value=+(ha*nh).toFixed(nu?1:0);sEl.value=+(sa*nh).toFixed(nu?1:0);unitsUi();affUpdate();pump()}
   function unitsUi(){[].forEach.call(document.querySelectorAll('#usg button'),function(b){b.classList.toggle('on',(b.dataset.u==='si')===!!UI)});if(typeof settingsRender==='function'&&$('settings')&&!$('settings').hidden)settingsRender()}
   $('usg').addEventListener('click',function(e){var b=e.target.closest('[data-u]');if(b)setUnits(b.dataset.u)});
   document.addEventListener('input',function(e){if(e.target.closest&&e.target.closest('#t-aff'))affUpdate()});affUpdate();
@@ -713,7 +720,7 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
     else if(pct>120){M.className='msg warn';M.textContent='Above the typical preferred region. High flow is commonly linked to low suction margin and motor overload. Check NPSH available and the vendor limits.'}
     else{M.className='msg';M.textContent='Inside the typical preferred operating region around the best efficiency point. Try closing the valve or lowering the speed and watch the point move.'}
   }
-  ['N','D','H','T'].forEach(function(id){$(id).addEventListener('input',pump)});pump();if(UI){$('af-q').value=68.1;$('af-h').value=18.3;affUpdate()}unitsUi();
+  ['N','D','H','T'].forEach(function(id){$(id).addEventListener('input',pump)});pump();if(UI){$('af-q').value=68.1;$('af-h').value=18.3;$('af-s').value=6.1;affUpdate()}unitsUi();
   /* MTBF */
   function mt(){var h=+$('mh').value,f=+$('mf').value,r=+$('mr').value,O=$('mr-out'),M=$('mm');
     if(!(f>0)||!(h>0)||r<0){O.innerHTML='';M.className='msg warn';M.textContent='Enter operating hours and at least one failure.';return}
