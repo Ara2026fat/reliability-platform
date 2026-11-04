@@ -464,13 +464,13 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
         <label>Rated head H1 (ft)<input class="num" id="af-h" type="number" min="1" value="60"></label>
         <label>Rated power P1 (kW)<input class="num" id="af-p" type="number" min="0.1" step="0.1" value="6"></label>
         <label>Speed, % of rated <span><i id="af-nv">100%</i></span><input id="af-n" type="range" min="50" max="120" step="1" value="100"></label>
-        <label>Impeller diameter, % of full <span><i id="af-dv">100%</i></span><input id="af-d" type="range" min="80" max="100" step="0.5" value="100"></label>
+        <label>Impeller diameter, % of full (max trim 5%) <span><i id="af-dv">100%</i></span><input id="af-d" type="range" min="95" max="100" step="0.5" value="100"></label>
       </div>
       <div class="read" id="af-out"></div>
       <div class="msg" id="af-msg" hidden></div>
-      <svg id="af-svg" viewBox="0 0 320 200" role="img" aria-label="Head against flow, rated curve and new curve" style="width:100%;height:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:10px"></svg>
-      <p class="note" style="margin-top:8px">Q2 = Q1 x (N2/N1) x (D2/D1). H2 = H1 x (N2/N1)<sup>2</sup> x (D2/D1)<sup>2</sup>. P2 = P1 x (N2/N1)<sup>3</sup> x (D2/D1)<sup>3</sup>. Speed and diameter laws are applied one after the other. Efficiency is held unchanged, which is a simplification: trimming typically makes the pump less efficient.</p>
-      <p class="note">Sources: <a href="https://www.pumps.org/2022/09/27/trimming-impellers-to-reduce-energy-consumption/" target="_blank" rel="noopener">Pumps.org, trimming impellers</a> (the equations and the Hydraulic Institute 5% statement) and <a href="https://www.pumpsandsystems.com/impeller-alterations-better-performance" target="_blank" rel="noopener">Pumps &amp; Systems, impeller alterations</a> (affinity rule is approximate).</p>
+      <svg id="af-svg" viewBox="0 0 320 200" role="img" aria-label="Head against flow, rated curve and new curve" style="width:100%;height:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:10px"></svg><svg id="af-svg2" viewBox="0 0 320 200" role="img" aria-label="Power against flow, rated curve and new curve" style="width:100%;height:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:10px"></svg><svg id="af-svg3" viewBox="0 0 320 200" role="img" aria-label="Efficiency against flow, rated curve and new curve" style="width:100%;height:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:10px"></svg>
+      <p class="note" style="margin-top:8px">Q2 = Q1 x (N2/N1) x (D2/D1). H2 = H1 x (N2/N1)<sup>2</sup> x (D2/D1)<sup>2</sup>. P2 = P1 x (N2/N1)<sup>3</sup> x (D2/D1)<sup>3</sup>. Speed and diameter laws are applied one after the other. Efficiency at each matching point is held unchanged, which is a simplification: trimming typically makes the pump less efficient. The curve shapes are illustrative (head falls with flow, power rises with flow, efficiency is derived from them and peaks at the rated point); use the manufacturer curves for a real pump.</p>
+      <p class="note">Sources: <a href="https://www.pumps.org/2022/09/27/trimming-impellers-to-reduce-energy-consumption/" target="_blank" rel="noopener">Pumps.org, trimming impellers</a> (the equations and the Hydraulic Institute 5% statement and the effect on efficiency and power) and <a href="https://www.pumpsandsystems.com/impeller-alterations-better-performance" target="_blank" rel="noopener">Pumps &amp; Systems, impeller alterations</a> (affinity rule is approximate).</p>
     </div>
 
     <div class="tool" id="t-mtbf">
@@ -646,18 +646,29 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
   /* tools switch */
 
   /* affinity law tool */
-  function affUpdate(){var q=+$('af-q').value,h=+$('af-h').value,p=+$('af-p').value,n=+$('af-n').value/100,d=+$('af-d').value/100;
+  function affUpdate(){var q=+$('af-q').value,h=+$('af-h').value,p=+$('af-p').value,n=+$('af-n').value/100,dEl=$('af-d'),d=+dEl.value/100;
+    if(d<0.95){d=0.95;dEl.value=95}
     $('af-nv').textContent=Math.round(n*100)+'%';$('af-dv').textContent=(Math.round(d*1000)/10)+'%';
     if(!(q>0&&h>0&&p>0)){$('af-out').textContent='Enter rated flow, head and power.';return}
     var r=n*d,q2=q*r,h2=h*r*r,p2=p*r*r*r;function ch(a,b){var x=(a/b-1)*100;return (x>=0?'+':'')+x.toFixed(1)+'%'}
-    $('af-out').innerHTML='<div class="kpis"><div><small>Flow</small><b>'+q2.toFixed(0)+' gpm</b><em>'+ch(q2,q)+'</em></div><div><small>Head</small><b>'+h2.toFixed(1)+' ft</b><em>'+ch(h2,h)+'</em></div><div><small>Power</small><b>'+p2.toFixed(2)+' kW</b><em>'+ch(p2,p)+'</em></div></div>';
-    var m=$('af-msg'),w=[];if(d<0.95)w.push('Trim is '+((1-d)*100).toFixed(1)+'%. The Hydraulic Institute allows a 5% reduction in impeller diameter when using affinity rules (as reported by Pumps.org). Beyond that, use the manufacturer curve or trim data and ask them first.');
+    var hp=p/0.7457,etaB=q*h/(3960*hp);
+    $('af-out').innerHTML='<div class="kpis"><div><small>Flow</small><b>'+q2.toFixed(0)+' gpm</b><em>'+ch(q2,q)+'</em></div><div><small>Head</small><b>'+h2.toFixed(1)+' ft</b><em>'+ch(h2,h)+'</em></div><div><small>Power</small><b>'+p2.toFixed(2)+' kW</b><em>'+ch(p2,p)+'</em></div><div><small>Efficiency</small><b>'+(etaB*100).toFixed(0)+'%</b><em>held</em></div></div>';
+    var m=$('af-msg'),w=[];if(d<=0.9501)w.push('Trim limit reached: 5% of full diameter. The Hydraulic Institute allows a 5% reduction in impeller diameter when using affinity rules (as reported by Pumps.org). For more, use the manufacturer curve or trim data and ask them first.');
     if(n>1)w.push('Speed is above rated. Check the manufacturer limits for the pump and the driver.');
+    if(etaB>1)w.push('These inputs imply an efficiency above 100% (water, SG 1). Check flow, head and power.');
     m.hidden=!w.length;m.className='msg warn';m.textContent=w.join(' ');
-    var xs=1.6*q*Math.max(1,r),ys=1.3*h*Math.max(1,r*r)*1.05,W=320,H=200,L=34,B=22,T=10,Rr=10;
-    function X(v){return L+(W-L-Rr)*v/xs}function Y(v){return H-B-(H-B-T)*v/ys}
-    function path(k){var a=[];for(var i=0;i<=40;i++){var Q=q*1.6*i/40,Hh=h*(1.3-0.3*Math.pow(Q/q,2));a.push((i?'L':'M')+X(Q*k).toFixed(1)+' '+Y(Hh*k*k).toFixed(1))}return a.join('')}
-    $('af-svg').innerHTML='<line x1="'+L+'" y1="'+(H-B)+'" x2="'+(W-Rr)+'" y2="'+(H-B)+'" stroke="#9aa6c4"/><line x1="'+L+'" y1="'+T+'" x2="'+L+'" y2="'+(H-B)+'" stroke="#9aa6c4"/><text x="'+(W-Rr)+'" y="'+(H-6)+'" text-anchor="end" font-size="10" fill="#5a6585">Flow (gpm)</text><text x="4" y="'+(T+8)+'" font-size="10" fill="#5a6585">Head (ft)</text><path d="'+path(1)+'" fill="none" stroke="#2F55C8" stroke-width="2.5"/><path d="'+path(r)+'" fill="none" stroke="#B86A1A" stroke-width="2.5" stroke-dasharray="6 3"/><circle cx="'+X(q)+'" cy="'+Y(h)+'" r="5" fill="#2F55C8"/><circle cx="'+X(q2)+'" cy="'+Y(h2)+'" r="5" fill="#B86A1A"/><text x="'+(L+8)+'" y="'+(T+22)+'" font-size="11" fill="#2F55C8" font-weight="700">Rated</text><text x="'+(L+8)+'" y="'+(T+36)+'" font-size="11" fill="#B86A1A" font-weight="700">New</text>'}
+    /* illustrative base curves in x=Q/Q1 */
+    function Hc(x){return h*(1.3-0.3*x*x)}function Pc(x){return p*(0.55+0.5*x-0.05*x*x)}function Ef(x){return 100*(q*x*Hc(x)/3960)/(Pc(x)/0.7457)}
+    var xs=1.6*q*Math.max(1,r),W=320,H=200,L=40,B=22,T=10,Rr=10,N=40;
+    function chart(id,yl,fy,k3,ymax,dp,pt1,pt2){var ys=ymax,svg=$(id);
+      function X(v){return L+(W-L-Rr)*v/xs}function Y(v){return H-B-(H-B-T)*v/ys}
+      function path(kq,ky){var a=[];for(var i=0;i<=N;i++){var x=1.6*i/N;a.push((i?'L':'M')+X(q*x*kq).toFixed(1)+' '+Y(fy(x)*ky).toFixed(1))}return a.join('')}
+      var g='';for(var t=0;t<=4;t++){var v=ys*t/4;g+='<line x1="'+L+'" y1="'+Y(v).toFixed(1)+'" x2="'+(W-Rr)+'" y2="'+Y(v).toFixed(1)+'" stroke="#DAE0F0"/><text x="'+(L-4)+'" y="'+(Y(v)+3).toFixed(1)+'" text-anchor="end" font-size="9" fill="#5a6585">'+(ys>=100?Math.round(v):v.toFixed(dp))+'</text>'}
+      svg.innerHTML=g+'<line x1="'+L+'" y1="'+(H-B)+'" x2="'+(W-Rr)+'" y2="'+(H-B)+'" stroke="#9aa6c4"/><line x1="'+L+'" y1="'+T+'" x2="'+L+'" y2="'+(H-B)+'" stroke="#9aa6c4"/><text x="'+(W-Rr)+'" y="'+(H-6)+'" text-anchor="end" font-size="10" fill="#5a6585">Flow (gpm)</text><text x="'+(L+6)+'" y="'+(T+9)+'" font-size="10" fill="#5a6585">'+yl+'</text><path d="'+path(1,1)+'" fill="none" stroke="#2F55C8" stroke-width="2.5"/><path d="'+path(r,k3)+'" fill="none" stroke="#B86A1A" stroke-width="2.5" stroke-dasharray="6 3"/><circle cx="'+X(q)+'" cy="'+Y(pt1)+'" r="5" fill="#2F55C8"/><circle cx="'+X(q2)+'" cy="'+Y(pt2)+'" r="5" fill="#B86A1A"/><text x="'+(W-Rr-4)+'" y="'+(T+22)+'" text-anchor="end" font-size="11" fill="#2F55C8" font-weight="700">Rated</text><text x="'+(W-Rr-4)+'" y="'+(T+36)+'" text-anchor="end" font-size="11" fill="#B86A1A" font-weight="700">New</text>'}
+    var rr=Math.max(1,r),hm=1.3*h*Math.max(1,r*r)*1.08,pm=1.1*p*Math.max(1,r*r*r)*1.2;
+    chart('af-svg','Head (ft)',Hc,r*r,hm,0,h,h2);
+    chart('af-svg2','Power (kW)',Pc,r*r*r,pm,1,p,p2);
+    chart('af-svg3','Efficiency (%)',Ef,1,Math.max(100,etaB*100*1.1),0,etaB*100,etaB*100)}
   document.addEventListener('input',function(e){if(e.target.closest&&e.target.closest('#t-aff'))affUpdate()});affUpdate();
   function setTool(t){[].forEach.call(document.querySelectorAll('.seg button'),function(b){b.classList.toggle('on',b.getAttribute('data-tool')===t)});
     [].forEach.call(document.querySelectorAll('.tool'),function(e){e.classList.toggle('on',e.id==='t-'+t)})}
