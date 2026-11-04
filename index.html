@@ -7,8 +7,8 @@
 <meta name="theme-color" content="#FFFFFF">
 <script>(function(){try{var d=document.documentElement,m=localStorage.getItem("rl_mode")||"auto",p=localStorage.getItem("rl_pal")||"blue";d.dataset.pal=p;d.dataset.mode=m==="auto"?(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light"):m}catch(e){}})()</script>
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" sizes="32x32" href="platform-favicon-32.png?v=2">
-<link rel="apple-touch-icon" href="platform-apple-touch.png?v=2">
+<link rel="icon" type="image/png" sizes="32x32" href="platform-favicon-32.png?v=3">
+<link rel="apple-touch-icon" href="platform-apple-touch.png?v=3">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="HIRZ">
@@ -908,7 +908,7 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
   function setLang(l){if(l===LANG)return;LANG=l;if(!$('about').hidden)setTimeout(function(){aboutOpen()},0);try{localStorage.setItem('rl_lang',LANG)}catch(e){}tbuild();renderLearn(CUR);applyLang();if(!$('guide').hidden)guideOpen();settingsRender()}
   var SX={en:{t:'Settings',l:'Language',a:'Appearance',c:'Colors',d:'Day',n:'Night',au:'Auto',au2:'Auto follows your device setting.',b:'Blue & gold',h:'HIRZ logo colors',c2:'Applies to the whole platform. Course colors stay.'},ar:{t:'الإعدادات',l:'اللغة',a:'المظهر',c:'الألوان',d:'نهاري',n:'ليلي',au:'تلقائي',au2:'التلقائي يتبع إعداد جهازك.',b:'أزرق وذهبي',h:'ألوان الشعار',c2:'تنطبق على المنصة كلها. تبقى ألوان الدورات.'}};
   var mq=window.matchMedia&&matchMedia('(prefers-color-scheme:dark)');
-  function applyTheme(){var d=document.documentElement,m,p;try{m=localStorage.getItem('rl_mode')||'auto';p=localStorage.getItem('rl_pal')||'blue'}catch(e){m='auto';p='blue'}d.dataset.pal=p;d.dataset.mode=m==='auto'?(mq&&mq.matches?'dark':'light'):m;var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=getComputedStyle(d).getPropertyValue('--surface').trim()||'#FFFFFF'}
+  function applyTheme(){var d=document.documentElement,m,p;try{m=localStorage.getItem('rl_mode')||'auto';p=localStorage.getItem('rl_pal')||'blue'}catch(e){m='auto';p='blue'}d.dataset.pal=p;var bl=p!=='hirz',lg=document.querySelector('.brand .logo'),fi=$('fimg');if(lg)lg.src=bl?'hirz-logo-b.png':'hirz-logo.png';if(fi)fi.src=bl?'hirz-big-b.jpg':'hirz-big.jpg';d.dataset.mode=m==='auto'?(mq&&mq.matches?'dark':'light'):m;var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=getComputedStyle(d).getPropertyValue('--surface').trim()||'#FFFFFF'}
   if(mq&&mq.addEventListener)mq.addEventListener('change',applyTheme);
   function gl(k,d){try{return localStorage.getItem(k)||d}catch(e){return d}}
   function settingsRender(){var x=SX[LANG],m=gl('rl_mode','auto'),p=gl('rl_pal','blue');$('stitle').textContent=x.t;$('settings').setAttribute('dir',LANG==='ar'?'rtl':'ltr');
