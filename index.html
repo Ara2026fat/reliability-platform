@@ -33,6 +33,7 @@ html[data-pal=hirz]{--bg:#FDF6EB;--sage:#F1EBD6;--surface:#FFFFFF;--line:#E4DABD
 html[data-mode=dark]{color-scheme:dark;--bg:#0E1222;--sage:#1A2140;--surface:#161B30;--line:#2A3358;--ink:#E8ECF8;--mut:#9AA6C8;--navy:#22357F;--navy2:#2D47A8;--navy3:#4A6FE0;--act:#4A6FE0;--act-d:#2D47A8;--gold:#E3B23C;--ochre:#E3B23C;--tx:#C9D4FF;--tx2:#A9BBFF;--mut2:#B3BEDD;--hl:#FFD97A;--sheet1:#1B2242;--hero1:#16225F;--hero2:#0A1030;--glow:61,98,221;--glow2:47,85,200}
 html[data-mode=dark][data-pal=hirz]{--bg:#0E1A13;--sage:#17291E;--surface:#14221A;--line:#25402F;--ink:#F3EBD8;--mut:#A9BDB0;--navy:#0F6B3A;--navy2:#14854A;--navy3:#2E9B5E;--act:#2E9B5E;--act-d:#14854A;--gold:#E3B23C;--ochre:#E3B23C;--tx:#BFE8CF;--tx2:#9FDDB8;--mut2:#C4D6CA;--hl:#F2C75C;--sheet1:#14291D;--hero1:#0B4D2B;--hero2:#04180D;--glow:46,155,94;--glow2:217,162,27}
 html[data-mode=dark] img.lg,html[data-mode=dark] .hav img{filter:none}
+.usg{display:inline-flex;border:2px solid var(--tx);border-radius:11px;overflow:hidden;margin:4px 0 12px}.usg button{border:0;background:transparent;color:var(--tx);font:700 13.5px var(--font-display);padding:8px 14px}.usg button.on{background:var(--navy);color:#fff}
 .sg{display:flex;gap:8px;margin:8px 0 18px}.sg button{flex:1;min-height:46px;border-radius:12px;border:2px solid var(--line);background:var(--surface);color:var(--ink);font:700 14.5px var(--font-display);padding:6px 8px}.sg button[aria-pressed=true]{border-color:var(--tx);background:var(--navy);color:#fff}
 #sbody h3{font:800 12.5px var(--font-display);letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:14px 0 0}#sbody small{display:block;color:var(--mut);font-size:13px;line-height:1.4;margin-top:-10px;margin-bottom:14px}
 .sw{display:inline-flex;gap:3px;vertical-align:middle;margin-inline-end:6px}.sw i{width:11px;height:11px;border-radius:50%;display:block}
@@ -443,6 +444,8 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
   <div class="wrap sect pgbody">
     <div class="seg" role="tablist"><button class="on" data-tool="pump">Pump curve</button><button data-tool="aff">Affinity law</button><button data-tool="mtbf">MTBF and MTTR</button><button data-tool="rel">Series and parallel</button><button data-tool="rpn">RPN ranking</button></div>
 
+    <div class="usg" id="usg" role="group" aria-label="Units"><button type="button" data-u="us">US: gpm, ft, in</button><button type="button" data-u="si">SI: m&sup3;/h, m, mm</button></div>
+
     <div class="tool on" id="t-pump">
       <div class="ctl">
         <label>Speed <span><i id="vN">3000 rpm</i></span><input id="N" type="range" min="1800" max="3600" step="50" value="3000"></label>
@@ -453,15 +456,15 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
       <div class="chartbox"><svg id="pc" viewBox="0 0 640 340" role="img" aria-label="Pump and system curves with operating point"></svg></div>
       <div class="read" id="pr"></div>
       <div class="msg" id="pm"></div>
-      <p class="note" style="margin-top:10px">Model: illustrative pump, 3000 rpm and 10 in at full size. Speed and diameter use the affinity laws (flow scales with speed and diameter, head with their squares); trimming is an approximation. System curve: static head plus a flow-squared friction term, steeper as the valve closes. Power = flow &times; head &times; SG / (3960 &times; efficiency) in US units. The operating-region band is a typical guideline, not a limit: use the vendor's allowable range.</p>
+      <p class="note" style="margin-top:10px">Model: illustrative pump, 3000 rpm and 10 in at full size. Speed and diameter use the affinity laws (flow scales with speed and diameter, head with their squares); trimming is an approximation. System curve: static head plus a flow-squared friction term, steeper as the valve closes. Power = flow &times; head &times; SG / (3960 &times; efficiency) in US units (gpm, ft, hp), or flow &times; head &times; SG / (367 &times; efficiency) in kW with flow in m&sup3;/h and head in m. 1 gpm = 0.2271 m&sup3;/h, 1 ft = 0.3048 m, 1 in = 25.4 mm. The operating-region band is a typical guideline, not a limit: use the vendor's allowable range.</p>
     </div>
 
 
     <div class="tool" id="t-aff">
       <p class="note" style="margin:0 0 8px">Change the speed or the impeller diameter and see flow, head and power follow. Starting values are illustrative.</p>
       <div class="ctl">
-        <label>Rated flow Q1 (gpm)<input class="num" id="af-q" type="number" min="1" value="300"></label>
-        <label>Rated head H1 (ft)<input class="num" id="af-h" type="number" min="1" value="60"></label>
+        <label>Rated flow Q1 (<u id="u-q">gpm</u>)<input class="num" id="af-q" type="number" min="1" value="300"></label>
+        <label>Rated head H1 (<u id="u-h">ft</u>)<input class="num" id="af-h" type="number" min="1" value="60"></label>
         <label>Rated power P1 (kW)<input class="num" id="af-p" type="number" min="0.1" step="0.1" value="6"></label>
         <label>Speed, % of rated <span><i id="af-nv">100%</i></span><input id="af-n" type="range" min="50" max="120" step="1" value="100"></label>
         <label>Impeller diameter, % of full (max trim 5%) <span><i id="af-dv">100%</i></span><input id="af-d" type="range" min="95" max="100" step="0.5" value="100"></label>
@@ -645,30 +648,37 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
   $('chips').onclick=function(e){var b=e.target.closest('[data-q]');if(b){$('q').value=b.getAttribute('data-q');find()}};
   /* tools switch */
 
+  var UI=0;try{UI=localStorage.getItem('rl_units')==='si'?1:0}catch(e){}
   /* affinity law tool */
-  function affUpdate(){var q=+$('af-q').value,h=+$('af-h').value,p=+$('af-p').value,n=+$('af-n').value/100,dEl=$('af-d'),d=+dEl.value/100;
+  function affUpdate(){var cf=UI?0.2271247:1,hf=UI?0.3048:1,uq=UI?'m³/h':'gpm',uh=UI?'m':'ft',q=+$('af-q').value/cf,h=+$('af-h').value/hf,p=+$('af-p').value,n=+$('af-n').value/100,dEl=$('af-d'),d=+dEl.value/100;
     if(d<0.95){d=0.95;dEl.value=95}
+    $('u-q').textContent=uq;$('u-h').textContent=uh;
     $('af-nv').textContent=Math.round(n*100)+'%';$('af-dv').textContent=(Math.round(d*1000)/10)+'%';
     if(!(q>0&&h>0&&p>0)){$('af-out').textContent='Enter rated flow, head and power.';return}
     var r=n*d,q2=q*r,h2=h*r*r,p2=p*r*r*r;function ch(a,b){var x=(a/b-1)*100;return (x>=0?'+':'')+x.toFixed(1)+'%'}
-    var hp=p/0.7457,etaB=q*h/(3960*hp);
-    $('af-out').innerHTML='<div class="kpis"><div><small>Flow</small><b>'+q2.toFixed(0)+' gpm</b><em>'+ch(q2,q)+'</em></div><div><small>Head</small><b>'+h2.toFixed(1)+' ft</b><em>'+ch(h2,h)+'</em></div><div><small>Power</small><b>'+p2.toFixed(2)+' kW</b><em>'+ch(p2,p)+'</em></div><div><small>Efficiency</small><b>'+(etaB*100).toFixed(0)+'%</b><em>held</em></div></div>';
+    var hp=p/0.7457,etaB=q*h/(3960*hp),qd=q*cf,hd=h*hf;
+    $('af-out').innerHTML='<div class="kpis"><div><small>Flow</small><b>'+(q2*cf).toFixed(UI?1:0)+' '+uq+'</b><em>'+ch(q2,q)+'</em></div><div><small>Head</small><b>'+(h2*hf).toFixed(1)+' '+uh+'</b><em>'+ch(h2,h)+'</em></div><div><small>Power</small><b>'+p2.toFixed(2)+' kW</b><em>'+ch(p2,p)+'</em></div><div><small>Efficiency</small><b>'+(etaB*100).toFixed(0)+'%</b><em>held</em></div></div>';
     var m=$('af-msg'),w=[];if(d<=0.9501)w.push('Trim limit reached: 5% of full diameter. The Hydraulic Institute allows a 5% reduction in impeller diameter when using affinity rules (as reported by Pumps.org). For more, use the manufacturer curve or trim data and ask them first.');
     if(n>1)w.push('Speed is above rated. Check the manufacturer limits for the pump and the driver.');
     if(etaB>1)w.push('These inputs imply an efficiency above 100% (water, SG 1). Check flow, head and power.');
     m.hidden=!w.length;m.className='msg warn';m.textContent=w.join(' ');
-    /* illustrative base curves in x=Q/Q1 */
-    function Hc(x){return h*(1.3-0.3*x*x)}function Pc(x){return p*(0.55+0.5*x-0.05*x*x)}function Ef(x){return 100*(q*x*Hc(x)/3960)/(Pc(x)/0.7457)}
-    var xs=1.6*q*Math.max(1,r),W=320,H=200,L=40,B=22,T=10,Rr=10,N=40;
+    function Hc(x){return hd*(1.3-0.3*x*x)}function Pc(x){return p*(0.55+0.5*x-0.05*x*x)}
+    function Ef(x){return 100*(q*x*h*(1.3-0.3*x*x)/3960)/(Pc(x)/0.7457)}
+    var xs=1.6*qd*Math.max(1,r),W=320,H=200,L=40,B=22,T=10,Rr=10,N=40;
     function chart(id,yl,fy,k3,ymax,dp,pt1,pt2){var ys=ymax,svg=$(id);
       function X(v){return L+(W-L-Rr)*v/xs}function Y(v){return H-B-(H-B-T)*v/ys}
-      function path(kq,ky){var a=[];for(var i=0;i<=N;i++){var x=1.6*i/N;a.push((i?'L':'M')+X(q*x*kq).toFixed(1)+' '+Y(fy(x)*ky).toFixed(1))}return a.join('')}
+      function path(kq,ky){var a=[];for(var i=0;i<=N;i++){var x=1.6*i/N;a.push((i?'L':'M')+X(qd*x*kq).toFixed(1)+' '+Y(fy(x)*ky).toFixed(1))}return a.join('')}
       var g='';for(var t=0;t<=4;t++){var v=ys*t/4;g+='<line x1="'+L+'" y1="'+Y(v).toFixed(1)+'" x2="'+(W-Rr)+'" y2="'+Y(v).toFixed(1)+'" stroke="#DAE0F0"/><text x="'+(L-4)+'" y="'+(Y(v)+3).toFixed(1)+'" text-anchor="end" font-size="9" fill="#5a6585">'+(ys>=100?Math.round(v):v.toFixed(dp))+'</text>'}
-      svg.innerHTML=g+'<line x1="'+L+'" y1="'+(H-B)+'" x2="'+(W-Rr)+'" y2="'+(H-B)+'" stroke="#9aa6c4"/><line x1="'+L+'" y1="'+T+'" x2="'+L+'" y2="'+(H-B)+'" stroke="#9aa6c4"/><text x="'+(W-Rr)+'" y="'+(H-6)+'" text-anchor="end" font-size="10" fill="#5a6585">Flow (gpm)</text><text x="'+(L+6)+'" y="'+(T+9)+'" font-size="10" fill="#5a6585">'+yl+'</text><path d="'+path(1,1)+'" fill="none" stroke="#2F55C8" stroke-width="2.5"/><path d="'+path(r,k3)+'" fill="none" stroke="#B86A1A" stroke-width="2.5" stroke-dasharray="6 3"/><circle cx="'+X(q)+'" cy="'+Y(pt1)+'" r="5" fill="#2F55C8"/><circle cx="'+X(q2)+'" cy="'+Y(pt2)+'" r="5" fill="#B86A1A"/><text x="'+(W-Rr-4)+'" y="'+(T+22)+'" text-anchor="end" font-size="11" fill="#2F55C8" font-weight="700">Rated</text><text x="'+(W-Rr-4)+'" y="'+(T+36)+'" text-anchor="end" font-size="11" fill="#B86A1A" font-weight="700">New</text>'}
-    var rr=Math.max(1,r),hm=1.3*h*Math.max(1,r*r)*1.08,pm=1.1*p*Math.max(1,r*r*r)*1.2;
-    chart('af-svg','Head (ft)',Hc,r*r,hm,0,h,h2);
+      svg.innerHTML=g+'<line x1="'+L+'" y1="'+(H-B)+'" x2="'+(W-Rr)+'" y2="'+(H-B)+'" stroke="#9aa6c4"/><line x1="'+L+'" y1="'+T+'" x2="'+L+'" y2="'+(H-B)+'" stroke="#9aa6c4"/><text x="'+(W-Rr)+'" y="'+(H-6)+'" text-anchor="end" font-size="10" fill="#5a6585">Flow ('+uq+')</text><text x="'+(L+6)+'" y="'+(T+9)+'" font-size="10" fill="#5a6585">'+yl+'</text><path d="'+path(1,1)+'" fill="none" stroke="#2F55C8" stroke-width="2.5"/><path d="'+path(r,k3)+'" fill="none" stroke="#B86A1A" stroke-width="2.5" stroke-dasharray="6 3"/><circle cx="'+X(qd)+'" cy="'+Y(pt1)+'" r="5" fill="#2F55C8"/><circle cx="'+X(qd*r)+'" cy="'+Y(pt2)+'" r="5" fill="#B86A1A"/><text x="'+(W-Rr-4)+'" y="'+(T+22)+'" text-anchor="end" font-size="11" fill="#2F55C8" font-weight="700">Rated</text><text x="'+(W-Rr-4)+'" y="'+(T+36)+'" text-anchor="end" font-size="11" fill="#B86A1A" font-weight="700">New</text>'}
+    var hm=1.3*hd*Math.max(1,r*r)*1.08,pm=1.1*p*Math.max(1,r*r*r)*1.2,em=Math.max(100,etaB*100*1.1);
+    chart('af-svg','Head ('+uh+')',Hc,r*r,hm,UI?1:0,hd,h2*hf);
     chart('af-svg2','Power (kW)',Pc,r*r*r,pm,1,p,p2);
-    chart('af-svg3','Efficiency (%)',Ef,1,Math.max(100,etaB*100*1.1),0,etaB*100,etaB*100)}
+    chart('af-svg3','Efficiency (%)',Ef,1,em,0,etaB*100,etaB*100)}
+  function setUnits(u){var nu=u==='si'?1:0;if(nu===UI)return;var o=UI?0.2271247:1,oh=UI?0.3048:1,nq=nu?0.2271247:1,nh=nu?0.3048:1,a=$('af-q'),b=$('af-h');
+    var qa=+a.value/o,ha=+b.value/oh;try{localStorage.setItem('rl_units',nu?'si':'us')}catch(e){}UI=nu;
+    a.value=+(qa*nq).toFixed(nu?1:0);b.value=+(ha*nh).toFixed(nu?1:0);unitsUi();affUpdate();pump()}
+  function unitsUi(){[].forEach.call(document.querySelectorAll('#usg button'),function(b){b.classList.toggle('on',(b.dataset.u==='si')===!!UI)});if(typeof settingsRender==='function'&&$('settings')&&!$('settings').hidden)settingsRender()}
+  $('usg').addEventListener('click',function(e){var b=e.target.closest('[data-u]');if(b)setUnits(b.dataset.u)});
   document.addEventListener('input',function(e){if(e.target.closest&&e.target.closest('#t-aff'))affUpdate()});affUpdate();
   function setTool(t){[].forEach.call(document.querySelectorAll('.seg button'),function(b){b.classList.toggle('on',b.getAttribute('data-tool')===t)});
     [].forEach.call(document.querySelectorAll('.tool'),function(e){e.classList.toggle('on',e.id==='t-'+t)})}
@@ -676,14 +686,14 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
   /* pump curve */
   function pump(){
     var N=+$('N').value,D=+$('D').value,Hs=+$('H').value,T=+$('T').value;
-    $('vN').textContent=N+' rpm';$('vD').textContent=D.toFixed(1)+' in';$('vH').textContent=Hs+' ft';$('vT').textContent=T+' %';
+    $('vN').textContent=N+' rpm';$('vD').textContent=UI?Math.round(D*25.4)+' mm':D.toFixed(1)+' in';$('vH').textContent=UI?(Hs*0.3048).toFixed(1)+' m':Hs+' ft';$('vT').textContent=T+' %';
     var s=(N/3000)*(D/10),H0=52*s*s,Qm=450*s,Qb=260*s,k=0.00012*(1+6*T/100);
     var X=function(q){return 56+q/600*560},Y=function(h){return 300-Math.min(h,80)/80*280};
     var svg='',i,q,h,d;
     svg+='<rect x="'+X(.7*Qb)+'" y="20" width="'+(X(1.2*Qb)-X(.7*Qb))+'" height="280" fill="#1d8a57" opacity=".13"/>';
-    for(i=0;i<=600;i+=100)svg+='<line x1="'+X(i)+'" y1="20" x2="'+X(i)+'" y2="300" stroke="#DAE0F0"/><text x="'+X(i)+'" y="318" font-size="14" text-anchor="middle" fill="#56608A" font-family="IBM Plex Mono,monospace">'+i+'</text>';
-    for(i=0;i<=80;i+=20)svg+='<line x1="56" y1="'+Y(i)+'" x2="616" y2="'+Y(i)+'" stroke="#DAE0F0"/><text x="48" y="'+(Y(i)+4)+'" font-size="14" text-anchor="end" fill="#56608A" font-family="IBM Plex Mono,monospace">'+i+'</text>';
-    svg+='<text x="336" y="336" font-size="14" text-anchor="middle" fill="#56608A" font-family="IBM Plex Mono,monospace">Flow (gpm)</text><text x="14" y="160" font-size="14" fill="#56608A" font-family="IBM Plex Mono,monospace" transform="rotate(-90 14 160)" text-anchor="middle">Head (ft)</text>';
+    var cq=UI?0.2271247:1,ch_=UI?0.3048:1,qs=UI?25:100,hs=UI?5:20;for(i=0;i<=600/cq+0.01;i+=qs){var xi=i/cq;svg+='<line x1="'+X(xi)+'" y1="20" x2="'+X(xi)+'" y2="300" stroke="#DAE0F0"/><text x="'+X(xi)+'" y="318" font-size="14" text-anchor="middle" fill="#56608A" font-family="IBM Plex Mono,monospace">'+i+'</text>'}
+    for(i=0;i<=80*ch_+0.01;i+=hs){var yi=i/ch_;svg+='<line x1="56" y1="'+Y(yi)+'" x2="616" y2="'+Y(yi)+'" stroke="#DAE0F0"/><text x="48" y="'+(Y(yi)+4)+'" font-size="14" text-anchor="end" fill="#56608A" font-family="IBM Plex Mono,monospace">'+i+'</text>'}
+    svg+='<text x="336" y="336" font-size="14" text-anchor="middle" fill="#56608A" font-family="IBM Plex Mono,monospace">Flow ('+(UI?'m\u00b3/h':'gpm')+')</text><text x="14" y="160" font-size="14" fill="#56608A" font-family="IBM Plex Mono,monospace" transform="rotate(-90 14 160)" text-anchor="middle">Head ('+(UI?'m':'ft')+')</text>';
     d='';for(q=0;q<=Qm;q+=4){h=H0*(1-(q/Qm)*(q/Qm));d+=(d?'L':'M')+X(q).toFixed(1)+','+Y(h).toFixed(1)}
     svg+='<path d="'+d+'" fill="none" stroke="#0B1B52" stroke-width="3.5"/>';
     d='';for(q=0;q<=600;q+=4){h=Hs+k*q*q;if(h>80)break;d+=(d?'L':'M')+X(q).toFixed(1)+','+Y(h).toFixed(1)}
@@ -692,18 +702,18 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
     svg+='<text x="68" y="38" font-size="15" fill="#0B1B52" font-weight="600" font-family="IBM Plex Sans,sans-serif">Pump curve</text><text x="68" y="54" font-size="15" fill="#9C6A06" font-weight="600" font-family="IBM Plex Sans,sans-serif">System curve</text>';
     var R=$('pr'),M=$('pm');
     if(H0<=Hs+0.01){svg+='<rect x="56" y="20" width="560" height="280" fill="none" stroke="#a50f15" stroke-width="2"/>';
-      R.innerHTML='<div><small>Flow</small><b>0<i>gpm</i></b></div><div><small>Pump shutoff head</small><b>'+H0.toFixed(1)+'<i>ft</i></b></div><div><small>Static head</small><b>'+Hs+'<i>ft</i></b></div>';
+      R.innerHTML='<div><small>Flow</small><b>0<i>'+(UI?'m\u00b3/h':'gpm')+'</i></b></div><div><small>Pump shutoff head</small><b>'+(H0*ch_).toFixed(1)+'<i>'+(UI?'m':'ft')+'</i></b></div><div><small>Static head</small><b>'+(UI?(Hs*0.3048).toFixed(1):Hs)+'<i>'+(UI?'m':'ft')+'</i></b></div>';
       M.className='msg bad';M.textContent='No flow. At this speed and diameter the pump cannot produce enough head to overcome the static head of the system.';$('pc').innerHTML=svg;return}
     q=Math.sqrt((H0-Hs)/(H0/(Qm*Qm)+k));h=Hs+k*q*q;
     var eta=Math.max(.05,.72*(1-Math.pow(q/Qb-1,2))),bhp=q*h/(3960*eta),kw=bhp*0.7457,pct=q/Qb*100;
     svg+='<circle cx="'+X(q)+'" cy="'+Y(h)+'" r="8" fill="#D9A21B" stroke="#0B1B52" stroke-width="3"/><text x="'+(X(q)+12)+'" y="'+(Y(h)-10)+'" font-size="15" fill="#0B1B52" font-weight="600" font-family="IBM Plex Sans,sans-serif">Operating point</text>';
     $('pc').innerHTML=svg;
-    R.innerHTML='<div><small>Flow</small><b>'+q.toFixed(0)+'<i>gpm</i></b></div><div><small>Head</small><b>'+h.toFixed(1)+'<i>ft</i></b></div><div><small>Efficiency</small><b>'+(eta*100).toFixed(0)+'<i>%</i></b></div><div><small>Power</small><b>'+kw.toFixed(1)+'<i>kW</i></b></div><div><small>Flow vs BEP</small><b>'+pct.toFixed(0)+'<i>%</i></b></div>';
+    R.innerHTML='<div><small>Flow</small><b>'+(q*cq).toFixed(UI?1:0)+'<i>'+(UI?'m\u00b3/h':'gpm')+'</i></b></div><div><small>Head</small><b>'+(h*ch_).toFixed(1)+'<i>'+(UI?'m':'ft')+'</i></b></div><div><small>Efficiency</small><b>'+(eta*100).toFixed(0)+'<i>%</i></b></div><div><small>Power</small><b>'+kw.toFixed(1)+'<i>kW</i></b></div><div><small>Flow vs BEP</small><b>'+pct.toFixed(0)+'<i>%</i></b></div>';
     if(pct<70){M.className='msg warn';M.textContent='Below the typical preferred region. Low flow is commonly linked to recirculation, heating and higher vibration. Check the vendor minimum continuous flow.'}
     else if(pct>120){M.className='msg warn';M.textContent='Above the typical preferred region. High flow is commonly linked to low suction margin and motor overload. Check NPSH available and the vendor limits.'}
     else{M.className='msg';M.textContent='Inside the typical preferred operating region around the best efficiency point. Try closing the valve or lowering the speed and watch the point move.'}
   }
-  ['N','D','H','T'].forEach(function(id){$(id).addEventListener('input',pump)});pump();
+  ['N','D','H','T'].forEach(function(id){$(id).addEventListener('input',pump)});pump();if(UI){$('af-q').value=68.1;$('af-h').value=18.3;affUpdate()}unitsUi();
   /* MTBF */
   function mt(){var h=+$('mh').value,f=+$('mf').value,r=+$('mr').value,O=$('mr-out'),M=$('mm');
     if(!(f>0)||!(h>0)||r<0){O.innerHTML='';M.className='msg warn';M.textContent='Enter operating hours and at least one failure.';return}
@@ -917,7 +927,7 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
   $('gclose').addEventListener('click',guideClose);$('guide').addEventListener('click',function(e){if(e.target.id==='guide')guideClose()});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('guide').hidden)guideClose()});
   function setLang(l){if(l===LANG)return;LANG=l;if(!$('about').hidden)setTimeout(function(){aboutOpen()},0);try{localStorage.setItem('rl_lang',LANG)}catch(e){}tbuild();renderLearn(CUR);applyLang();if(!$('guide').hidden)guideOpen();settingsRender()}
-  var SX={en:{t:'Settings',l:'Language',a:'Appearance',c:'Colors',d:'Day',n:'Night',au:'Auto',au2:'Auto follows your device setting.',b:'Blue & gold',h:'HIRZ logo colors',c2:'Applies to the whole platform. Course colors stay.',g:'Platform walkthrough',g2:'Start the walkthrough'},ar:{t:'الإعدادات',l:'اللغة',a:'المظهر',c:'الألوان',d:'نهاري',n:'ليلي',au:'تلقائي',au2:'التلقائي يتبع إعداد جهازك.',b:'أزرق وذهبي',h:'ألوان الشعار',c2:'تنطبق على المنصة كلها. تبقى ألوان الدورات.',g:'شرح المنصة',g2:'ابدأ الشرح'}};
+  var SX={en:{t:'Settings',l:'Language',a:'Appearance',c:'Colors',d:'Day',n:'Night',au:'Auto',au2:'Auto follows your device setting.',b:'Blue & gold',h:'HIRZ logo colors',c2:'Applies to the whole platform. Course colors stay.',u:'Units',us:'US: gpm, ft, in',si:'SI: m\u00b3/h, m, mm',g:'Platform walkthrough',g2:'Start the walkthrough'},ar:{t:'الإعدادات',l:'اللغة',a:'المظهر',c:'الألوان',d:'نهاري',n:'ليلي',au:'تلقائي',au2:'التلقائي يتبع إعداد جهازك.',b:'أزرق وذهبي',h:'ألوان الشعار',c2:'تنطبق على المنصة كلها. تبقى ألوان الدورات.',u:'الوحدات',us:'أمريكية: gpm, ft, in',si:'دولية SI: m\u00b3/h, m, mm',g:'شرح المنصة',g2:'ابدأ الشرح'}};
   var mq=window.matchMedia&&matchMedia('(prefers-color-scheme:dark)');
   function applyTheme(){var d=document.documentElement,m,p;try{m=localStorage.getItem('rl_mode')||'auto';p=localStorage.getItem('rl_pal')||'blue'}catch(e){m='auto';p='blue'}d.dataset.pal=p;var bl=false,lg=document.querySelector('.brand .logo'),fi=$('fimg');if(lg)lg.src=bl?'hirz-logo-b.png':'hirz-logo.png';if(fi)fi.src=bl?'hirz-big-b.jpg':'hirz-big.jpg';d.dataset.mode=m==='auto'?(mq&&mq.matches?'dark':'light'):m;var tc=document.querySelector('meta[name=theme-color]');if(tc)tc.content=getComputedStyle(d).getPropertyValue('--surface').trim()||'#FFFFFF'}
   if(mq&&mq.addEventListener)mq.addEventListener('change',applyTheme);
@@ -925,11 +935,11 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
   function settingsRender(){var x=SX[LANG],m=gl('rl_mode','auto'),p=gl('rl_pal','blue');$('stitle').textContent=x.t;$('settings').setAttribute('dir',LANG==='ar'?'rtl':'ltr');
     function seg(key,cur,items){return '<div class="sg">'+items.map(function(i){return '<button type="button" data-k="'+key+'" data-v="'+i[0]+'" aria-pressed="'+(cur===i[0])+'">'+i[1]+'</button>'}).join('')+'</div>'}
     function sw(a){return '<span class="sw">'+a.map(function(c){return '<i style="background:'+c+'"></i>'}).join('')+'</span>'}
-    $('sbody').innerHTML='<h3>'+x.l+'</h3>'+seg('lang',LANG,[['en','English'],['ar','العربية']])+'<h3>'+x.a+'</h3>'+seg('rl_mode',m,[['light',x.d],['dark',x.n],['auto',x.au]])+'<small>'+x.au2+'</small><h3>'+x.c+'</h3>'+seg('rl_pal',p,[['blue',sw(['#14307F','#D9A21B'])+x.b],['hirz',sw(['#0F6B3A','#B5622A'])+x.h]])+'<small>'+x.c2+'</small><h3>'+x.g+'</h3><div class="sg"><button type="button" id="sguide">? &nbsp;'+x.g2+'</button></div>'}
+    $('sbody').innerHTML='<h3>'+x.l+'</h3>'+seg('lang',LANG,[['en','English'],['ar','العربية']])+'<h3>'+x.a+'</h3>'+seg('rl_mode',m,[['light',x.d],['dark',x.n],['auto',x.au]])+'<small>'+x.au2+'</small><h3>'+x.c+'</h3>'+seg('rl_pal',p,[['blue',sw(['#14307F','#D9A21B'])+x.b],['hirz',sw(['#0F6B3A','#B5622A'])+x.h]])+'<small>'+x.c2+'</small><h3>'+x.u+'</h3>'+seg('rl_units',UI?'si':'us',[['us',x.us],['si',x.si]])+'<h3>'+x.g+'</h3><div class="sg"><button type="button" id="sguide">? &nbsp;'+x.g2+'</button></div>'}
   function settingsOpen(){settingsRender();$('settings').hidden=false}
   function settingsClose(){$('settings').hidden=true;$('setb').focus()}
   $('setb').addEventListener('click',settingsOpen);$('sclose').addEventListener('click',settingsClose);$('settings').addEventListener('click',function(e){if(e.target.id==='settings')settingsClose()});
-  $('sbody').addEventListener('click',function(e){if(e.target.closest('#sguide')){$('settings').hidden=true;guideOpen();return}var b=e.target.closest('button[data-k]');if(!b)return;var k=b.dataset.k,v=b.dataset.v;if(k==='lang'){setLang(v);return}try{localStorage.setItem(k,v)}catch(_){}applyTheme();settingsRender()});
+  $('sbody').addEventListener('click',function(e){if(e.target.closest('#sguide')){$('settings').hidden=true;guideOpen();return}var b=e.target.closest('button[data-k]');if(!b)return;var k=b.dataset.k,v=b.dataset.v;if(k==='lang'){setLang(v);return}if(k==='rl_units'){setUnits(v);settingsRender();return}try{localStorage.setItem(k,v)}catch(_){}applyTheme();settingsRender()});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('settings').hidden)settingsClose()});
   applyTheme();
   function lockBtn(){return ''}
