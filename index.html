@@ -891,7 +891,7 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--navy);
     img.onload=function(){ready=true};img.src='hirz-big.jpg';
     function build(){dpr=Math.min(2,window.devicePixelRatio||1);W=Math.round(innerWidth*dpr);H=Math.round(innerHeight*dpr);cv.width=W;cv.height=H;
       tex=document.createElement('canvas');tex.width=W;tex.height=H;var g=tex.getContext('2d');g.fillStyle='#FDF6EB';g.fillRect(0,0,W,H);
-      var sz=Math.min(W*0.98,H*0.86);g.drawImage(img,(W-sz)/2,(H-sz)/2,sz,sz)}
+      var w=W*1.0,h=Math.min(H*0.96,w*1.5),bg=g.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#FDF6EB');bg.addColorStop(1,'#FDF6EB');g.drawImage(img,(W-w)/2,(H-h)/2,w,h)}
     function frame(now){if(!t0)t0=now;var t=(now-t0)/1000,amp=(still?0.25:1)*Math.min(1,t/0.7)*Math.max(6,W*0.022),lam=W*0.9,sp=still?0:2.4,N=Math.ceil(W/2.5),sw=W/N;
       cx.fillStyle='#FDF6EB';cx.fillRect(0,0,W,H);var sc=1+2*amp/H+0.02;
       for(var i=0;i<N;i++){var x=i*sw,ph=(x/lam)*Math.PI*2*1.4-t*sp*2,dy=Math.sin(ph)*amp*(0.35+0.65*x/W),sl=Math.cos(ph);
