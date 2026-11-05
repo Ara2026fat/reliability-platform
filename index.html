@@ -35,6 +35,7 @@ html[data-mode=dark][data-pal=hirz]{--bg:#0E1A13;--sage:#17291E;--surface:#14221
 html[data-mode=dark] img.lg,html[data-mode=dark] .hav img{filter:none}
 .usg{display:inline-flex;border:2px solid var(--tx);border-radius:11px;overflow:hidden;margin:4px 0 12px}.usg button{border:0;background:transparent;color:var(--tx);font:700 13.5px var(--font-display);padding:8px 14px}.usg button.on{background:var(--navy);color:#fff}
 .inst{position:fixed;left:10px;right:10px;bottom:calc(74px + env(safe-area-inset-bottom,0px));z-index:50;background:var(--navy);color:#fff;border-radius:16px;padding:12px 12px 12px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 28px rgba(0,0,0,.35);max-width:520px;margin:0 auto}.inst[hidden]{display:none}.inst div{flex:1;min-width:0}.inst b{display:block;font:800 15px var(--font-display)}.inst span{display:block;font-size:13px;line-height:1.35;opacity:.92;margin-top:2px}.inst button{border:0;border-radius:10px;font:800 14px var(--font-display);padding:9px 14px;background:var(--hl);color:#1b1b1b}.inst .x{background:transparent;color:#fff;font-size:22px;padding:4px 8px;line-height:1}.inst button[hidden]{display:none}
+#sguide,#sinst{display:flex;align-items:center;justify-content:center;gap:10px}
 .sg{display:flex;gap:8px;margin:8px 0 18px}.sg button{flex:1;min-height:46px;border-radius:12px;border:2px solid var(--line);background:var(--surface);color:var(--ink);font:700 14.5px var(--font-display);padding:6px 8px}.sg button[aria-pressed=true]{border-color:var(--tx);background:var(--navy);color:#fff}
 #sbody h3{font:800 12.5px var(--font-display);letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:14px 0 0}#sbody small{display:block;color:var(--mut);font-size:13px;line-height:1.4;margin-top:-10px;margin-bottom:14px}
 .sw{display:inline-flex;gap:3px;vertical-align:middle;margin-inline-end:6px}.sw i{width:11px;height:11px;border-radius:50%;display:block}
@@ -445,7 +446,7 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
 <section class="page" id="p-tools">
   <div class="phead"><div class="wrap"><div class="eyebrow">Analyze</div><h2 class="h">Tools that show their work</h2><p class="lede">Every number comes with its formula and assumptions. Values in these demos are illustrative.</p></div><img class="phimp" alt="" width="200" height="200" aria-hidden="true"></div>
   <div class="wrap sect pgbody">
-    <div class="seg" role="tablist"><button class="on" data-tool="pump">Pump curve</button><button data-tool="aff">Affinity law</button><button data-tool="mtbf">MTBF and MTTR</button><button data-tool="rel">Series and parallel</button><button data-tool="rpn">RPN ranking</button></div>
+    <div class="seg" role="tablist"><button class="on" data-tool="pump">Pump curve</button><button data-tool="aff">Affinity law</button><button data-tool="comp">Compressor</button><button data-tool="mtbf">MTBF and MTTR</button><button data-tool="rel">Series and parallel</button><button data-tool="rpn">RPN ranking</button></div>
 
     <div class="usg" id="usg" role="group" aria-label="Units"><button type="button" data-u="us">US: gpm, ft, in</button><button type="button" data-u="si">SI: m&sup3;/h, m, mm</button></div>
 
@@ -478,6 +479,26 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
       <svg id="af-svg" viewBox="0 0 320 200" role="img" aria-label="Head against flow, rated curve and new curve" style="width:100%;height:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:10px"></svg><svg id="af-svg2" viewBox="0 0 320 200" role="img" aria-label="Power against flow, rated curve and new curve" style="width:100%;height:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:10px"></svg><svg id="af-svg3" viewBox="0 0 320 200" role="img" aria-label="Efficiency against flow, rated curve and new curve" style="width:100%;height:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:10px"></svg>
       <p class="note" style="margin-top:8px">Q2 = Q1 x (N2/N1) x (D2/D1). H2 = H1 x (N2/N1)<sup>2</sup> x (D2/D1)<sup>2</sup>. P2 = P1 x (N2/N1)<sup>3</sup> x (D2/D1)<sup>3</sup>. Speed and diameter laws are applied one after the other. The system curve is static head plus a flow-squared friction term, set to pass through the rated point; the new operating point is where the new pump curve crosses it, so it differs from the simple affinity-scaled point. Efficiency at each matching point is held unchanged, which is a simplification: trimming typically makes the pump less efficient. The curve shapes are illustrative (head falls with flow, power rises with flow, efficiency is derived from them and peaks at the rated point); use the manufacturer curves for a real pump.</p>
       <p class="note">Sources: <a href="https://www.pumps.org/2022/09/27/trimming-impellers-to-reduce-energy-consumption/" target="_blank" rel="noopener">Pumps.org, trimming impellers</a> (the equations and the Hydraulic Institute 5% statement and the effect on efficiency and power) and <a href="https://www.pumpsandsystems.com/impeller-alterations-better-performance" target="_blank" rel="noopener">Pumps &amp; Systems, impeller alterations</a> (affinity rule is approximate).</p>
+    </div>
+
+    <div class="tool" id="t-comp">
+      <p class="note" style="margin:0 0 8px">Illustrative centrifugal compressor map. Change the speed or close the discharge valve and watch the operating point move toward the surge line. Starting values are illustrative.</p>
+      <div class="ctl">
+        <label>Gas<select class="num" id="cg"><option value="air">Air</option><option value="n2">Nitrogen</option><option value="h2">Hydrogen</option><option value="ch4">Methane</option><option value="co2">Carbon dioxide</option><option value="custom">Custom</option></select></label>
+        <label>Specific heat ratio k<input class="num" id="ck" type="number" step="0.01" min="1.05" max="1.7" value="1.40"></label>
+        <label>Molecular weight (kg/kmol)<input class="num" id="cm" type="number" step="0.01" min="1" value="28.96"></label>
+        <label>Suction pressure, absolute (<u id="cu-p">bar</u>)<input class="num" id="cp1" type="number" step="0.1" min="0.1" value="1"></label>
+        <label>Suction temperature (<u id="cu-t">&deg;C</u>)<input class="num" id="ct1" type="number" step="1" value="30"></label>
+        <label>Design inlet flow (<u id="cu-q">m&sup3;/h</u>)<input class="num" id="cqd" type="number" min="1" value="10000"></label>
+        <label>Design pressure ratio<input class="num" id="cpr" type="number" step="0.1" min="1.1" value="3"></label>
+        <label>Design polytropic efficiency, %<input class="num" id="ce" type="number" min="40" max="95" value="78"></label>
+        <label>Speed, % of design <span><i id="cnv">100%</i></span><input id="cn" type="range" min="70" max="105" step="1" value="100"></label>
+        <label>Discharge valve closed <span><i id="cvv">0 %</i></span><input id="cv" type="range" min="0" max="100" step="1" value="0"></label>
+      </div>
+      <div class="chartbox"><svg id="cc" viewBox="0 0 640 340" role="img" aria-label="Compressor map: head against inlet flow, speed lines, surge line, system curve and operating point"></svg></div>
+      <div class="read" id="cr"></div>
+      <div class="msg" id="cmg"></div>
+      <p class="note" style="margin-top:10px">Model: ideal gas, compressibility Z = 1, no intercooling, no leakage. Polytropic head H = (R/MW) &times; T1 / a &times; (PR<sup>a</sup> &minus; 1), with a = (k &minus; 1) / (k &times; &eta;p). Discharge temperature T2 = T1 &times; PR<sup>a</sup>. Gas power = mass flow &times; H / &eta;p. Speed changes follow the fan laws: flow with speed, head with speed squared. The map shape, the surge line at 70% of design flow, the efficiency curve and the system curve (30% static, 70% flow-squared) are illustrative assumptions for teaching, not data for any real machine. Use the vendor map and surge control line for real work. Gas k and MW are approximate ideal-gas values near 300 K.</p>
     </div>
 
     <div class="tool" id="t-mtbf">
@@ -653,6 +674,7 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
   /* tools switch */
 
   var UI=0;try{UI=localStorage.getItem('rl_units')==='si'?1:0}catch(e){}
+  var CU=1,GAS={air:[1.40,28.96],n2:[1.40,28.01],h2:[1.41,2.016],ch4:[1.31,16.04],co2:[1.29,44.01]};
   /* affinity law tool */
   function affUpdate(){var cf=UI?0.2271247:1,hf=UI?0.3048:1,uq=UI?'m³/h':'gpm',uh=UI?'m':'ft',q=+$('af-q').value/cf,h=+$('af-h').value/hf,p=+$('af-p').value,hs0=+$('af-s').value/hf,n=+$('af-n').value/100,dEl=$('af-d'),d=+dEl.value/100;
     if(d<0.95){d=0.95;dEl.value=95}
@@ -684,9 +706,57 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
     chart('af-svg','Head ('+uh+')',Hc,r*r,hm,UI?1:0,hd,h2*hf,q2*cf,true);
     chart('af-svg2','Power (kW)',Pc,r*r*r,pm,1,p,p2,q2*cf,false);
     chart('af-svg3','Efficiency (%)',Ef,1,em,0,etaB*100,e2,q2*cf,false)}
+  /* compressor */
+  function cget(){var f=CU?1:14.5038;var P=+$('cp1').value/(CU?1:14.5038),T=CU?+$('ct1').value:(+$('ct1').value-32)*5/9,Q=+$('cqd').value/(CU?1:0.588578);return {P:P,T:T,Q:Q}}
+  function cset(P,T,Q){$('cp1').value=+(CU?P:P*14.5038).toFixed(CU?2:1);$('ct1').value=+(CU?T:T*9/5+32).toFixed(0);$('cqd').value=+(CU?Q:Q*0.588578).toFixed(0)}
+  function compUnits(){var o=cget();CU=UI;cset(o.P,o.T,o.Q);$('cu-p').textContent=CU?'bar':'psia';$('cu-t').innerHTML=CU?'&deg;C':'&deg;F';$('cu-q').innerHTML=CU?'m&sup3;/h':'acfm';comp()}
+  function comp(){
+    var k=+$('ck').value,mw=+$('cm').value,g=cget(),pr=+$('cpr').value,ed=+$('ce').value/100,sN=+$('cn').value/100,tv=+$('cv').value;
+    $('cnv').textContent=Math.round(sN*100)+'%';$('cvv').textContent=tv+' %';
+    var R=$('cr'),M=$('cmg');
+    if(!(k>1&&mw>0&&g.P>0&&g.Q>0&&pr>1&&ed>0.3&&ed<1)){R.innerHTML='';M.className='msg warn';M.textContent='Check the inputs: k above 1, positive pressure and flow, pressure ratio above 1, efficiency between 40 and 95 %.';$('cc').innerHTML='';return}
+    var Rg=8.314/mw,T1=g.T+273.15,Qd=g.Q,ad=(k-1)/(k*ed),Hd=Rg*T1/ad*(Math.pow(pr,ad)-1),c=1+4*tv/100;
+    function h(q){var v=1+0.35*(1-q*q);if(q>1.15)v-=2*Math.pow(q-1.15,2);return v}
+    function eta(q){return Math.max(0.3,ed*(1-1.2*Math.pow(q-1,2)))}
+    function sysH(Q){return Hd*(0.3+0.7*c*Math.pow(Q/Qd,2))}
+    function f(Q){return Hd*sN*sN*h(Q/(Qd*sN))-sysH(Q)}
+    var lo=0.05*Qd,hi=1.6*Qd,Qo=null;if(f(lo)>0&&f(hi)<0){for(var i=0;i<60;i++){var mid=(lo+hi)/2;if(f(mid)>0)lo=mid;else hi=mid}Qo=(lo+hi)/2}
+    var cf=UI?1:0.588578,hf=UI?1:334.553,uq=UI?'m³/h':'acfm',uh=UI?'kJ/kg':'ft';
+    var X=function(q){return 70+q*cf/(1.7*Qd*cf)*540},Y=function(hh){return 300-hh/(1.5*Hd)*280};
+    var sv='',i2,q,hh,d,sp=[0.7,0.8,0.9,1.0];
+    var xt=UI?(Qd>=8000?2500:Qd>=2000?500:100):(Qd*0.588578>=4000?1000:Qd*0.588578>=1000?250:50);
+    for(i2=0;i2*xt<=1.7*Qd*cf;i2++){var xv=i2*xt/cf;sv+='<line x1="'+X(xv)+'" y1="20" x2="'+X(xv)+'" y2="300" stroke="#DAE0F0"/><text x="'+X(xv)+'" y="318" font-size="13" text-anchor="middle" fill="#56608A" font-family="IBM Plex Mono,monospace">'+(i2*xt)+'</text>'}
+    var ytk=UI?Math.pow(10,Math.floor(Math.log10(1.5*Hd/4))):Math.pow(10,Math.floor(Math.log10(1.5*Hd*334.553/4)));var ystep=ytk*(UI?Math.ceil(1.5*Hd/4/ytk):Math.ceil(1.5*Hd*334.553/4/ytk));
+    for(i2=0;i2*ystep<=1.5*Hd*hf;i2++){var yv=i2*ystep/hf;sv+='<line x1="70" y1="'+Y(yv)+'" x2="610" y2="'+Y(yv)+'" stroke="#DAE0F0"/><text x="62" y="'+(Y(yv)+4)+'" font-size="13" text-anchor="end" fill="#56608A" font-family="IBM Plex Mono,monospace">'+Math.round(i2*ystep)+'</text>'}
+    sv+='<text x="340" y="336" font-size="13" text-anchor="middle" fill="#56608A" font-family="IBM Plex Mono,monospace">Inlet flow ('+uq+')</text><text x="14" y="160" font-size="13" fill="#56608A" font-family="IBM Plex Mono,monospace" transform="rotate(-90 14 160)" text-anchor="middle">Polytropic head ('+uh+')</text>';
+    /* surge zone */
+    var sz='M'+X(0)+','+Y(0);for(var sk=0.6;sk<=1.051;sk+=0.05){sz+='L'+X(0.7*Qd*sk).toFixed(1)+','+Y(Hd*sk*sk*h(0.7)).toFixed(1)}sz+='L'+X(0)+','+Y(Hd*1.05*1.05*h(0.7))+'Z';
+    sv+='<path d="'+sz+'" fill="#a50f15" opacity=".08"/>';
+    function curve(s2,w,col,op){var p='';for(q=0.7;q<=1.3;q+=0.02){hh=Hd*s2*s2*h(q);if(hh<0)break;p+=(p?'L':'M')+X(q*Qd*s2).toFixed(1)+','+Y(hh).toFixed(1)}return '<path d="'+p+'" fill="none" stroke="'+col+'" stroke-width="'+w+'" opacity="'+op+'"/>'}
+    sp.forEach(function(s2){sv+=curve(s2,1.5,'#56608A',.55)});
+    if(sp.indexOf(Math.round(sN*100)/100)<0)sv+=curve(sN,2,'#2F55C8',.9);
+    sv+=curve(sN,3.5,'#0B1B52',1);
+    d='';for(q=0.6;q<=1.051;q+=0.05)d+=(d?'L':'M')+X(0.7*Qd*q).toFixed(1)+','+Y(Hd*q*q*h(0.7)).toFixed(1);
+    sv+='<path d="'+d+'" fill="none" stroke="#a50f15" stroke-width="2.5" stroke-dasharray="6 4"/><text x="'+(X(0.7*Qd*0.62)+6)+'" y="'+(Y(Hd*0.62*0.62*h(0.7))-14)+'" font-size="13" fill="#a50f15" font-family="IBM Plex Sans,sans-serif" font-weight="600">Surge line</text>';
+    d='';for(var Qq=0;Qq<=1.6*Qd;Qq+=Qd/40){var hs=sysH(Qq);if(hs>1.5*Hd)break;d+=(d?'L':'M')+X(Qq).toFixed(1)+','+Y(hs).toFixed(1)}
+    sv+='<path d="'+d+'" fill="none" stroke="#9C6A06" stroke-width="3" stroke-dasharray="7 5"/>';
+    sv+='<text x="395" y="38" font-size="14" fill="#0B1B52" font-weight="600" font-family="IBM Plex Sans,sans-serif">Speed line</text><text x="395" y="54" font-size="14" fill="#9C6A06" font-weight="600" font-family="IBM Plex Sans,sans-serif">System curve</text>';
+    if(Qo===null){$('cc').innerHTML=sv;R.innerHTML='<div><small>Flow</small><b>0<i>'+uq+'</i></b></div>';M.className='msg bad';M.textContent='No stable operating point on this map: at this speed the compressor cannot overcome the system head.';return}
+    var qo=Qo/(Qd*sN),Ho=Hd*sN*sN*h(qo),eo=eta(qo),ao=(k-1)/(k*eo),PRo=Math.pow(1+Ho*ao/(Rg*T1),1/ao),T2=T1*Math.pow(PRo,ao),rho=g.P*100*mw/(8.314*T1),mdot=rho*Qo/3600,kw=mdot*Ho/eo,sm=(Qo/(0.7*Qd*sN)-1)*100;
+    sv+='<circle cx="'+X(Qo)+'" cy="'+Y(Ho)+'" r="8" fill="#D9A21B" stroke="#0B1B52" stroke-width="3"/><text x="'+(X(Qo)+12)+'" y="'+(Y(Ho)-10)+'" font-size="14" fill="#0B1B52" font-weight="600" font-family="IBM Plex Sans,sans-serif">Operating point</text>';
+    $('cc').innerHTML=sv;
+    var tU=UI?'°C':'°F',pU=UI?'bar':'psia',T2d=UI?T2-273.15:(T2-273.15)*9/5+32,Pd=g.P*PRo*(UI?1:14.5038);
+    R.innerHTML='<div><small>Inlet flow</small><b>'+(Qo*cf).toFixed(0)+'<i>'+uq+'</i></b></div><div><small>Pressure ratio</small><b>'+PRo.toFixed(2)+'</b></div><div><small>Discharge pressure</small><b>'+Pd.toFixed(UI?2:1)+'<i>'+pU+'</i></b></div><div><small>Discharge temperature</small><b>'+T2d.toFixed(0)+'<i>'+tU+'</i></b></div><div><small>Efficiency</small><b>'+(eo*100).toFixed(0)+'<i>%</i></b></div><div><small>Gas power</small><b>'+kw.toFixed(0)+'<i>kW</i></b></div><div><small>Margin to surge</small><b>'+sm.toFixed(0)+'<i>%</i></b></div>';
+    if(sm<0){M.className='msg bad';M.textContent='Left of the surge line. A real compressor would be in surge here: flow reversal, strong vibration and thrust changes. Open the discharge valve or raise the speed.'}
+    else if(sm<10){M.className='msg warn';M.textContent='Close to the surge line (margin under 10 %, an illustrative threshold). Real machines use a surge control line set by the vendor, with an anti-surge valve.'}
+    else{M.className='msg';M.textContent='Comfortable margin from surge on this illustrative map. Close the valve or lower the speed and watch the margin shrink.'}
+  }
+  $('cg').addEventListener('change',function(){var v=GAS[this.value];if(v){$('ck').value=v[0];$('cm').value=v[1]}comp()});
+  ['ck','cm'].forEach(function(id){$(id).addEventListener('input',function(){$('cg').value='custom';comp()})});
+  ['cp1','ct1','cqd','cpr','ce','cn','cv'].forEach(function(id){$(id).addEventListener('input',comp)});
   function setUnits(u){var nu=u==='si'?1:0;if(nu===UI)return;var o=UI?0.2271247:1,oh=UI?0.3048:1,nq=nu?0.2271247:1,nh=nu?0.3048:1,a=$('af-q'),b=$('af-h');
     var sEl=$('af-s'),sa=+sEl.value/oh,qa=+a.value/o,ha=+b.value/oh;try{localStorage.setItem('rl_units',nu?'si':'us')}catch(e){}UI=nu;
-    a.value=+(qa*nq).toFixed(nu?1:0);b.value=+(ha*nh).toFixed(nu?1:0);sEl.value=+(sa*nh).toFixed(nu?1:0);unitsUi();affUpdate();pump()}
+    a.value=+(qa*nq).toFixed(nu?1:0);b.value=+(ha*nh).toFixed(nu?1:0);sEl.value=+(sa*nh).toFixed(nu?1:0);unitsUi();affUpdate();pump();compUnits()}
   function unitsUi(){[].forEach.call(document.querySelectorAll('#usg button'),function(b){b.classList.toggle('on',(b.dataset.u==='si')===!!UI)});if(typeof settingsRender==='function'&&$('settings')&&!$('settings').hidden)settingsRender()}
   $('usg').addEventListener('click',function(e){var b=e.target.closest('[data-u]');if(b)setUnits(b.dataset.u)});
   document.addEventListener('input',function(e){if(e.target.closest&&e.target.closest('#t-aff'))affUpdate()});affUpdate();
@@ -723,7 +793,7 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
     else if(pct>120){M.className='msg warn';M.textContent='Above the typical preferred region. High flow is commonly linked to low suction margin and motor overload. Check NPSH available and the vendor limits.'}
     else{M.className='msg';M.textContent='Inside the typical preferred operating region around the best efficiency point. Try closing the valve or lowering the speed and watch the point move.'}
   }
-  ['N','D','H','T'].forEach(function(id){$(id).addEventListener('input',pump)});pump();if(UI){$('af-q').value=68.1;$('af-h').value=18.3;$('af-s').value=6.1;affUpdate()}unitsUi();
+  ['N','D','H','T'].forEach(function(id){$(id).addEventListener('input',pump)});pump();if(UI){$('af-q').value=68.1;$('af-h').value=18.3;$('af-s').value=6.1;affUpdate()}unitsUi();compUnits();
   /* MTBF */
   function mt(){var h=+$('mh').value,f=+$('mf').value,r=+$('mr').value,O=$('mr-out'),M=$('mm');
     if(!(f>0)||!(h>0)||r<0){O.innerHTML='';M.className='msg warn';M.textContent='Enter operating hours and at least one failure.';return}
@@ -941,7 +1011,7 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
   window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();DP=e;instShow()});
   window.addEventListener('appinstalled',function(){DP=null;$('inst').hidden=true;try{localStorage.setItem('rl_inst','done')}catch(e){}});
   function instHtml(x){if(standalone())return '<small style="margin-top:6px">'+x.idn+'</small>';
-    return '<div class="sg"><button type="button" id="sinst">'+x.it+'</button></div>'}
+    return '<div class="sg"><button type="button" id="sinst"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M12 8v6M9.5 11.5 12 14l2.5-2.5"/></svg><span>'+x.it+'</span></button></div>'}
   function instGo(fromSettings){var x=SX[LANG];if(DP){DP.prompt();DP.userChoice.then(function(){DP=null;$('inst').hidden=true});return}
     $('inst-t').textContent=x.it;$('inst-s').textContent=IOS?x.ios:x.ino;$('inst-go').hidden=true;if(fromSettings)$('settings').hidden=true;$('inst').hidden=false}
   function instShow(){if(standalone())return;var d;try{d=localStorage.getItem('rl_inst')}catch(e){}if(d==='done')return;if(d&&Date.now()-(+d)<6048e5)return;
@@ -959,7 +1029,7 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
   function settingsRender(){var x=SX[LANG],m=gl('rl_mode','auto'),p=gl('rl_pal','blue');$('stitle').textContent=x.t;$('settings').setAttribute('dir',LANG==='ar'?'rtl':'ltr');
     function seg(key,cur,items){return '<div class="sg">'+items.map(function(i){return '<button type="button" data-k="'+key+'" data-v="'+i[0]+'" aria-pressed="'+(cur===i[0])+'">'+i[1]+'</button>'}).join('')+'</div>'}
     function sw(a){return '<span class="sw">'+a.map(function(c){return '<i style="background:'+c+'"></i>'}).join('')+'</span>'}
-    $('sbody').innerHTML='<h3>'+x.l+'</h3>'+seg('lang',LANG,[['en','English'],['ar','العربية']])+'<h3>'+x.a+'</h3>'+seg('rl_mode',m,[['light',x.d],['dark',x.n],['auto',x.au]])+'<small>'+x.au2+'</small><h3>'+x.c+'</h3>'+seg('rl_pal',p,[['blue',sw(['#14307F','#D9A21B'])+x.b],['hirz',sw(['#0F6B3A','#D9A21B'])+x.h]])+'<small>'+x.c2+'</small><h3>'+x.u+'</h3>'+seg('rl_units',UI?'si':'us',[['us',x.us],['si',x.si]])+'<h3>'+x.ia+'</h3>'+instHtml(x)+'<h3>'+x.g+'</h3><div class="sg"><button type="button" id="sguide">? &nbsp;'+x.g2+'</button></div>'}
+    $('sbody').innerHTML='<h3>'+x.l+'</h3>'+seg('lang',LANG,[['en','English'],['ar','العربية']])+'<h3>'+x.a+'</h3>'+seg('rl_mode',m,[['light',x.d],['dark',x.n],['auto',x.au]])+'<small>'+x.au2+'</small><h3>'+x.c+'</h3>'+seg('rl_pal',p,[['blue',sw(['#14307F','#D9A21B'])+x.b],['hirz',sw(['#0F6B3A','#D9A21B'])+x.h]])+'<small>'+x.c2+'</small><h3>'+x.u+'</h3>'+seg('rl_units',UI?'si':'us',[['us',x.us],['si',x.si]])+'<h3>'+x.ia+'</h3>'+instHtml(x)+'<h3>'+x.g+'</h3><div class="sg"><button type="button" id="sguide"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.6 2.6 0 1 1 3.6 2.4c-.7.4-1.1.9-1.1 1.7"/><path d="M12 17h.01"/></svg><span>'+x.g2+'</span></button></div>'}
   function settingsOpen(){settingsRender();$('settings').hidden=false}
   function settingsClose(){$('settings').hidden=true;$('setb').focus()}
   $('setb').addEventListener('click',settingsOpen);$('sclose').addEventListener('click',settingsClose);$('settings').addEventListener('click',function(e){if(e.target.id==='settings')settingsClose()});
