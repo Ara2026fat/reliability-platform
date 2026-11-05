@@ -814,6 +814,9 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
     else if(cm<5){M.className='msg warn';M.textContent='Very close to the choke line. Check the vendor limits.'}
     else{M.className='msg';M.textContent='Between the surge and choke lines on this illustrative map. Close the valve or lower the speed and watch the margin to surge shrink.'}
   }
+  ['ck','cm'].forEach(function(id){$(id).addEventListener('input',function(){$('cg').value='custom';comp()})});
+  ['cp1','ct1','cqd','cpr','ce','cn','cv'].forEach(function(id){$(id).addEventListener('input',comp)});
+  $('cax').addEventListener('change',comp);
   /* shared gas list and reciprocating compressor */
   var GASL=[['air','Air',1.40,28.96],['n2','Nitrogen',1.40,28.01],['o2','Oxygen',1.40,32.00],['h2','Hydrogen',1.41,2.016],['he','Helium',1.66,4.003],['ar','Argon',1.67,39.95],['co','Carbon monoxide',1.40,28.01],['co2','Carbon dioxide',1.29,44.01],['nh3','Ammonia',1.31,17.03],['h2s','Hydrogen sulfide',1.32,34.08],['ch4','Methane',1.31,16.04],['c2h6','Ethane',1.19,30.07],['c2h4','Ethylene',1.24,28.05],['c3h8','Propane',1.13,44.10],['c3h6','Propylene',1.15,42.08],['c4h10','n-Butane',1.09,58.12],['ng','Natural gas (typical, varies)',1.27,18.5],['custom','Custom',0,0]];
   ['cg','rg'].forEach(function(id){$(id).innerHTML=GASL.map(function(g){return '<option value="'+g[0]+'">'+g[1]+'</option>'}).join('')});
