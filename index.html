@@ -520,12 +520,23 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
         <label>Other losses (leakage, valves, heating), %<span><i id="rlv">5%</i></span><input id="rls" type="range" min="0" max="20" step="1" value="5"></label>
         <label>Number of stages<select class="num" id="rs"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option></select></label>
         <label>Overall isentropic efficiency, %<input class="num" id="re" type="number" min="40" max="95" value="80"></label>
+        <label><bdi class="lbt">Piston rod diameter (<u id="ru-rd">mm</u>)</bdi><input class="num" id="rrd" type="number" min="1" value="40"></label>
+        <label><bdi class="lbt">Vendor rod load limit, optional (<u id="ru-lim">kN</u>)</bdi><input class="num" id="rlim" type="number" min="0" value="0"></label>
+        <label><bdi class="lbt">Pipe length to check (<u id="ru-pl">m</u>)</bdi><input class="num" id="rpl" type="number" min="0.1" step="0.1" value="3"></label>
+        <label>Line to check<select class="num" id="rpt"><option value="s">Suction line</option><option value="d">Discharge line</option></select></label>
+        <label>Pipe ends<select class="num" id="rpe"><option value="oc">One end open (vessel), one closed (cylinder)</option><option value="cc">Both ends the same (closed or open)</option></select></label>
       </div>
       <div class="read" id="rr"></div>
       <div class="msg" id="rmg"></div>
+      <h3 style="font:800 13px var(--font-display);letter-spacing:.05em;text-transform:uppercase;color:var(--mut);margin:16px 0 6px">Rod gas load, first stage</h3>
+      <div class="read" id="rld"></div>
+      <div class="msg" id="rlm"></div>
+      <h3 style="font:800 13px var(--font-display);letter-spacing:.05em;text-transform:uppercase;color:var(--mut);margin:16px 0 6px">Pulsation screening</h3>
+      <div class="msg" id="rpm"></div>
       <svg id="rc1" viewBox="0 0 320 200" role="img" aria-label="Volumetric efficiency against pressure ratio for three clearances" style="width:100%;height:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:10px"></svg>
       <svg id="rc2" viewBox="0 0 320 200" role="img" aria-label="Shaft power against total pressure ratio" style="width:100%;height:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:10px"></svg>
       <p class="note" style="margin-top:10px">Model: ideal gas, Z = 1, single suction conditions. Swept volume = &pi;/4 &times; bore<sup>2</sup> &times; stroke &times; cylinders &times; (1 or 2) &times; rpm (rod area ignored for double acting). Volumetric efficiency = 1 &minus; C &times; (r<sup>1/k</sup> &minus; 1), then multiplied by (1 &minus; other losses). Isentropic discharge temperature T2s = T1 &times; r<sup>(k&minus;1)/k</sup>; the tool estimates actual T2 = T1 + (T2s &minus; T1) / &eta;. Power per stage = mass flow &times; k/(k&minus;1) &times; (R/MW) &times; T1 &times; (r<sup>(k&minus;1)/k</sup> &minus; 1) / &eta;. Staging: equal pressure ratio per stage, intercooled back to the suction temperature, no pressure drop; the cylinder size is for the first stage. The clearance, losses and efficiency values are illustrative assumptions, not data for a real machine. For real design and limits (discharge temperature, rod load, pulsation) use the vendor data and API 618 (the reciprocating compressor standard for petroleum, chemical and gas industry services). Gas k and MW are approximate ideal-gas values near 300 K; natural gas varies with composition.</p>
+      <p class="note">Rod gas load (first-stage cylinder, gas pressure only): compression load = Pd &times; Ap &minus; Ps &times; (Ap &minus; Ar); the opposite half stroke gives Ps &times; Ap &minus; Pd &times; (Ap &minus; Ar), negative meaning tension. Ap is the piston area, Ar the rod area. A single-acting cylinder is assumed to see atmospheric pressure (1.013 bar) behind the piston and never reverses. Inertia loads, valve pressure drops and pulsation are not included; the combined rod load check needs the vendor's reciprocating weights. Load reversal is commonly checked so that the crosshead pin is lubricated. Pulsation screening: speed of sound c = &radic;(k &times; 8314 &times; T / MW); acoustic modes of a straight pipe are c/(4L) &times; (1, 3, 5, &hellip;) with one end open and one closed, or c/(2L) &times; (1, 2, 3, &hellip;) with equal ends; excitation is at multiples of the running speed, strongest at the cylinder pulse rate. Modes within &plusmn;20 % of a harmonic (an illustrative screening margin) are flagged. This is a first screening only: real pulsation and piping vibration studies follow API 618 and need an acoustic simulation.</p>
     </div>
 
     <div class="tool" id="t-mtbf">
@@ -785,9 +796,9 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
   ['cg','rg'].forEach(function(id){$(id).innerHTML=GASL.map(function(g){return '<option value="'+g[0]+'">'+g[1]+'</option>'}).join('')});
   function gasSet(sel,kid,mid){var g=GASL.filter(function(x){return x[0]===$(sel).value})[0];if(g&&g[2]){$(kid).value=g[2];$(mid).value=g[3]}}
   var RU=1;
-  function rget(){var u=RU;return {P1:+$('rp1').value/(u?1:14.5038),P2:+$('rp2').value/(u?1:14.5038),T:u?+$('rt1').value:(+$('rt1').value-32)*5/9,D:+$('rd').value*(u?1:25.4),L:+$('rl').value*(u?1:25.4)}}
-  function rset(o){var u=RU;$('rp1').value=+(u?o.P1:o.P1*14.5038).toFixed(u?2:1);$('rp2').value=+(u?o.P2:o.P2*14.5038).toFixed(u?2:1);$('rt1').value=+(u?o.T:o.T*9/5+32).toFixed(0);$('rd').value=+(u?o.D:o.D/25.4).toFixed(u?0:2);$('rl').value=+(u?o.L:o.L/25.4).toFixed(u?0:2)}
-  function recUnits(){var o=rget();RU=UI;rset(o);$('ru-p').textContent=$('ru-p2').textContent=RU?'bar':'psia';$('ru-t').innerHTML=RU?'&deg;C':'&deg;F';$('ru-d').textContent=$('ru-l').textContent=RU?'mm':'in';recip()}
+  function rget(){var u=RU;return {P1:+$('rp1').value/(u?1:14.5038),P2:+$('rp2').value/(u?1:14.5038),T:u?+$('rt1').value:(+$('rt1').value-32)*5/9,D:+$('rd').value*(u?1:25.4),L:+$('rl').value*(u?1:25.4),RD:+$('rrd').value*(u?1:25.4),LIM:+$('rlim').value/(u?1:224.809),PL:+$('rpl').value*(u?1:0.3048)}}
+  function rset(o){var u=RU;$('rp1').value=+(u?o.P1:o.P1*14.5038).toFixed(u?2:1);$('rp2').value=+(u?o.P2:o.P2*14.5038).toFixed(u?2:1);$('rt1').value=+(u?o.T:o.T*9/5+32).toFixed(0);$('rd').value=+(u?o.D:o.D/25.4).toFixed(u?0:2);$('rl').value=+(u?o.L:o.L/25.4).toFixed(u?0:2);$('rrd').value=+(u?o.RD:o.RD/25.4).toFixed(u?0:2);$('rlim').value=+(u?o.LIM:o.LIM*224.809).toFixed(u?0:0);$('rpl').value=+(u?o.PL:o.PL/0.3048).toFixed(u?1:1)}
+  function recUnits(){var o=rget();RU=UI;rset(o);$('ru-p').textContent=$('ru-p2').textContent=RU?'bar':'psia';$('ru-t').innerHTML=RU?'&deg;C':'&deg;F';$('ru-d').textContent=$('ru-l').textContent=$('ru-rd').textContent=RU?'mm':'in';$('ru-lim').textContent=RU?'kN':'lbf';$('ru-pl').textContent=RU?'m':'ft';recip()}
   function recip(){
     var k=+$('rk').value,mw=+$('rm').value,g=rget(),n=+$('rn').value,nc=+$('rc').value,act=+$('ra').value,C=+$('rcl').value/100,loss=+$('rls').value/100,z=+$('rs').value,eta=+$('re').value/100;
     $('rcv').textContent=Math.round(C*100)+'%';$('rlv').textContent=Math.round(loss*100)+'%';
@@ -803,6 +814,24 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
       R.innerHTML='<div><small>Inlet flow</small><b>'+(Q*cf).toFixed(0)+'<i>'+uq+'</i></b></div><div><small>Volumetric efficiency</small><b>'+(evn*100).toFixed(0)+'<i>%</i></b></div><div><small>Pressure ratio</small><b>'+r.toFixed(2)+'</b></div><div><small>Per stage</small><b>'+rs.toFixed(2)+'</b></div><div><small>Discharge temperature, each stage</small><b>'+T2d.toFixed(0)+'<i>'+tU+'</i></b></div><div><small>Shaft power</small><b>'+kw.toFixed(0)+'<i>kW</i></b></div>';
       if(evn<0.5){M.className='msg warn';M.textContent='Volumetric efficiency is below 50 % (an illustrative threshold). A high ratio per stage costs capacity; more stages or smaller clearance help.'}
       else{M.className='msg';M.textContent='Check the discharge temperature against the vendor and API 618 limits for this gas and lubrication. Try more stages and watch temperature and power fall.'}}
+    /* rod load */
+    var Ap=Math.PI/4*Math.pow(g.D/1000,2),Ar=Math.PI/4*Math.pow(g.RD/1000,2),Pd1=g.P1*rs,RL=$('rld'),RM=$('rlm'),fU=UI?'kN':'lbf',ff=UI?1:224.809;
+    if(!(Ar>=0&&Ar<Ap)){RL.innerHTML='';RM.className='msg warn';RM.textContent='Rod diameter must be smaller than the bore.'}
+    else{var Fc,Ft;if(act===2){Fc=100*(Pd1*Ap-g.P1*(Ap-Ar));Ft=100*(g.P1*Ap-Pd1*(Ap-Ar))}else{Fc=100*(Pd1-1.01325)*Ap;Ft=100*(g.P1-1.01325)*Ap}
+      var peak=Math.max(Math.abs(Fc),Math.abs(Ft)),rev=act===2&&Fc>0&&Ft<0;
+      RL.innerHTML='<div><small>Compression load</small><b>'+(Fc*ff).toFixed(0)+'<i>'+fU+'</i></b></div>'+(act===2?'<div><small>Other half stroke</small><b>'+(Ft*ff).toFixed(0)+'<i>'+fU+'</i></b></div>':'')+'<div><small>Load reversal</small><b>'+(rev?'Yes':'No')+'</b></div>'+(g.LIM>0?'<div><small>Of vendor limit</small><b>'+(peak/g.LIM*100).toFixed(0)+'<i>%</i></b></div>':'');
+      if(g.LIM>0&&peak>g.LIM){RM.className='msg bad';RM.textContent='The gas load alone exceeds the vendor rod load limit you entered. Reduce the pressure ratio per stage or use a larger frame.'}
+      else if(act===2&&!rev){RM.className='msg warn';RM.textContent='No load reversal on this cylinder, so the crosshead pin may not get lubrication on the reversal. Check with the vendor.'}
+      else if(act===1){RM.className='msg';RM.textContent='Single acting: the rod stays in compression, so there is no reversal. Gas load only; inertia is not included.'}
+      else{RM.className='msg';RM.textContent='Gas load only; inertia loads and the vendor limit still need to be checked. Enter the vendor limit above to compare.'}}
+    /* pulsation screening */
+    var PM=$('rpm'),Tl=$('rpt').value==='d'?(evn>0?T1+(T1*Math.pow(rs,a)-T1)/eta:T1):T1,c=Math.sqrt(k*8314*Tl/mw),Lp=g.PL,fr=n/60,modes=[],lines=[],hz=function(x){return x.toFixed(x<100?1:0)+' Hz'};
+    if(!(Lp>0)){PM.className='msg warn';PM.textContent='Enter a pipe length.'}
+    else{for(var mi=1;mi<=12;mi++)modes.push($('rpe').value==='oc'?(2*mi-1)*c/(4*Lp):mi*c/(2*Lp));
+      for(var hi=1;hi<=6;hi++){var fh=hi*fr;modes.forEach(function(fm,idx){if(Math.abs(fm-fh)/fh<=0.2)lines.push('Mode '+(idx+1)+' at '+hz(fm)+' is within 20 % of '+hi+'× running speed ('+hz(fh)+')'+(hi===act?' (the cylinder pulse rate)':''))})}
+      var head='Speed of sound '+c.toFixed(0)+' m/s at '+(Tl-273.15).toFixed(0)+'°C. First acoustic modes: '+modes.slice(0,4).map(hz).join(', ')+'. Running speed '+hz(fr)+'; cylinder pulse rate '+hz(fr*act)+'. ';
+      if(lines.length){PM.className='msg warn';PM.textContent=head+'Possible coincidences: '+lines.slice(0,6).join('; ')+(lines.length>6?'; and more':'')+'. Change the pipe length or add a damper, and ask for a pulsation study.'}
+      else{PM.className='msg';PM.textContent=head+'No mode within 20 % of the first six harmonics for this length.'}}
     /* charts */
     var W=320,H=200,L=40,B=22,T=10,Rr=10,rmax=Math.max(10,Math.ceil(r*1.3));
     function chart(id,yl,series,ymax,pt,dp){var svg=$(id);function X(v){return L+(W-L-Rr)*(v-1)/(rmax-1)}function Y(v){return H-B-(H-B-T)*v/ymax}
@@ -817,7 +846,7 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
   $('cg').addEventListener('change',function(){gasSet('cg','ck','cm');comp()});
   $('rg').addEventListener('change',function(){gasSet('rg','rk','rm');recip()});
   ['rk','rm'].forEach(function(id){$(id).addEventListener('input',function(){$('rg').value='custom';recip()})});
-  ['rp1','rp2','rt1','rd','rl','rn','rc','ra','rcl','rls','rs','re'].forEach(function(id){$(id).addEventListener('input',recip);$(id).addEventListener('change',recip)});
+  ['rp1','rp2','rt1','rd','rl','rn','rc','ra','rcl','rls','rs','re','rrd','rlim','rpl','rpt','rpe'].forEach(function(id){$(id).addEventListener('input',recip);$(id).addEventListener('change',recip)});
   function setUnits(u){var nu=u==='si'?1:0;if(nu===UI)return;var o=UI?0.2271247:1,oh=UI?0.3048:1,nq=nu?0.2271247:1,nh=nu?0.3048:1,a=$('af-q'),b=$('af-h');
     var sEl=$('af-s'),sa=+sEl.value/oh,qa=+a.value/o,ha=+b.value/oh;try{localStorage.setItem('rl_units',nu?'si':'us')}catch(e){}UI=nu;
     a.value=+(qa*nq).toFixed(nu?1:0);b.value=+(ha*nh).toFixed(nu?1:0);sEl.value=+(sa*nh).toFixed(nu?1:0);unitsUi();affUpdate();pump();compUnits();recUnits()}
