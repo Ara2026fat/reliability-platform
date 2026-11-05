@@ -36,6 +36,7 @@ html[data-mode=dark] img.lg,html[data-mode=dark] .hav img{filter:none}
 .usg{display:inline-flex;border:2px solid var(--tx);border-radius:11px;overflow:hidden;margin:4px 0 12px}.usg button{border:0;background:transparent;color:var(--tx);font:700 13.5px var(--font-display);padding:8px 14px}.usg button.on{background:var(--navy);color:#fff}
 .inst{position:fixed;left:10px;right:10px;bottom:calc(74px + env(safe-area-inset-bottom,0px));z-index:50;background:var(--navy);color:#fff;border-radius:16px;padding:12px 12px 12px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 28px rgba(0,0,0,.35);max-width:520px;margin:0 auto}.inst[hidden]{display:none}.inst div{flex:1;min-width:0}.inst b{display:block;font:800 15px var(--font-display)}.inst span{display:block;font-size:13px;line-height:1.35;opacity:.92;margin-top:2px}.inst button{border:0;border-radius:10px;font:800 14px var(--font-display);padding:9px 14px;background:var(--hl);color:#1b1b1b}.inst .x{background:transparent;color:#fff;font-size:22px;padding:4px 8px;line-height:1}.inst button[hidden]{display:none}
 #sguide,#sinst{display:flex;align-items:center;justify-content:center;gap:10px}
+.ctl .lbt{display:block}.ctl u{text-decoration:none}
 .sg{display:flex;gap:8px;margin:8px 0 18px}.sg button{flex:1;min-height:46px;border-radius:12px;border:2px solid var(--line);background:var(--surface);color:var(--ink);font:700 14.5px var(--font-display);padding:6px 8px}.sg button[aria-pressed=true]{border-color:var(--tx);background:var(--navy);color:#fff}
 #sbody h3{font:800 12.5px var(--font-display);letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:14px 0 0}#sbody small{display:block;color:var(--mut);font-size:13px;line-height:1.4;margin-top:-10px;margin-bottom:14px}
 .sw{display:inline-flex;gap:3px;vertical-align:middle;margin-inline-end:6px}.sw i{width:11px;height:11px;border-radius:50%;display:block}
@@ -446,7 +447,7 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
 <section class="page" id="p-tools">
   <div class="phead"><div class="wrap"><div class="eyebrow">Analyze</div><h2 class="h">Tools that show their work</h2><p class="lede">Every number comes with its formula and assumptions. Values in these demos are illustrative.</p></div><img class="phimp" alt="" width="200" height="200" aria-hidden="true"></div>
   <div class="wrap sect pgbody">
-    <div class="seg" role="tablist"><button class="on" data-tool="pump">Pump curve</button><button data-tool="aff">Affinity law</button><button data-tool="comp">Compressor</button><button data-tool="mtbf">MTBF and MTTR</button><button data-tool="rel">Series and parallel</button><button data-tool="rpn">RPN ranking</button></div>
+    <div class="seg" role="tablist"><button class="on" data-tool="pump">Pump curve</button><button data-tool="aff">Affinity law</button><button data-tool="comp">Centrifugal compressor</button><button data-tool="recip">Reciprocating compressor</button><button data-tool="mtbf">MTBF and MTTR</button><button data-tool="rel">Series and parallel</button><button data-tool="rpn">RPN ranking</button></div>
 
     <div class="usg" id="usg" role="group" aria-label="Units"><button type="button" data-u="us">US: gpm, ft, in</button><button type="button" data-u="si">SI: m&sup3;/h, m, mm</button></div>
 
@@ -467,10 +468,10 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
     <div class="tool" id="t-aff">
       <p class="note" style="margin:0 0 8px">Change the speed or the impeller diameter and see flow, head and power follow. Starting values are illustrative.</p>
       <div class="ctl">
-        <label>Rated flow Q1 (<u id="u-q">gpm</u>)<input class="num" id="af-q" type="number" min="1" value="300"></label>
-        <label>Rated head H1 (<u id="u-h">ft</u>)<input class="num" id="af-h" type="number" min="1" value="60"></label>
+        <label><bdi class="lbt">Rated flow Q1 (<u id="u-q">gpm</u>)</bdi><input class="num" id="af-q" type="number" min="1" value="300"></label>
+        <label><bdi class="lbt">Rated head H1 (<u id="u-h">ft</u>)</bdi><input class="num" id="af-h" type="number" min="1" value="60"></label>
         <label>Rated power P1 (kW)<input class="num" id="af-p" type="number" min="0.1" step="0.1" value="6"></label>
-        <label>System static head (<u id="u-s">ft</u>)<input class="num" id="af-s" type="number" min="0" value="20"></label>
+        <label><bdi class="lbt">System static head (<u id="u-s">ft</u>)</bdi><input class="num" id="af-s" type="number" min="0" value="20"></label>
         <label>Speed, % of rated <span><i id="af-nv">100%</i></span><input id="af-n" type="range" min="50" max="120" step="1" value="100"></label>
         <label>Impeller diameter, % of full (max trim 5%) <span><i id="af-dv">100%</i></span><input id="af-d" type="range" min="95" max="100" step="0.5" value="100"></label>
       </div>
@@ -484,12 +485,12 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
     <div class="tool" id="t-comp">
       <p class="note" style="margin:0 0 8px">Illustrative centrifugal compressor map. Change the speed or close the discharge valve and watch the operating point move toward the surge line. Starting values are illustrative.</p>
       <div class="ctl">
-        <label>Gas<select class="num" id="cg"><option value="air">Air</option><option value="n2">Nitrogen</option><option value="h2">Hydrogen</option><option value="ch4">Methane</option><option value="co2">Carbon dioxide</option><option value="custom">Custom</option></select></label>
+        <label>Gas<select class="num" id="cg"></select></label>
         <label>Specific heat ratio k<input class="num" id="ck" type="number" step="0.01" min="1.05" max="1.7" value="1.40"></label>
         <label>Molecular weight (kg/kmol)<input class="num" id="cm" type="number" step="0.01" min="1" value="28.96"></label>
-        <label>Suction pressure, absolute (<u id="cu-p">bar</u>)<input class="num" id="cp1" type="number" step="0.1" min="0.1" value="1"></label>
-        <label>Suction temperature (<u id="cu-t">&deg;C</u>)<input class="num" id="ct1" type="number" step="1" value="30"></label>
-        <label>Design inlet flow (<u id="cu-q">m&sup3;/h</u>)<input class="num" id="cqd" type="number" min="1" value="10000"></label>
+        <label><bdi class="lbt">Suction pressure, absolute (<u id="cu-p">bar</u>)</bdi><input class="num" id="cp1" type="number" step="0.1" min="0.1" value="1"></label>
+        <label><bdi class="lbt">Suction temperature (<u id="cu-t">&deg;C</u>)</bdi><input class="num" id="ct1" type="number" step="1" value="30"></label>
+        <label><bdi class="lbt">Design inlet flow (<u id="cu-q">m&sup3;/h</u>)</bdi><input class="num" id="cqd" type="number" min="1" value="10000"></label>
         <label>Design pressure ratio<input class="num" id="cpr" type="number" step="0.1" min="1.1" value="3"></label>
         <label>Design polytropic efficiency, %<input class="num" id="ce" type="number" min="40" max="95" value="78"></label>
         <label>Speed, % of design <span><i id="cnv">100%</i></span><input id="cn" type="range" min="70" max="105" step="1" value="100"></label>
@@ -499,6 +500,32 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
       <div class="read" id="cr"></div>
       <div class="msg" id="cmg"></div>
       <p class="note" style="margin-top:10px">Model: ideal gas, compressibility Z = 1, no intercooling, no leakage. Polytropic head H = (R/MW) &times; T1 / a &times; (PR<sup>a</sup> &minus; 1), with a = (k &minus; 1) / (k &times; &eta;p). Discharge temperature T2 = T1 &times; PR<sup>a</sup>. Gas power = mass flow &times; H / &eta;p. Speed changes follow the fan laws: flow with speed, head with speed squared. The map shape, the surge line at 70% of design flow, the efficiency curve and the system curve (30% static, 70% flow-squared) are illustrative assumptions for teaching, not data for any real machine. Use the vendor map and surge control line for real work. Gas k and MW are approximate ideal-gas values near 300 K.</p>
+    </div>
+
+    <div class="tool" id="t-recip">
+      <p class="note" style="margin:0 0 8px">Illustrative reciprocating compressor. Pick the gas, set the cylinder size, speed, clearance and staging, and see capacity, volumetric efficiency, discharge temperature and power. Starting values are illustrative.</p>
+      <div class="ctl">
+        <label>Gas<select class="num" id="rg"></select></label>
+        <label>Specific heat ratio k<input class="num" id="rk" type="number" step="0.01" min="1.05" max="1.7" value="1.40"></label>
+        <label>Molecular weight (kg/kmol)<input class="num" id="rm" type="number" step="0.01" min="1" value="28.96"></label>
+        <label><bdi class="lbt">Suction pressure, absolute (<u id="ru-p">bar</u>)</bdi><input class="num" id="rp1" type="number" step="0.1" min="0.1" value="1"></label>
+        <label><bdi class="lbt">Discharge pressure, absolute (<u id="ru-p2">bar</u>)</bdi><input class="num" id="rp2" type="number" step="0.1" min="0.2" value="8"></label>
+        <label><bdi class="lbt">Suction temperature (<u id="ru-t">&deg;C</u>)</bdi><input class="num" id="rt1" type="number" step="1" value="30"></label>
+        <label><bdi class="lbt">Cylinder bore (<u id="ru-d">mm</u>)</bdi><input class="num" id="rd" type="number" min="1" value="150"></label>
+        <label><bdi class="lbt">Stroke (<u id="ru-l">mm</u>)</bdi><input class="num" id="rl" type="number" min="1" value="120"></label>
+        <label>Speed (rpm)<input class="num" id="rn" type="number" min="50" value="1000"></label>
+        <label>First-stage cylinders<input class="num" id="rc" type="number" min="1" max="8" step="1" value="2"></label>
+        <label>Cylinder action<select class="num" id="ra"><option value="1">Single acting</option><option value="2">Double acting</option></select></label>
+        <label>Clearance volume, % of swept<span><i id="rcv">10%</i></span><input id="rcl" type="range" min="2" max="25" step="1" value="10"></label>
+        <label>Other losses (leakage, valves, heating), %<span><i id="rlv">5%</i></span><input id="rls" type="range" min="0" max="20" step="1" value="5"></label>
+        <label>Number of stages<select class="num" id="rs"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option></select></label>
+        <label>Overall isentropic efficiency, %<input class="num" id="re" type="number" min="40" max="95" value="80"></label>
+      </div>
+      <div class="read" id="rr"></div>
+      <div class="msg" id="rmg"></div>
+      <svg id="rc1" viewBox="0 0 320 200" role="img" aria-label="Volumetric efficiency against pressure ratio for three clearances" style="width:100%;height:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:10px"></svg>
+      <svg id="rc2" viewBox="0 0 320 200" role="img" aria-label="Shaft power against total pressure ratio" style="width:100%;height:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:10px"></svg>
+      <p class="note" style="margin-top:10px">Model: ideal gas, Z = 1, single suction conditions. Swept volume = &pi;/4 &times; bore<sup>2</sup> &times; stroke &times; cylinders &times; (1 or 2) &times; rpm (rod area ignored for double acting). Volumetric efficiency = 1 &minus; C &times; (r<sup>1/k</sup> &minus; 1), then multiplied by (1 &minus; other losses). Isentropic discharge temperature T2s = T1 &times; r<sup>(k&minus;1)/k</sup>; the tool estimates actual T2 = T1 + (T2s &minus; T1) / &eta;. Power per stage = mass flow &times; k/(k&minus;1) &times; (R/MW) &times; T1 &times; (r<sup>(k&minus;1)/k</sup> &minus; 1) / &eta;. Staging: equal pressure ratio per stage, intercooled back to the suction temperature, no pressure drop; the cylinder size is for the first stage. The clearance, losses and efficiency values are illustrative assumptions, not data for a real machine. For real design and limits (discharge temperature, rod load, pulsation) use the vendor data and API 618 (the reciprocating compressor standard for petroleum, chemical and gas industry services). Gas k and MW are approximate ideal-gas values near 300 K; natural gas varies with composition.</p>
     </div>
 
     <div class="tool" id="t-mtbf">
@@ -751,12 +778,49 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
     else if(sm<10){M.className='msg warn';M.textContent='Close to the surge line (margin under 10 %, an illustrative threshold). Real machines use a surge control line set by the vendor, with an anti-surge valve.'}
     else{M.className='msg';M.textContent='Comfortable margin from surge on this illustrative map. Close the valve or lower the speed and watch the margin shrink.'}
   }
-  $('cg').addEventListener('change',function(){var v=GAS[this.value];if(v){$('ck').value=v[0];$('cm').value=v[1]}comp()});
   ['ck','cm'].forEach(function(id){$(id).addEventListener('input',function(){$('cg').value='custom';comp()})});
   ['cp1','ct1','cqd','cpr','ce','cn','cv'].forEach(function(id){$(id).addEventListener('input',comp)});
+  /* shared gas list and reciprocating compressor */
+  var GASL=[['air','Air',1.40,28.96],['n2','Nitrogen',1.40,28.01],['o2','Oxygen',1.40,32.00],['h2','Hydrogen',1.41,2.016],['he','Helium',1.66,4.003],['ar','Argon',1.67,39.95],['co','Carbon monoxide',1.40,28.01],['co2','Carbon dioxide',1.29,44.01],['nh3','Ammonia',1.31,17.03],['h2s','Hydrogen sulfide',1.32,34.08],['ch4','Methane',1.31,16.04],['c2h6','Ethane',1.19,30.07],['c2h4','Ethylene',1.24,28.05],['c3h8','Propane',1.13,44.10],['c3h6','Propylene',1.15,42.08],['c4h10','n-Butane',1.09,58.12],['ng','Natural gas (typical, varies)',1.27,18.5],['custom','Custom',0,0]];
+  ['cg','rg'].forEach(function(id){$(id).innerHTML=GASL.map(function(g){return '<option value="'+g[0]+'">'+g[1]+'</option>'}).join('')});
+  function gasSet(sel,kid,mid){var g=GASL.filter(function(x){return x[0]===$(sel).value})[0];if(g&&g[2]){$(kid).value=g[2];$(mid).value=g[3]}}
+  var RU=1;
+  function rget(){var u=RU;return {P1:+$('rp1').value/(u?1:14.5038),P2:+$('rp2').value/(u?1:14.5038),T:u?+$('rt1').value:(+$('rt1').value-32)*5/9,D:+$('rd').value*(u?1:25.4),L:+$('rl').value*(u?1:25.4)}}
+  function rset(o){var u=RU;$('rp1').value=+(u?o.P1:o.P1*14.5038).toFixed(u?2:1);$('rp2').value=+(u?o.P2:o.P2*14.5038).toFixed(u?2:1);$('rt1').value=+(u?o.T:o.T*9/5+32).toFixed(0);$('rd').value=+(u?o.D:o.D/25.4).toFixed(u?0:2);$('rl').value=+(u?o.L:o.L/25.4).toFixed(u?0:2)}
+  function recUnits(){var o=rget();RU=UI;rset(o);$('ru-p').textContent=$('ru-p2').textContent=RU?'bar':'psia';$('ru-t').innerHTML=RU?'&deg;C':'&deg;F';$('ru-d').textContent=$('ru-l').textContent=RU?'mm':'in';recip()}
+  function recip(){
+    var k=+$('rk').value,mw=+$('rm').value,g=rget(),n=+$('rn').value,nc=+$('rc').value,act=+$('ra').value,C=+$('rcl').value/100,loss=+$('rls').value/100,z=+$('rs').value,eta=+$('re').value/100;
+    $('rcv').textContent=Math.round(C*100)+'%';$('rlv').textContent=Math.round(loss*100)+'%';
+    var R=$('rr'),M=$('rmg');
+    if(!(k>1&&mw>0&&g.P1>0&&g.P2>g.P1&&g.D>0&&g.L>0&&n>0&&nc>=1&&eta>0.3&&eta<=1)){R.innerHTML='';M.className='msg warn';M.textContent='Check the inputs: discharge pressure must be above suction pressure; k above 1; sizes, speed and efficiency positive.';$('rc1').innerHTML='';$('rc2').innerHTML='';return}
+    var Rg=8.314/mw,T1=g.T+273.15,a=(k-1)/k,vs=Math.PI/4*Math.pow(g.D/1000,2)*(g.L/1000)*nc*act*n*60;/* m3/h swept */
+    function ev(r,c){var rs=Math.pow(r,1/z);return (1-c*(Math.pow(rs,1/k)-1))*(1-loss)}
+    var r=g.P2/g.P1,rs=Math.pow(r,1/z),evn=ev(r,C),Q=vs*evn,rho=g.P1*100*mw/(8.314*T1);
+    var cf=UI?1:0.588578,uq=UI?'m³/h':'acfm',tU=UI?'°C':'°F';
+    function pw(rr,Qq){var m=rho*Qq/3600;return z*m*(k/(k-1))*Rg*T1*(Math.pow(Math.pow(rr,1/z),a)-1)/eta}
+    if(evn<=0){R.innerHTML='<div><small>Pressure ratio</small><b>'+r.toFixed(2)+'</b></div><div><small>Per stage</small><b>'+rs.toFixed(2)+'</b></div><div><small>Delivery</small><b>0<i>'+uq+'</i></b></div>';M.className='msg bad';M.textContent='No delivery: the gas left in the clearance volume re-expands and fills the whole stroke. Reduce the pressure ratio per stage (more stages) or the clearance.'}
+    else{var kw=pw(r,Q),T2s=T1*Math.pow(rs,a),T2=T1+(T2s-T1)/eta,T2d=UI?T2-273.15:(T2-273.15)*9/5+32;
+      R.innerHTML='<div><small>Inlet flow</small><b>'+(Q*cf).toFixed(0)+'<i>'+uq+'</i></b></div><div><small>Volumetric efficiency</small><b>'+(evn*100).toFixed(0)+'<i>%</i></b></div><div><small>Pressure ratio</small><b>'+r.toFixed(2)+'</b></div><div><small>Per stage</small><b>'+rs.toFixed(2)+'</b></div><div><small>Discharge temperature, each stage</small><b>'+T2d.toFixed(0)+'<i>'+tU+'</i></b></div><div><small>Shaft power</small><b>'+kw.toFixed(0)+'<i>kW</i></b></div>';
+      if(evn<0.5){M.className='msg warn';M.textContent='Volumetric efficiency is below 50 % (an illustrative threshold). A high ratio per stage costs capacity; more stages or smaller clearance help.'}
+      else{M.className='msg';M.textContent='Check the discharge temperature against the vendor and API 618 limits for this gas and lubrication. Try more stages and watch temperature and power fall.'}}
+    /* charts */
+    var W=320,H=200,L=40,B=22,T=10,Rr=10,rmax=Math.max(10,Math.ceil(r*1.3));
+    function chart(id,yl,series,ymax,pt,dp){var svg=$(id);function X(v){return L+(W-L-Rr)*(v-1)/(rmax-1)}function Y(v){return H-B-(H-B-T)*v/ymax}
+      var gr='';for(var t=0;t<=4;t++){var v=ymax*t/4;gr+='<line x1="'+L+'" y1="'+Y(v).toFixed(1)+'" x2="'+(W-Rr)+'" y2="'+Y(v).toFixed(1)+'" stroke="#DAE0F0"/><text x="'+(L-4)+'" y="'+(Y(v)+3).toFixed(1)+'" text-anchor="end" font-size="9" fill="#5a6585">'+v.toFixed(dp)+'</text>'}
+      var out=gr+'<line x1="'+L+'" y1="'+(H-B)+'" x2="'+(W-Rr)+'" y2="'+(H-B)+'" stroke="#9aa6c4"/><line x1="'+L+'" y1="'+T+'" x2="'+L+'" y2="'+(H-B)+'" stroke="#9aa6c4"/><text x="'+(W-Rr)+'" y="'+(H-6)+'" text-anchor="end" font-size="10" fill="#5a6585">Total pressure ratio</text><text x="'+(L+6)+'" y="'+(T+9)+'" font-size="10" fill="#5a6585">'+yl+'</text>';
+      series.forEach(function(se,si){var p='';for(var i=0;i<=60;i++){var rr=1.05+(rmax-1.05)*i/60,y=se.f(rr);if(y<0)break;p+=(p?'L':'M')+X(rr).toFixed(1)+' '+Y(y).toFixed(1)}out+='<path d="'+p+'" fill="none" stroke="'+se.c+'" stroke-width="'+(se.w||2.2)+'"'+(se.d?' stroke-dasharray="'+se.d+'"':'')+'/><text x="'+(L+8)+'" y="'+(H-B-8-(series.length-1-si)*13)+'" font-size="10.5" fill="'+se.c+'" font-weight="700">'+se.n+'</text>'});
+      if(pt&&pt[1]>=0)out+='<circle cx="'+X(pt[0]).toFixed(1)+'" cy="'+Y(pt[1]).toFixed(1)+'" r="5" fill="#D9A21B" stroke="#0B1B52" stroke-width="2"/>';svg.innerHTML=out}
+    chart('rc1','Volumetric efficiency (%)',[{f:function(x){return 100*ev(x,C*0.5)},c:'#12909C',n:'Clearance '+Math.round(C*50)+'%'},{f:function(x){return 100*ev(x,C)},c:'#0B1B52',n:'Clearance '+Math.round(C*100)+'%',w:3},{f:function(x){return 100*ev(x,Math.min(0.4,C*2))},c:'#B86A1A',n:'Clearance '+Math.round(Math.min(40,C*200))+'%'}],100,[r,evn*100],0);
+    var pm=0;for(var i3=0;i3<=60;i3++){var rr3=1.05+(rmax-1.05)*i3/60,e3=ev(rr3,C);if(e3>0)pm=Math.max(pm,pw(rr3,vs*e3))}pm=Math.max(pm,1)*1.1;
+    chart('rc2','Shaft power (kW)',[{f:function(x){var e=ev(x,C);return e>0?pw(x,vs*e):-1},c:'#0B1B52',n:'Power',w:3}],pm,[r,evn>0?pw(r,Q):-1],0)
+  }
+  $('cg').addEventListener('change',function(){gasSet('cg','ck','cm');comp()});
+  $('rg').addEventListener('change',function(){gasSet('rg','rk','rm');recip()});
+  ['rk','rm'].forEach(function(id){$(id).addEventListener('input',function(){$('rg').value='custom';recip()})});
+  ['rp1','rp2','rt1','rd','rl','rn','rc','ra','rcl','rls','rs','re'].forEach(function(id){$(id).addEventListener('input',recip);$(id).addEventListener('change',recip)});
   function setUnits(u){var nu=u==='si'?1:0;if(nu===UI)return;var o=UI?0.2271247:1,oh=UI?0.3048:1,nq=nu?0.2271247:1,nh=nu?0.3048:1,a=$('af-q'),b=$('af-h');
     var sEl=$('af-s'),sa=+sEl.value/oh,qa=+a.value/o,ha=+b.value/oh;try{localStorage.setItem('rl_units',nu?'si':'us')}catch(e){}UI=nu;
-    a.value=+(qa*nq).toFixed(nu?1:0);b.value=+(ha*nh).toFixed(nu?1:0);sEl.value=+(sa*nh).toFixed(nu?1:0);unitsUi();affUpdate();pump();compUnits()}
+    a.value=+(qa*nq).toFixed(nu?1:0);b.value=+(ha*nh).toFixed(nu?1:0);sEl.value=+(sa*nh).toFixed(nu?1:0);unitsUi();affUpdate();pump();compUnits();recUnits()}
   function unitsUi(){[].forEach.call(document.querySelectorAll('#usg button'),function(b){b.classList.toggle('on',(b.dataset.u==='si')===!!UI)});if(typeof settingsRender==='function'&&$('settings')&&!$('settings').hidden)settingsRender()}
   $('usg').addEventListener('click',function(e){var b=e.target.closest('[data-u]');if(b)setUnits(b.dataset.u)});
   document.addEventListener('input',function(e){if(e.target.closest&&e.target.closest('#t-aff'))affUpdate()});affUpdate();
@@ -793,7 +857,7 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
     else if(pct>120){M.className='msg warn';M.textContent='Above the typical preferred region. High flow is commonly linked to low suction margin and motor overload. Check NPSH available and the vendor limits.'}
     else{M.className='msg';M.textContent='Inside the typical preferred operating region around the best efficiency point. Try closing the valve or lowering the speed and watch the point move.'}
   }
-  ['N','D','H','T'].forEach(function(id){$(id).addEventListener('input',pump)});pump();if(UI){$('af-q').value=68.1;$('af-h').value=18.3;$('af-s').value=6.1;affUpdate()}unitsUi();compUnits();
+  ['N','D','H','T'].forEach(function(id){$(id).addEventListener('input',pump)});pump();if(UI){$('af-q').value=68.1;$('af-h').value=18.3;$('af-s').value=6.1;affUpdate()}unitsUi();compUnits();recUnits();
   /* MTBF */
   function mt(){var h=+$('mh').value,f=+$('mf').value,r=+$('mr').value,O=$('mr-out'),M=$('mm');
     if(!(f>0)||!(h>0)||r<0){O.innerHTML='';M.className='msg warn';M.textContent='Enter operating hours and at least one failure.';return}
