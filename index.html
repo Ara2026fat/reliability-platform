@@ -476,6 +476,7 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
         <label>Impeller diameter, % of full (max trim 5%) <span><i id="af-dv">100%</i></span><input id="af-d" type="range" min="95" max="100" step="0.5" value="100"></label>
       </div>
       <div class="read" id="af-out"></div>
+      <details id="af-det" style="margin-top:10px"><summary style="cursor:pointer;font-weight:600">Calculation details (step by step)</summary><div id="af-detb" style="margin-top:8px;font-size:13.5px"></div></details>
       <div class="msg" id="af-msg" hidden></div>
       <svg id="af-svg" viewBox="0 0 320 200" role="img" aria-label="Head against flow, rated curve and new curve" style="width:100%;height:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:10px"></svg><svg id="af-svg2" viewBox="0 0 320 200" role="img" aria-label="Power against flow, rated curve and new curve" style="width:100%;height:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:10px"></svg><svg id="af-svg3" viewBox="0 0 320 200" role="img" aria-label="Efficiency against flow, rated curve and new curve" style="width:100%;height:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:10px"></svg>
       <p class="note" style="margin-top:8px">Q2 = Q1 x (N2/N1) x (D2/D1). H2 = H1 x (N2/N1)<sup>2</sup> x (D2/D1)<sup>2</sup>. P2 = P1 x (N2/N1)<sup>3</sup> x (D2/D1)<sup>3</sup>. Speed and diameter laws are applied one after the other. The system curve is static head plus a flow-squared friction term, set to pass through the rated point; the new operating point is where the new pump curve crosses it, so it differs from the simple affinity-scaled point. Efficiency at each matching point is held unchanged, which is a simplification: trimming typically makes the pump less efficient. The curve shapes are illustrative (head falls with flow, power rises with flow, efficiency is derived from them and peaks at the rated point); use the manufacturer curves for a real pump.</p>
@@ -815,6 +816,17 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
     if(!noflow){q2=Math.sqrt(num/den);h2=Hs+k*q2*q2;var xo=q2/(q*r);p2=Pc(xo)*r*r*r;e2=Ef(xo)}
     if(noflow){$('af-out').innerHTML='<div class="kpis"><div><small>Flow</small><b>0 '+uq+'</b><em>no flow</em></div></div>'}
     else $('af-out').innerHTML='<div class="kpis"><div><small>Flow</small><b>'+(q2*cf).toFixed(UI?1:0)+' '+uq+'</b><em>'+ch(q2,q)+'</em></div><div><small>Head</small><b>'+(h2*hf).toFixed(1)+' '+uh+'</b><em>'+ch(h2,h)+'</em></div><div><small>Power</small><b>'+p2.toFixed(2)+' kW</b><em>'+ch(p2,p)+'</em></div><div><small>Efficiency</small><b>'+e2.toFixed(0)+'%</b><em>'+(e2-etaB*100>=0?'+':'')+(e2-etaB*100).toFixed(1)+' pts</em></div></div>';
+    (function(){var rows=[],fq=function(v){return (v*cf).toFixed(UI?1:0)+' '+uq},fh=function(v){return (v*hf).toFixed(1)+' '+uh},fp=function(v){return v.toFixed(2)+' kW'};
+      function R(t,v){rows.push('<div style="display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px solid var(--line)"><span>'+t+'</span><b style="text-align:right">'+v+'</b></div>')}
+      function Hd(t){rows.push('<div style="margin:10px 0 2px;font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute,#56608A)">'+t+'</div>')}
+      var ph1=q*h/3960*0.7457;
+      Hd('1. Ratios');R('Speed ratio N2/N1',n.toFixed(3));R('Diameter ratio D2/D1',d.toFixed(3));R('Combined ratio r = (N2/N1) x (D2/D1)',r.toFixed(3));
+      Hd('2. Same-efficiency point (affinity laws)');R('Q = Q1 x r',fq(q*r));R('H = H1 x r\u00b2',fh(h*r*r));R('P = P1 x r\u00b3',fp(p*r*r*r));
+      Hd('3. Original pump');R('Hydraulic power = Q x H x SG / 3960 (water, SG 1)',fp(ph1));R('Shaft power P1',fp(p));R('Efficiency = hydraulic / shaft',(etaB*100).toFixed(1)+' %');
+      Hd('4. New operating point (meets the system curve)');
+      if(noflow){R('Result','no flow')}else{var ph2=q2*h2/3960*0.7457;R('Flow Q2',fq(q2)+' ('+ch(q2,q)+')');R('Head H2',fh(h2)+' ('+ch(h2,h)+')');R('Hydraulic power',fp(ph2));R('Shaft power P2 (hydraulic / efficiency)',fp(p2)+' ('+ch(p2,p)+')');R('Efficiency',e2.toFixed(1)+' %')}
+      R('Check: power at the similar point P1 x r\u00b3 is the shaft power only if the system curve also follows the affinity laws (no static head)','');
+      $('af-detb').innerHTML=rows.join('')})();
     var m=$('af-msg'),w=[];if(d<=0.9501)w.push('Trim limit reached: 5% of full diameter. The Hydraulic Institute allows a 5% reduction in impeller diameter when using affinity rules (as reported by Pumps.org). For more, use the manufacturer curve or trim data and ask them first.');
     if(n>1)w.push('Speed is above rated. Check the manufacturer limits for the pump and the driver.');
     if(!sysOk)w.push('Static head must be lower than the rated head so the system curve passes through the rated point.');else if(noflow)w.push('At this speed and diameter the pump cannot overcome the static head: no flow.');
