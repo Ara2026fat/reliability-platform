@@ -495,11 +495,12 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
         <label>Design polytropic efficiency, %<input class="num" id="ce" type="number" min="40" max="95" value="78"></label>
         <label>Speed, % of design <span><i id="cnv">100%</i></span><input id="cn" type="range" min="70" max="105" step="1" value="100"></label>
         <label>Discharge valve closed <span><i id="cvv">0 %</i></span><input id="cv" type="range" min="0" max="100" step="1" value="0"></label>
+        <label>Map vertical axis<select class="num" id="cax"><option value="pr">Pressure ratio</option><option value="h">Polytropic head</option></select></label>
       </div>
-      <div class="chartbox"><svg id="cc" viewBox="0 0 640 340" role="img" aria-label="Compressor map: head against inlet flow, speed lines, surge line, system curve and operating point"></svg></div>
+      <div class="chartbox"><svg id="cc" viewBox="0 0 640 340" style="min-width:560px" role="img" aria-label="Compressor map: head against inlet flow, speed lines, surge line, system curve and operating point"></svg></div>
       <div class="read" id="cr"></div>
       <div class="msg" id="cmg"></div>
-      <p class="note" style="margin-top:10px">Model: ideal gas, compressibility Z = 1, no intercooling, no leakage. Polytropic head H = (R/MW) &times; T1 / a &times; (PR<sup>a</sup> &minus; 1), with a = (k &minus; 1) / (k &times; &eta;p). Discharge temperature T2 = T1 &times; PR<sup>a</sup>. Gas power = mass flow &times; H / &eta;p. Speed changes follow the fan laws: flow with speed, head with speed squared. The map shape, the surge line at 70% of design flow, the efficiency curve and the system curve (30% static, 70% flow-squared) are illustrative assumptions for teaching, not data for any real machine. Use the vendor map and surge control line for real work. Gas k and MW are approximate ideal-gas values near 300 K.</p>
+      <p class="note" style="margin-top:10px">Model: ideal gas, compressibility Z = 1, no intercooling, no leakage. Polytropic head H = (R/MW) &times; T1 / a &times; (PR<sup>a</sup> &minus; 1), with a = (k &minus; 1) / (k &times; &eta;p). Discharge temperature T2 = T1 &times; PR<sup>a</sup>. Gas power = mass flow &times; H / &eta;p. Speed changes follow the fan laws: flow with speed, head with speed squared. The map shape, the surge line at 70% of design flow, the choke line at 125%, the constant-efficiency lines, the peak-efficiency line and the system curve (30% static, 70% flow-squared) are illustrative assumptions for teaching, not data for any real machine. Use the vendor map and surge control line for real work. Gas k and MW are approximate ideal-gas values near 300 K.</p>
     </div>
 
     <div class="tool" id="t-recip">
@@ -749,48 +750,70 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
   function cset(P,T,Q){$('cp1').value=+(CU?P:P*14.5038).toFixed(CU?2:1);$('ct1').value=+(CU?T:T*9/5+32).toFixed(0);$('cqd').value=+(CU?Q:Q*0.588578).toFixed(0)}
   function compUnits(){var o=cget();CU=UI;cset(o.P,o.T,o.Q);$('cu-p').textContent=CU?'bar':'psia';$('cu-t').innerHTML=CU?'&deg;C':'&deg;F';$('cu-q').innerHTML=CU?'m&sup3;/h':'acfm';comp()}
   function comp(){
-    var k=+$('ck').value,mw=+$('cm').value,g=cget(),pr=+$('cpr').value,ed=+$('ce').value/100,sN=+$('cn').value/100,tv=+$('cv').value;
+    var k=+$('ck').value,mw=+$('cm').value,g=cget(),pr=+$('cpr').value,ed=+$('ce').value/100,sN=+$('cn').value/100,tv=+$('cv').value,ax=$('cax').value;
     $('cnv').textContent=Math.round(sN*100)+'%';$('cvv').textContent=tv+' %';
     var R=$('cr'),M=$('cmg');
     if(!(k>1&&mw>0&&g.P>0&&g.Q>0&&pr>1&&ed>0.3&&ed<1)){R.innerHTML='';M.className='msg warn';M.textContent='Check the inputs: k above 1, positive pressure and flow, pressure ratio above 1, efficiency between 40 and 95 %.';$('cc').innerHTML='';return}
-    var Rg=8.314/mw,T1=g.T+273.15,Qd=g.Q,ad=(k-1)/(k*ed),Hd=Rg*T1/ad*(Math.pow(pr,ad)-1),c=1+4*tv/100;
-    function h(q){var v=1+0.35*(1-q*q);if(q>1.15)v-=2*Math.pow(q-1.15,2);return v}
+    var Rg=8.314/mw,T1=g.T+273.15,Qd=g.Q,ad=(k-1)/(k*ed),Hd=Rg*T1/ad*(Math.pow(pr,ad)-1),c=1+4*tv/100,QS=0.7,QC=1.25;
+    function h(q){var v=1+0.35*(1-q*q);if(q>1.15)v-=6*Math.pow(q-1.15,2);return v}
     function eta(q){return Math.max(0.3,ed*(1-1.2*Math.pow(q-1,2)))}
+    function prOf(H,q){var aa=(k-1)/(k*eta(q));return Math.pow(1+H*aa/(Rg*T1),1/aa)}
     function sysH(Q){return Hd*(0.3+0.7*c*Math.pow(Q/Qd,2))}
     function f(Q){return Hd*sN*sN*h(Q/(Qd*sN))-sysH(Q)}
     var lo=0.05*Qd,hi=1.6*Qd,Qo=null;if(f(lo)>0&&f(hi)<0){for(var i=0;i<60;i++){var mid=(lo+hi)/2;if(f(mid)>0)lo=mid;else hi=mid}Qo=(lo+hi)/2}
-    var cf=UI?1:0.588578,hf=UI?1:334.553,uq=UI?'m³/h':'acfm',uh=UI?'kJ/kg':'ft';
-    var X=function(q){return 70+q*cf/(1.7*Qd*cf)*540},Y=function(hh){return 300-hh/(1.5*Hd)*280};
-    var sv='',i2,q,hh,d,sp=[0.7,0.8,0.9,1.0];
-    var xt=UI?(Qd>=8000?2500:Qd>=2000?500:100):(Qd*0.588578>=4000?1000:Qd*0.588578>=1000?250:50);
-    for(i2=0;i2*xt<=1.7*Qd*cf;i2++){var xv=i2*xt/cf;sv+='<line x1="'+X(xv)+'" y1="20" x2="'+X(xv)+'" y2="300" stroke="#DAE0F0"/><text x="'+X(xv)+'" y="318" font-size="13" text-anchor="middle" fill="#56608A" font-family="IBM Plex Mono,monospace">'+(i2*xt)+'</text>'}
-    var ytk=UI?Math.pow(10,Math.floor(Math.log10(1.5*Hd/4))):Math.pow(10,Math.floor(Math.log10(1.5*Hd*334.553/4)));var ystep=ytk*(UI?Math.ceil(1.5*Hd/4/ytk):Math.ceil(1.5*Hd*334.553/4/ytk));
-    for(i2=0;i2*ystep<=1.5*Hd*hf;i2++){var yv=i2*ystep/hf;sv+='<line x1="70" y1="'+Y(yv)+'" x2="610" y2="'+Y(yv)+'" stroke="#DAE0F0"/><text x="62" y="'+(Y(yv)+4)+'" font-size="13" text-anchor="end" fill="#56608A" font-family="IBM Plex Mono,monospace">'+Math.round(i2*ystep)+'</text>'}
-    sv+='<text x="340" y="336" font-size="13" text-anchor="middle" fill="#56608A" font-family="IBM Plex Mono,monospace">Inlet flow ('+uq+')</text><text x="14" y="160" font-size="13" fill="#56608A" font-family="IBM Plex Mono,monospace" transform="rotate(-90 14 160)" text-anchor="middle">Polytropic head ('+uh+')</text>';
-    /* surge zone */
-    var sz='M'+X(0)+','+Y(0);for(var sk=0.6;sk<=1.051;sk+=0.05){sz+='L'+X(0.7*Qd*sk).toFixed(1)+','+Y(Hd*sk*sk*h(0.7)).toFixed(1)}sz+='L'+X(0)+','+Y(Hd*1.05*1.05*h(0.7))+'Z';
-    sv+='<path d="'+sz+'" fill="#a50f15" opacity=".08"/>';
-    function curve(s2,w,col,op){var p='';for(q=0.7;q<=1.3;q+=0.02){hh=Hd*s2*s2*h(q);if(hh<0)break;p+=(p?'L':'M')+X(q*Qd*s2).toFixed(1)+','+Y(hh).toFixed(1)}return '<path d="'+p+'" fill="none" stroke="'+col+'" stroke-width="'+w+'" opacity="'+op+'"/>'}
-    sp.forEach(function(s2){sv+=curve(s2,1.5,'#56608A',.55)});
-    if(sp.indexOf(Math.round(sN*100)/100)<0)sv+=curve(sN,2,'#2F55C8',.9);
+    var cf=UI?1:0.588578,hf=UI?1:334.553,uq=UI?'m³/h':'acfm',uh=UI?'kJ/kg':'ft',isPR=ax==='pr';
+    var SM=[0.6,0.7,0.8,0.9,1.0,1.05];
+    /* axis range */
+    var xmax=1.45*Qd,ymin=isPR?1:0,ymax;
+    if(isPR){var mx=1;SM.forEach(function(s2){mx=Math.max(mx,prOf(Hd*s2*s2*h(QS),QS))});ymax=Math.ceil(mx*1.06*10)/10}else ymax=1.5*Hd*hf;
+    function nice(r){var e=Math.pow(10,Math.floor(Math.log10(r))),m=r/e;return (m<=1?1:m<=2?2:m<=2.5?2.5:m<=5?5:10)*e}
+    var X=function(Q){return 70+Q/xmax*540},Y=function(v){return 300-(v-ymin)/(ymax-ymin)*280};
+    function val(H,q){return isPR?prOf(H,q):H*hf}
+    function pt(s2,q){return [X(q*Qd*s2),Y(val(Hd*s2*s2*h(q),q))]}
+    function line(pts){return pts.map(function(p,i){return (i?'L':'M')+p[0].toFixed(1)+','+p[1].toFixed(1)}).join('')}
+    var T='font-family="IBM Plex Mono,monospace" fill="#56608A"',TS='font-family="IBM Plex Sans,sans-serif" font-weight="600"';
+    var sv='',i2;
+    var xt=nice(xmax*cf/6);for(i2=0;i2*xt<=xmax*cf+1e-6;i2++){var xv=i2*xt/cf;sv+='<line x1="'+X(xv)+'" y1="20" x2="'+X(xv)+'" y2="300" stroke="#DAE0F0"/><text x="'+X(xv)+'" y="318" font-size="13" text-anchor="middle" '+T+'>'+(i2*xt)+'</text>'}
+    var yt=nice((ymax-ymin)/5);for(var yv=ymin;yv<=ymax+1e-9;yv+=yt){sv+='<line x1="70" y1="'+Y(yv)+'" x2="610" y2="'+Y(yv)+'" stroke="#DAE0F0"/><text x="62" y="'+(Y(yv)+4)+'" font-size="13" text-anchor="end" '+T+'>'+(isPR?yv.toFixed(yt<1?1:0):Math.round(yv))+'</text>'}
+    sv+='<text x="340" y="336" font-size="13" text-anchor="middle" '+T+'>Inlet flow ('+uq+')</text><text x="14" y="160" font-size="13" '+T+' transform="rotate(-90 14 160)" text-anchor="middle">'+(isPR?'Pressure ratio':'Polytropic head ('+uh+')')+'</text>';
+    var sg=[0.58,0.62,0.7,0.8,0.9,1.0,1.05,1.08].filter(function(x){return x>=0.58});
+    function loc(q,s0,s1){var p=[];for(var s2=s0;s2<=s1+1e-9;s2+=0.02)p.push(pt(s2,q));return p}
+    /* surge zone and choke zone */
+    var surge=loc(QS,0.6,1.05),choke=loc(QC,0.6,1.05);
+    sv+='<path d="M'+X(0)+','+Y(ymin)+surge.map(function(p){return 'L'+p[0].toFixed(1)+','+p[1].toFixed(1)}).join('')+'L'+X(0)+','+surge[surge.length-1][1].toFixed(1)+'Z" fill="#a50f15" opacity=".08"/>';
+    sv+='<path d="M'+choke[0][0].toFixed(1)+','+choke[0][1].toFixed(1)+choke.map(function(p){return 'L'+p[0].toFixed(1)+','+p[1].toFixed(1)}).join('')+'L'+X(xmax)+','+choke[choke.length-1][1].toFixed(1)+'L'+X(xmax)+','+Y(ymin)+'Z" fill="#B86A1A" opacity=".10"/>';
+    /* efficiency islands: constant efficiency lines (illustrative) and peak efficiency line */
+    [3,8,15].forEach(function(dp,ix){var dq=Math.sqrt(dp/100/(1.2*ed)),lab=Math.round(ed*100-dp);[1-dq,1+dq].forEach(function(q,j){if(q<QS||q>QC)return;var pp=loc(q,0.62,1.05);sv+='<path d="'+line(pp)+'" fill="none" stroke="#56608A" stroke-width="1.4" stroke-dasharray="2 4" opacity=".75"/>';if(j===1)sv+='<text x="'+(pp[pp.length-1][0]+4).toFixed(1)+'" y="'+(pp[pp.length-1][1]+4).toFixed(1)+'" font-size="11" '+T+'>'+lab+'%</text>'})});
+    sv+='<path d="'+line(loc(1,0.6,1.05))+'" fill="none" stroke="#1d8a57" stroke-width="2.5" stroke-dasharray="8 4"/>';
+    /* speed lines */
+    function curve(s2,w,col,op){var p=[];for(var q=QS;q<=QC+1e-9;q+=0.0125)p.push(pt(s2,q));return '<path d="'+line(p)+'" fill="none" stroke="'+col+'" stroke-width="'+w+'" opacity="'+op+'"/>'}
+    [0.7,0.8,0.9,1.0].forEach(function(s2){sv+=curve(s2,1.6,'#56608A',.65);var e=pt(s2,QC);sv+='<text x="'+(e[0]-4).toFixed(1)+'" y="'+(e[1]+16).toFixed(1)+'" font-size="11" text-anchor="end" '+T+'>'+Math.round(s2*100)+'%</text>'});
+    if([0.7,0.8,0.9,1.0].indexOf(Math.round(sN*100)/100)<0)sv+=curve(sN,2,'#2F55C8',.9);
     sv+=curve(sN,3.5,'#0B1B52',1);
-    d='';for(q=0.6;q<=1.051;q+=0.05)d+=(d?'L':'M')+X(0.7*Qd*q).toFixed(1)+','+Y(Hd*q*q*h(0.7)).toFixed(1);
-    sv+='<path d="'+d+'" fill="none" stroke="#a50f15" stroke-width="2.5" stroke-dasharray="6 4"/><text x="'+(X(0.7*Qd*0.62)+6)+'" y="'+(Y(Hd*0.62*0.62*h(0.7))-14)+'" font-size="13" fill="#a50f15" font-family="IBM Plex Sans,sans-serif" font-weight="600">Surge line</text>';
-    d='';for(var Qq=0;Qq<=1.6*Qd;Qq+=Qd/40){var hs=sysH(Qq);if(hs>1.5*Hd)break;d+=(d?'L':'M')+X(Qq).toFixed(1)+','+Y(hs).toFixed(1)}
-    sv+='<path d="'+d+'" fill="none" stroke="#9C6A06" stroke-width="3" stroke-dasharray="7 5"/>';
-    sv+='<text x="395" y="38" font-size="14" fill="#0B1B52" font-weight="600" font-family="IBM Plex Sans,sans-serif">Speed line</text><text x="395" y="54" font-size="14" fill="#9C6A06" font-weight="600" font-family="IBM Plex Sans,sans-serif">System curve</text>';
+    /* surge, control and choke lines */
+    sv+='<path d="'+line(surge)+'" fill="none" stroke="#a50f15" stroke-width="2.6" stroke-dasharray="6 4"/>';
+    sv+='<path d="'+line(loc(QS*1.1,0.6,1.05))+'" fill="none" stroke="#C2456B" stroke-width="1.8" stroke-dasharray="2 3"/>';
+    sv+='<path d="'+line(choke)+'" fill="none" stroke="#B86A1A" stroke-width="2.8"/>';
+    /* system curve */
+    var sp=[];for(var Qq=0;Qq<=xmax;Qq+=Qd/40){var hs=sysH(Qq),vv=val(hs,1);if(vv>ymax)break;sp.push([X(Qq),Y(vv)])}
+    sv+='<path d="'+line(sp)+'" fill="none" stroke="#9C6A06" stroke-width="3" stroke-dasharray="7 5"/>';
+    /* labels */
+    var ls=surge[Math.floor(surge.length*0.55)],lc=choke[Math.floor(choke.length*0.5)];
+    sv+='<text x="'+(ls[0]-8).toFixed(1)+'" y="'+(ls[1]+22).toFixed(1)+'" font-size="13" text-anchor="end" fill="#a50f15" '+TS+'>Surge (stall) line</text><text x="'+(lc[0]+8).toFixed(1)+'" y="'+(lc[1]+40).toFixed(1)+'" font-size="13" fill="#B86A1A" '+TS+'>Choke line</text>';
+    var lpe=loc(1,0.6,1.05)[6];sv+='<text x="'+(lpe[0]+6).toFixed(1)+'" y="'+(lpe[1]-6).toFixed(1)+'" font-size="12" fill="#1d8a57" '+TS+'>Peak efficiency</text>';
+    sv+='<text x="75" y="38" font-size="13" fill="#0B1B52" '+TS+'>Speed line</text><text x="75" y="54" font-size="13" fill="#9C6A06" '+TS+'>Operating (system) line</text><text x="75" y="70" font-size="13" fill="#C2456B" '+TS+'>Surge control line (+10 % flow)</text><text x="75" y="86" font-size="13" fill="#56608A" '+TS+'>Dotted grey: constant efficiency</text>';
     if(Qo===null){$('cc').innerHTML=sv;R.innerHTML='<div><small>Flow</small><b>0<i>'+uq+'</i></b></div>';M.className='msg bad';M.textContent='No stable operating point on this map: at this speed the compressor cannot overcome the system head.';return}
-    var qo=Qo/(Qd*sN),Ho=Hd*sN*sN*h(qo),eo=eta(qo),ao=(k-1)/(k*eo),PRo=Math.pow(1+Ho*ao/(Rg*T1),1/ao),T2=T1*Math.pow(PRo,ao),rho=g.P*100*mw/(8.314*T1),mdot=rho*Qo/3600,kw=mdot*Ho/eo,sm=(Qo/(0.7*Qd*sN)-1)*100;
-    sv+='<circle cx="'+X(Qo)+'" cy="'+Y(Ho)+'" r="8" fill="#D9A21B" stroke="#0B1B52" stroke-width="3"/><text x="'+(X(Qo)+12)+'" y="'+(Y(Ho)-10)+'" font-size="14" fill="#0B1B52" font-weight="600" font-family="IBM Plex Sans,sans-serif">Operating point</text>';
+    var qo=Qo/(Qd*sN),Ho=Hd*sN*sN*h(qo),eo=eta(qo),ao=(k-1)/(k*eo),PRo=Math.pow(1+Ho*ao/(Rg*T1),1/ao),T2=T1*Math.pow(PRo,ao),rho=g.P*100*mw/(8.314*T1),mdot=rho*Qo/3600,kw=mdot*Ho/eo,sm=(Qo/(QS*Qd*sN)-1)*100,cm=(QC*Qd*sN/Qo-1)*100;
+    sv+='<circle cx="'+X(Qo)+'" cy="'+Y(val(Ho,qo))+'" r="8" fill="#D9A21B" stroke="#0B1B52" stroke-width="3"/><text x="'+(X(Qo)-12)+'" y="'+(Y(val(Ho,qo))-12)+'" font-size="14" text-anchor="end" fill="#0B1B52" '+TS+'>Operating point</text>';
     $('cc').innerHTML=sv;
     var tU=UI?'°C':'°F',pU=UI?'bar':'psia',T2d=UI?T2-273.15:(T2-273.15)*9/5+32,Pd=g.P*PRo*(UI?1:14.5038);
-    R.innerHTML='<div><small>Inlet flow</small><b>'+(Qo*cf).toFixed(0)+'<i>'+uq+'</i></b></div><div><small>Pressure ratio</small><b>'+PRo.toFixed(2)+'</b></div><div><small>Discharge pressure</small><b>'+Pd.toFixed(UI?2:1)+'<i>'+pU+'</i></b></div><div><small>Discharge temperature</small><b>'+T2d.toFixed(0)+'<i>'+tU+'</i></b></div><div><small>Efficiency</small><b>'+(eo*100).toFixed(0)+'<i>%</i></b></div><div><small>Gas power</small><b>'+kw.toFixed(0)+'<i>kW</i></b></div><div><small>Margin to surge</small><b>'+sm.toFixed(0)+'<i>%</i></b></div>';
+    R.innerHTML='<div><small>Inlet flow</small><b>'+(Qo*cf).toFixed(0)+'<i>'+uq+'</i></b></div><div><small>Pressure ratio</small><b>'+PRo.toFixed(2)+'</b></div><div><small>Discharge pressure</small><b>'+Pd.toFixed(UI?2:1)+'<i>'+pU+'</i></b></div><div><small>Discharge temperature</small><b>'+T2d.toFixed(0)+'<i>'+tU+'</i></b></div><div><small>Efficiency</small><b>'+(eo*100).toFixed(0)+'<i>%</i></b></div><div><small>Gas power</small><b>'+kw.toFixed(0)+'<i>kW</i></b></div><div><small>Margin to surge</small><b>'+sm.toFixed(0)+'<i>%</i></b></div><div><small>Margin to choke</small><b>'+cm.toFixed(0)+'<i>%</i></b></div>';
     if(sm<0){M.className='msg bad';M.textContent='Left of the surge line. A real compressor would be in surge here: flow reversal, strong vibration and thrust changes. Open the discharge valve or raise the speed.'}
-    else if(sm<10){M.className='msg warn';M.textContent='Close to the surge line (margin under 10 %, an illustrative threshold). Real machines use a surge control line set by the vendor, with an anti-surge valve.'}
-    else{M.className='msg';M.textContent='Comfortable margin from surge on this illustrative map. Close the valve or lower the speed and watch the margin shrink.'}
+    else if(cm<0){M.className='msg bad';M.textContent='Right of the choke line (stonewall). Flow cannot increase further and efficiency collapses. Close the discharge valve a little or lower the speed.'}
+    else if(sm<10){M.className='msg warn';M.textContent='Inside the surge control line (margin under 10 %, an illustrative threshold). Real machines use a surge control line set by the vendor, with an anti-surge valve.'}
+    else if(cm<5){M.className='msg warn';M.textContent='Very close to the choke line. Check the vendor limits.'}
+    else{M.className='msg';M.textContent='Between the surge and choke lines on this illustrative map. Close the valve or lower the speed and watch the margin to surge shrink.'}
   }
-  ['ck','cm'].forEach(function(id){$(id).addEventListener('input',function(){$('cg').value='custom';comp()})});
-  ['cp1','ct1','cqd','cpr','ce','cn','cv'].forEach(function(id){$(id).addEventListener('input',comp)});
   /* shared gas list and reciprocating compressor */
   var GASL=[['air','Air',1.40,28.96],['n2','Nitrogen',1.40,28.01],['o2','Oxygen',1.40,32.00],['h2','Hydrogen',1.41,2.016],['he','Helium',1.66,4.003],['ar','Argon',1.67,39.95],['co','Carbon monoxide',1.40,28.01],['co2','Carbon dioxide',1.29,44.01],['nh3','Ammonia',1.31,17.03],['h2s','Hydrogen sulfide',1.32,34.08],['ch4','Methane',1.31,16.04],['c2h6','Ethane',1.19,30.07],['c2h4','Ethylene',1.24,28.05],['c3h8','Propane',1.13,44.10],['c3h6','Propylene',1.15,42.08],['c4h10','n-Butane',1.09,58.12],['ng','Natural gas (typical, varies)',1.27,18.5],['custom','Custom',0,0]];
   ['cg','rg'].forEach(function(id){$(id).innerHTML=GASL.map(function(g){return '<option value="'+g[0]+'">'+g[1]+'</option>'}).join('')});
