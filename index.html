@@ -1123,14 +1123,15 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
     O.innerHTML=h;M.className=(eff<0.15||eff>0.45)?'msg warn':'msg';
     M.innerHTML=((eff<0.15||eff>0.45)?'This efficiency is outside 15 to 45 %, which is unusual for a simple-cycle gas turbine: check the fuel flow, its unit and the output. ':'')+msg;
     var ex=$('x-est'),em=$('x-em');
+    var teC=$('xE').value===''?null:gv('xE','t'),rngW=(teC!==null&&(teC<500||teC>560))?' The exhaust temperature is outside the 500 to 560 °C allowed range given by the expert: check the reading.':'';
     if($('xC').value===''||$('xE').value===''){ex.innerHTML='';em.className='msg';em.textContent='Enter CDP and the average exhaust temperature to estimate compressor efficiency, turbine efficiency, turbine inlet temperature and air flow.'}
     else{var cdA=$('xb').value==='g'?gv('xC','p')+Pa:gv('xC','p');
       var iv=gtInverse({Tc:gv('xT','t'),Pb:Pa,cdp:cdA,te:gv('xE','t'),W:W,mf:mf,lhv:L,ec:+$('xEc').value/100,cdt:$('xK').value===''?null:gv('xK','t')});
-      if(iv.err){ex.innerHTML='';em.className='msg warn';em.textContent=iv.err}
+      if(iv.err){ex.innerHTML='';em.className='msg warn';em.textContent=iv.err+rngW}
       else{var tf=function(c){return (UI?c:c*9/5+32).toFixed(0)+(UI?' °C':' °F')};
         ex.innerHTML='<div><small>Compressor isentropic efficiency'+($('xK').value===''?' (assumed)':' (from discharge temp)')+'</small><b>'+(iv.ec*100).toFixed(1)+'<i>%</i></b></div><div><small>Turbine isentropic efficiency (estimated)</small><b>'+(iv.et*100).toFixed(1)+'<i>%</i></b></div><div><small>Turbine inlet temperature (estimated)</small><b>'+tf(iv.T3)+'</b></div><div><small>Air flow (estimated)</small><b>'+(iv.ma*pf).toFixed(1)+'<i>'+(UI?'kg/s':'lb/s')+'</i></b></div>';
         em.className=(iv.et<0.6||iv.et>0.98)?'msg warn':'msg';
-        em.innerHTML=((iv.et<0.6||iv.et>0.98)?'The turbine efficiency is outside the usual range: check the readings or change the assumed compressor efficiency. ':'')+'These four values are estimates from the model assumptions below, not measurements. '+($('xK').value===''?'Change the assumed compressor efficiency to see how the others move.':'The compressor efficiency comes from your discharge temperature.')}}
+        em.innerHTML=((iv.et<0.6||iv.et>0.98)?'The turbine efficiency is outside the usual range: check the readings or change the assumed compressor efficiency. ':'')+'These four values are estimates from the model assumptions below, not measurements. '+($('xK').value===''?'Change the assumed compressor efficiency to see how the others move.':'The compressor efficiency comes from your discharge temperature.')+rngW}}
   }
   ['xT','xP','xb','xC','xE','xK','xEc','xF','xW','xQ','xU','xD','xL','xR'].forEach(function(id){var e=$(id);if(e){e.addEventListener('input',xCalc);e.addEventListener('change',xCalc)}});
   /* ---- steam turbine ---- */
