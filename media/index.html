@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" dir="ltr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#0F6B3A"><title>HIRZ Media</title>
+<style>
+@font-face{font-family:PS;font-weight:500;src:url(../promo/fonts/inter-latin-500-normal.woff2)}
+@font-face{font-family:PS;font-weight:700;src:url(../promo/fonts/inter-latin-700-normal.woff2)}
+@font-face{font-family:PS;font-weight:800;src:url(../promo/fonts/inter-latin-800-normal.woff2)}
+:root{--bg:#FBF6EC;--card:#fff;--ink:#1d2a22;--mute:#5d6b62;--line:#e6dcc8;--green:#0F6B3A;--gold:#D9A21B;--soft:#e9f4ee}
+@media(prefers-color-scheme:dark){:root{--bg:#0e1612;--card:#16221b;--ink:#eaf2ec;--mute:#9db0a4;--line:#26382d;--green:#3fb374;--gold:#e8b53a;--soft:#16281d}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:500 15px/1.65 PS,system-ui,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px 40px}
+h1{font-size:22px;margin:18px 0 4px;font-weight:800}.lead{color:var(--mute);margin:0 0 12px}
+nav{position:sticky;top:0;background:var(--bg);display:flex;gap:6px;padding:8px 0;border-bottom:1px solid var(--line);z-index:5}
+nav button{flex:1;border:0;background:var(--soft);color:var(--mute);font:inherit;font-weight:700;padding:10px;border-radius:10px;cursor:pointer}
+nav button[aria-selected=true]{background:var(--green);color:#fff}
+h2{font-size:15px;margin:22px 0 10px;color:var(--green)}h2 small{color:var(--mute);font-weight:500}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}.grid.t{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.card img,.card video{width:100%;display:block;background:#000;object-fit:cover;aspect-ratio:4/3;cursor:zoom-in}.card img.p{object-fit:contain;background:#fff}
+.card video{cursor:auto;object-fit:contain}.card video.v{aspect-ratio:9/16;max-height:480px}.card video.h{aspect-ratio:16/9}
+.cap{padding:10px 12px 4px;font-weight:700;font-size:13.5px;flex:1}.txt{padding:12px;white-space:pre-wrap;font-size:14px;flex:1}.txt b{color:var(--gold);letter-spacing:.06em;font-size:12px}
+.act{display:flex;gap:8px;padding:10px 12px 12px}.btn{flex:1;text-align:center;text-decoration:none;border:1.5px solid var(--green);background:transparent;color:var(--green);font:inherit;font-weight:700;font-size:13.5px;padding:8px;border-radius:10px;cursor:pointer}
+.btn.f{background:var(--green);color:#fff}.pane{display:none}.pane.on{display:block}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px}.stats div{background:var(--soft);border-radius:10px;padding:8px}.stats b{display:block;font-size:22px;color:var(--green)}.stats span{font-size:12.5px;color:var(--mute)}
+#lb{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:50;padding:12px}#lb.on{display:flex}#lb img{max-width:100%;max-height:100%}
+</style></head><body><div class="wrap">
+<h1>HIRZ Media — approved</h1><p class="lead">Everything here was approved by Mohamed Hafez on 6 Nov 2026. Copy the text, download the images and videos.</p>
+<nav role="tablist"><button data-t="w" aria-selected="true">Words</button><button data-t="i" aria-selected="false">Images</button><button data-t="v" aria-selected="false">Videos</button></nav>
+<div class="pane on" id="w"></div><div class="pane" id="i"></div><div class="pane" id="v"></div></div>
+<div id="lb"></div>
+<script>
+var URL_PLATFORM='https://ara2026fat.github.io/reliability-platform/';
+var T={
+en:{h1:'Your promo draft — awaiting your approval',h2:'Welcome, Mohamed Hafez. These promo materials were prepared from your photos, clips and past appearances, in three forms: words, images and video. Each item has two options only: <b>Approve</b> or <b>Reject</b>. Nothing is published before you approve it.',st1:'1 Browse the tabs',st2:'2 Mark each item',st3:'3 Send your decision from the “Decision” tab',
+ tw:'Words',ti:'Images',tv:'Video',td:'Decision',ft:'HIRZ Engineering Training & Consultancy · Draft for internal review only · Your choices are saved in your browser until you send them',
+ none:'Nothing marked yet',marked:function(d,n){return d+' of '+n+' items marked'},ok:'✓ Approve',no:'✕ Reject',cp:'Copy',copied:'Copied',
+ wLead:'<b>Words:</b> slogans, a short bio, key numbers and ready-to-post captions. Everything comes from the posters, slides and certificates of your appearances. Mark what you like and dislike; you can copy any text and edit it.',
+ hSlog:'Slogans',hBio:'Short bio',hNum:'At a glance',hPosts:'Ready-to-post captions',
+ bioT:'Short bio',statT:'Numbers panel (3 countries · 5 events · 3 committees · 2 courses)',
+ stats:[['3','Countries: UAE · Saudi Arabia · Oman'],['5','Major conferences and shows'],['3','Executive and technical committees'],['2','Training courses: CRL · TapRooT']],
+ noteH:'To confirm before publishing:',notes:['Dates and venues that do not appear in the original materials (APEX and TapRooT courses) were left out.','Titles and organisations are taken exactly as they appear on posters and slides.'],
+ iLead:'<b>Images:</b> tap any image to enlarge it. The selection focuses on you on stage and in sessions and avoids close-ups of the audience. Some shots include colleagues or other speakers; reject anything you find unsuitable.',
+ vLead:'<b>Video:</b> a master promo and a separate promo for each event, currently without sound (music and voice-over come after approval). The three original clips come from low-resolution sources; they were denoised, upscaled and sharpened, and quality is still limited by the source.',
+ dLead:'<b>Decision:</b> review the summary, choose an overall decision, add notes, then send the result via WhatsApp, copy it, or save it as a file.',
+ sOk:'Approved',sNo:'Rejected',sPe:'Pending',overall:'Overall decision',vd:{all:'Approved — go ahead and publish what I marked',edit:'Approved with changes — see my notes',hold:'Not approved for now — do not publish'},
+ notesH:'Your notes',notesPh:'e.g. Remove photos that show colleagues, or correct my job title...',sendH:'Send your decision',wa:'Send via WhatsApp',cpd:'Copy decision',dl:'Save as text file',rs:'Clear all choices',rsq:'Clear all choices and notes?',
+ prev:'‹ Previous',next:'Next ›',close:'Close',
+ rep:'HIRZ promo review — Mohamed Hafez',rv:'Overall decision',unset:'Not set',nt:'Notes',
+ lab:{slogan:'Slogan',bio:'Short bio',post:'Post',img:'Image',vid:'Video'},
+ slogans:['Where field experience meets engineering excellence.','From the plant floor to the conference stage.','Reliability you can measure. Knowledge you can apply.','Practical training from a working reliability engineer.'],
+ bio:'Mohamed Hafez is Lead Rotating Equipment Reliability & Condition Monitoring at SASREF, with 18 years in rotating equipment reliability and asset management across refining, petrochemical and mining operations (MIDOR, Methanex, Ambatovy, SATORP, SASREF).\nHe holds a Master\'s in Fluid Mechanics and an MBA in Project Management, and is certified CMRP, CRL, MLA II, API SIRE, CMQ/OE, CQE, CAT II VA and TapRooT Team Leader.',
+ posts:[['master','Main post — LinkedIn / WhatsApp','From the plant floor to the conference stage 🎤\n\nMohamed Hafez — Lead Rotating Equipment Reliability & Condition Monitoring at SASREF — as speaker and committee member at ME RoTIC Dubai, ROTIC Saudi, Maintrel 4.0, the Asset Integrity & Corrosion Management Conference and the Asset Integrity & Reliability Show in Muscat, and as instructor of the CRL and TapRooT courses.\n\nThis experience now powers HIRZ, a platform for industrial asset reliability and integrity.\n🔗 '+URL_PLATFORM+'\n\n#Reliability #AssetIntegrity #RotatingEquipment #HIRZ'],
+ ['dubai','ME RoTIC Dubai','ME RoTIC Dubai 🌍\nPanelist on “Optimizing Pump Performance”, panel moderator, speaker and Executive Committee member.\nGrand Hyatt, Dubai — 22–24 September 2025'],
+ ['rotic','ROTIC Saudi','ROTIC Saudi ⚙️\nTechnical paper: Effect of Gas Turbine Compressor Fouling on Auxiliary System Starting Delay.\nDhahran Expo Center — 28–30 September 2026 — Aramco principal sponsor'],
+ ['maintrel','Maintrel 4.0','Maintrel 4.0 🤖\nExecutive Committee member, panelist in “AI-Powered Reliability”, and a technical talk on spring hanger inspection plus a static-strain case study on a pump casing.\nAl Khobar — 2–4 February 2026'],
+ ['yanbu','Yanbu conference','Asset Integrity & Corrosion Management Conference — 7th Edition 🏆\nDistinguished Speaker (certificate of appreciation), with a talk on pipe strain, static and dynamic.\nYanbu — 24–25 February 2025'],
+ ['oman','Oman show','Asset Integrity & Reliability Show Middle East 🇴🇲\nSpeaker.\nMuscat — 5–7 March 2024'],
+ ['train','Certified training','Training with field experience 🎓\nInstructor of the Certified Reliability Leader (CRL) Certificate Preparation Course with APEX Dubai, and of the TapRooT® Root Cause Analysis course.']],
+ ig:['Posters & roles','ME RoTIC Dubai','ROTIC Saudi','Maintrel 4.0','Yanbu conference','Oman show','Certified training'],
+ vg:[['Master promo','~41 s'],['Per-event promos','Vertical'],['Original clips, enhanced','Upscaled and denoised from low-resolution sources']],
+ vn:{'master-vertical':'Vertical — WhatsApp / Reels','master-landscape':'Landscape — YouTube / presentation',dubai:'ME RoTIC Dubai',rotic:'ROTIC Saudi',maintrel:'Maintrel 4.0',yanbu:'Yanbu conference',oman:'Oman show',apex:'APEX Dubai — CRL','clip-yanbu-talk':'Yanbu — talk on stage','clip-yanbu-stage':'Yanbu — stage session','clip-maintrel-highlights':'Maintrel 4.0 — event highlights'},lg:''}};
+
+var SLOG_EN=T.en.slogans;
+var STATSN=4;
+var IMG_GROUPS=[
+ ['Dubai · Grand Hyatt',null],['','']];
+IMG_GROUPS=[
+ ['',[['fc17731c','Meet Our Speaker — ROTIC Saudi',1],['0f1c9577','Meet Our Panelist — ME RoTIC Dubai',1],['2aa3188c','Panel: Optimizing Pump Performance',1],['45679eba','Executive Committee — ME RoTIC 2025',1],['a2a712bc','Executive Committee Member — ME RoTIC Oct 2026',1],['fc9fcd84','Executive Committee — Maintrel 4.0',1],['1a58fc69','Technical Committee Member — Al Khobar',1],['73765922','Speaker card — Asset Integrity & Corrosion Conference',1],['465d40a9','Speaker — Asset Integrity & Reliability Show, Muscat',1]]],
+ ['Dubai · Grand Hyatt',[['558a70d5','Panelist — Optimizing Pump Performance'],['658f59a3','Speaking on the panel'],['b87b2af7','Moderating'],['f9b3f1e3','Panel discussion'],['506ff8c6','Panel — wide stage'],['31e52ffa','SASREF recognition on stage'],['c2ea9415','Standing session'],['287ecd1d','In conversation'],['a98c2b72','Solo presentation'],['e05ac766','Moderating — SASREF slide']]],
+ ['Dhahran Expo Center',[['d6e3ab2e','At the ROTIC Saudi entrance'],['349a6841','Gas turbine compressor fouling talk'],['c8cb7558','Presenting on the main stage'],['6c71501b','Starting-delay troubleshooting']]],
+ ['Al Khobar',[['96b80caf','Spring Hanger Inspection'],['16740001','Presenting'],['b9754f11','Pump casing static strain'],['76c1ab61','Case study on stage'],['8a4560c9','Walking the audience through the case'],['41d037fe','Q&A moment'],['d88dca9a','Hot and cold position of spring hangers']]],
+ ['Asset Integrity & Corrosion Management · 7th Edition KSA',[['9cdd3add','Pipe strain: static & dynamic'],['95d1d3b1','Panel discussion'],['448c6636','Panel on the gold stage'],['80947239','Speakers honoured'],['67d8dab6','Receiving the certificate'],['4afc4f3a','Certificate — Distinguished Speaker',1]]],
+ ['Muscat, Oman',[['92fa7f61','On stage in Muscat'],['3f252b5d','Reliability in practice']]],
+ ['APEX · Certified Reliability Leader (CRL)',[['a3f46c8b','Certificate of appreciation — CRL Preparation Course'],['e55e8492','Participants and instructor']]]];
+var VID_GROUPS=[[['master-vertical','9:16'],['master-landscape','16:9']],[['dubai','9:16'],['rotic','9:16'],['maintrel','9:16'],['yanbu','9:16'],['oman','9:16'],['apex','9:16']],[['clip-yanbu-talk','16:9'],['clip-yanbu-stage','16:9'],['clip-maintrel-highlights','16:9']]];
+var X=T.en,P='../promo/';
+function esc(x){return String(x).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+var COPY=[];function cp(t){COPY.push(t);return '<button class="btn f" data-c="'+(COPY.length-1)+'">Copy</button>'}
+var h='<h2>Slogans</h2><div class="grid t">';
+X.slogans.forEach(function(e){h+='<div class="card"><div class="txt">'+esc(e)+'</div><div class="act">'+cp(e)+'</div></div>'});
+h+='</div><h2>Short bio</h2><div class="grid t"><div class="card"><div class="txt">'+esc(X.bio)+'</div><div class="act">'+cp(X.bio)+'</div></div></div>';
+h+='<h2>At a glance</h2><div class="grid t"><div class="card"><div class="stats">'+X.stats.map(function(s){return '<div><b>'+s[0]+'</b><span>'+s[1]+'</span></div>'}).join('')+'</div><div class="act">'+cp(X.stats.map(function(s){return s[0]+' '+s[1]}).join('\n'))+'</div></div></div>';
+h+='<h2>Ready-to-post captions</h2><div class="grid t">';
+X.posts.forEach(function(p){h+='<div class="card"><div class="txt"><b>'+esc(p[1]).toUpperCase()+'</b>\n'+esc(p[2])+'</div><div class="act">'+cp(p[2])+'</div></div>'});
+document.getElementById('w').innerHTML=h+'</div>';
+h='';IMG_GROUPS.forEach(function(g,gi){h+='<h2>'+X.ig[gi]+(g[0]?' <small>'+esc(g[0])+'</small>':'')+'</h2><div class="grid">';
+ g[1].forEach(function(it){var u=P+'img/'+it[0]+'.jpg';h+='<div class="card"><img loading="lazy" class="'+(it[2]?'p':'')+'" src="'+u+'" alt="'+esc(it[1])+'" data-z="'+u+'"><div class="cap">'+esc(it[1])+'</div><div class="act"><a class="btn f" href="'+u+'" download="hirz-'+it[0]+'.jpg">Download</a></div></div>'});h+='</div>'});
+document.getElementById('i').innerHTML=h;
+h='';VID_GROUPS.forEach(function(g,gi){h+='<h2>'+X.vg[gi][0]+' <small>'+X.vg[gi][1]+'</small></h2><div class="grid t">';
+ g.forEach(function(v){var u=P+'vid/'+v[0]+'.mp4';h+='<div class="card"><video controls playsinline preload="none" class="'+(v[1]=='9:16'?'v':'h')+'" poster="'+P+'vid/'+v[0]+'.jpg" src="'+u+'"></video><div class="cap">'+esc(X.vn[v[0]])+'</div><div class="act"><a class="btn f" href="'+u+'" download="hirz-'+v[0]+'.mp4">Download</a></div></div>'});h+='</div>'});
+document.getElementById('v').innerHTML=h;
+document.addEventListener('click',function(e){var t=e.target;
+ if(t.dataset.t){['w','i','v'].forEach(function(k){document.getElementById(k).classList.toggle('on',k===t.dataset.t)});[].forEach.call(document.querySelectorAll('nav button'),function(b){b.setAttribute('aria-selected',b===t)});return}
+ if(t.dataset.c){var s=COPY[+t.dataset.c];function ok(){t.textContent='Copied';setTimeout(function(){t.textContent='Copy'},1500)}
+  function fb(){var a=document.createElement('textarea');a.value=s;document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(x){}document.body.removeChild(a);ok()}
+  try{navigator.clipboard.writeText(s).then(ok,fb)}catch(x){fb()}return}
+ if(t.dataset.z){var l=document.getElementById('lb');l.innerHTML='<img src="'+t.dataset.z+'">';l.classList.add('on');return}
+ if(t.id==='lb'||t.closest('#lb')){document.getElementById('lb').classList.remove('on')}});
+</script></body></html>
