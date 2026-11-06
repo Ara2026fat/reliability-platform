@@ -11,9 +11,6 @@
 @font-face{font-family:PS;font-weight:500;src:url(fonts/inter-latin-500-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
 @font-face{font-family:PS;font-weight:700;src:url(fonts/inter-latin-700-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
 @font-face{font-family:PS;font-weight:800;src:url(fonts/inter-latin-800-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
-@font-face{font-family:PS;font-weight:500;src:url(fonts/noto-kufi-arabic-arabic-500-normal.woff2);unicode-range:U+0600-06FF,U+0750-077F,U+FB50-FDFF,U+FE70-FEFF}
-@font-face{font-family:PS;font-weight:700;src:url(fonts/noto-kufi-arabic-arabic-700-normal.woff2);unicode-range:U+0600-06FF,U+0750-077F,U+FB50-FDFF,U+FE70-FEFF}
-@font-face{font-family:PS;font-weight:800;src:url(fonts/noto-kufi-arabic-arabic-800-normal.woff2);unicode-range:U+0600-06FF,U+0750-077F,U+FB50-FDFF,U+FE70-FEFF}
 :root{--bg:#FBF6EC;--card:#fff;--ink:#1d2a22;--mute:#5d6b62;--line:#e6dcc8;--green:#0F6B3A;--gold:#D9A21B;--blue:#1F5FA8;--dark:#123D2A;--ok:#16803c;--no:#b42318;--acc:var(--green);--soft:#e9f4ee}
 @media(prefers-color-scheme:dark){:root{--bg:#0e1612;--card:#16221b;--ink:#eaf2ec;--mute:#9db0a4;--line:#26382d;--green:#3fb374;--gold:#e8b53a;--blue:#6aa6ec;--dark:#0b2a1c;--ok:#4cc27a;--no:#ff7b6e;--soft:#16281d}}
 *{box-sizing:border-box}
@@ -114,7 +111,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--mute);fo
 </head>
 <body>
 <header class="hero"><div class="wrap">
-  <div class="brand"><img src="../hirz-mark.png" alt="HIRZ"><div><b>HIRZ</b><span>Engineering Training &amp; Consultancy</span></div><button class="lg" id="lg"></button></div>
+  <div class="brand"><img src="../hirz-mark.png" alt="HIRZ"><div><b>HIRZ</b><span>Engineering Training &amp; Consultancy</span></div></div>
   <h1 data-i="h1"></h1>
   <p data-i="h2"></p>
   <div class="steps"><span data-i="st1"></span><span data-i="st2"></span><span data-i="st3"></span></div>
@@ -140,8 +137,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--mute);fo
 <div class="toast" id="toast"></div>
 <script>
 var URL_PLATFORM='https://ara2026fat.github.io/reliability-platform/';
-var LK='hirz_promo_lang',L='en';
-try{var sl=localStorage.getItem(LK)||localStorage.getItem('rl_lang');if(sl==='ar')L='ar'}catch(e){}
+var L='en';
 var T={
 en:{h1:'Your promo draft — awaiting your approval',h2:'Welcome, Mohamed Hafez. These promo materials were prepared from your photos, clips and past appearances, in three forms: words, images and video. Each item has two options only: <b>Approve</b> or <b>Reject</b>. Nothing is published before you approve it.',st1:'1 Browse the tabs',st2:'2 Mark each item',st3:'3 Send your decision from the “Decision” tab',
  tw:'Words',ti:'Images',tv:'Video',td:'Decision',ft:'HIRZ Engineering Training & Consultancy · Draft for internal review only · Your choices are saved in your browser until you send them',
@@ -170,37 +166,9 @@ en:{h1:'Your promo draft — awaiting your approval',h2:'Welcome, Mohamed Hafez.
  ['train','Certified training','Training with field experience 🎓\nInstructor of the Certified Reliability Leader (CRL) Certificate Preparation Course with APEX Dubai, and of the TapRooT® Root Cause Analysis course.']],
  ig:['Posters & roles','ME RoTIC Dubai','ROTIC Saudi','Maintrel 4.0','Yanbu conference','Oman show','Certified training'],
  vg:[['Master promo','~41 s'],['Per-event promos','Vertical'],['Original clips, enhanced','Upscaled and denoised from low-resolution sources']],
- vn:{'master-vertical':'Vertical — WhatsApp / Reels','master-landscape':'Landscape — YouTube / presentation',dubai:'ME RoTIC Dubai',rotic:'ROTIC Saudi',maintrel:'Maintrel 4.0',yanbu:'Yanbu conference',oman:'Oman show',apex:'APEX Dubai — CRL','clip-yanbu-talk':'Yanbu — talk on stage','clip-yanbu-stage':'Yanbu — stage session','clip-maintrel-highlights':'Maintrel 4.0 — event highlights'},lg:'العربية'},
-ar:{h1:'مسودة الدعاية الخاصة بك — بانتظار رأيك',h2:'أهلًا أستاذ محمد حافظ. هذه المواد الدعائية أُعدّت من صورك ومقاطعك ومشاركاتك السابقة، في ثلاثة أشكال: كلمات وصور وفيديو. لكل مادة خياران فقط: <b>موافق</b> أو <b>غير موافق</b>، ولا يُنشر شيء قبل اعتمادك.',st1:'١ تصفّح التبويبات',st2:'٢ حدّد لكل مادة',st3:'٣ أرسل قرارك من تبويب «القرار»',
- tw:'دعاية بالكلمات',ti:'دعاية بالصور',tv:'دعاية بالفيديو',td:'القرار',ft:'HIRZ Engineering Training & Consultancy · مسودة للمراجعة الداخلية فقط · قراراتك تُحفظ في متصفحك حتى ترسلها',
- none:'لم تُحدَّد أي مادة بعد',marked:function(d,n){return 'حُدّد '+d+' من '+n+' مادة'},ok:'✓ موافق',no:'✕ غير موافق',cp:'نسخ',copied:'تم النسخ',
- wLead:'<b>دعاية بالكلمات:</b> شعارات، نبذة تعريفية، أرقام، ومنشورات جاهزة للنشر. كل ما فيها مأخوذ من بوسترات وشرائح وشهادات مشاركاتك. حدّد ما يعجبك وما لا يعجبك، ويمكنك نسخ أي نص وتعديله.',
- hSlog:'الشعارات',hBio:'النبذة التعريفية',hNum:'الأرقام',hPosts:'منشورات جاهزة',
- bioT:'نبذة تعريفية',statT:'لوحة الأرقام (3 دول · 5 مؤتمرات · 3 لجان · 2 دورتان)',
- stats:[['3','دول: الإمارات · السعودية · عُمان'],['5','مؤتمرات ومعارض كبرى'],['3','لجان تنفيذية وفنية'],['2','دورتان تدريبيتان: CRL · TapRooT']],
- noteH:'نقاط للتأكيد قبل النشر:',notes:['التواريخ والمواقع غير الظاهرة في المواد الأصلية (مثل دورة أبكس ودورة TapRooT) تُركت دون ذكر.','المسمّيات والجهات مأخوذة كما وردت على البوسترات والشرائح.'],
- iLead:'<b>دعاية بالصور:</b> اضغط على أي صورة لتكبيرها. الصور المختارة تركّز عليك على المنصة وفي الجلسات، مع تجنّب صور الحضور القريبة. بعض اللقطات يظهر فيها زملاء أو متحدثون آخرون، فاستبعد ما تراه غير مناسب.',
- vLead:'<b>دعاية بالفيديو:</b> الدعاية الرئيسية ودعاية مستقلة لكل فعالية، بدون صوت حاليًا (الموسيقى والتعليق الصوتي بعد الموافقة). المقاطع الأصلية الثلاثة مصدرها منخفض الدقة، وحُسّنت بإزالة التشويش والتكبير وتحسين الحدّة، ويبقى الحدّ الأقصى للجودة ما يسمح به المصدر.',
- dLead:'<b>القرار:</b> راجع الملخص، اختر القرار العام، أضف ملاحظاتك، ثم أرسل النتيجة عبر واتساب أو انسخها أو احفظها كملف.',
- sOk:'موافق',sNo:'غير موافق',sPe:'لم يُحدَّد',overall:'القرار العام',vd:{all:'موافق — يمكن البدء بالنشر وفق ما حدّدته',edit:'موافق مع تعديلات — راجع ملاحظاتي',hold:'غير موافق حاليًا — لا تنشر'},
- notesH:'ملاحظاتك',notesPh:'مثال: أستبعد الصور التي يظهر فيها زملاء، أو أصحّح المسمّى الوظيفي...',sendH:'إرسال القرار',wa:'إرسال عبر واتساب',cpd:'نسخ القرار',dl:'حفظ كملف نصي',rs:'مسح كل القرارات',rsq:'مسح كل القرارات والملاحظات؟',
- prev:'السابق ›',next:'‹ التالي',close:'إغلاق',
- rep:'مراجعة دعاية HIRZ — المستشار محمد حافظ',rv:'القرار العام',unset:'لم يُحدَّد',nt:'ملاحظات',
- lab:{slogan:'شعار',bio:'نبذة',post:'منشور',img:'صورة',vid:'فيديو'},
- slogans:['حيث تلتقي الخبرة الميدانية بالتميّز الهندسي','من أرض المصنع... إلى منصّات المؤتمرات','اعتمادية يمكن قياسها... ومعرفة يمكن تطبيقها','تدريب عملي من مهندس اعتمادية على رأس العمل'],
- bio:'المستشار محمد حافظ — Lead Rotating Equipment Reliability & Condition Monitoring في SASREF، بخبرة 18 عامًا في اعتمادية المعدات الدوّارة وإدارة الأصول، قضاها في مصافي التكرير والبتروكيماويات والتعدين (MIDOR، Methanex، Ambatovy، SATORP، SASREF).\nحاصل على الماجستير في ميكانيكا الموائع (Fluid Mechanics) وماجستير إدارة الأعمال في إدارة المشاريع، ويحمل شهادات CMRP وCRL وMLA II وAPI SIRE وCMQ/OE وCQE وCAT II VA، ومدرّب TapRooT معتمد (Team Leader).',
- posts:[['master','منشور رئيسي — واتساب / لينكدإن','من أرض المصنع إلى منصّات المؤتمرات 🎤\n\nالمستشار محمد حافظ — Lead Rotating Equipment Reliability & Condition Monitoring في SASREF — متحدثًا وعضو لجان في ME RoTIC دبي، وROTIC السعودية، وMaintrel 4.0، ومؤتمر Asset Integrity & Corrosion Management، ومعرض Asset Integrity & Reliability Show في مسقط، ومدرّبًا لدورتي CRL وTapRooT.\n\nنحمل هذه الخبرة اليوم إلى منصة HIRZ لاعتمادية وسلامة الأصول الصناعية.\n🔗 '+URL_PLATFORM+'\n\n#Reliability #AssetIntegrity #RotatingEquipment #HIRZ'],
- ['dubai','ME RoTIC دبي','ME RoTIC دبي 🌍\nعضو لوحة نقاش «Optimizing Pump Performance»، ومدير لجلسة حوارية، ومتحدث، وعضو اللجنة التنفيذية.\nGrand Hyatt، دبي — 22–24 سبتمبر 2025'],
- ['rotic','ROTIC السعودية','ROTIC السعودية ⚙️\nورقة فنية بعنوان: Effect of Gas Turbine Compressor Fouling on Auxiliary System Starting Delay.\nمركز ظهران إكسبو — 28–30 سبتمبر 2026 — برعاية رئيسية من أرامكو'],
- ['maintrel','Maintrel 4.0','Maintrel 4.0 🤖\nعضو اللجنة التنفيذية، ومشارك في جلسة «AI-Powered Reliability»، وعرض فني عن فحص حوامل النوابض (Spring Hangers) ودراسة حالة الانفعال الساكن في غلاف مضخة.\nالخبر — 2–4 فبراير 2026'],
- ['yanbu','مؤتمر ينبع','مؤتمر Asset Integrity & Corrosion Management — النسخة 7 🏆\nمتحدث مميز بشهادة تقدير، وعرض عن إجهاد الأنابيب Pipe Strain (الساكن والديناميكي).\nينبع — 24–25 فبراير 2025'],
- ['oman','معرض عُمان','Asset Integrity & Reliability Show Middle East 🇴🇲\nمتحدث في المعرض.\nمسقط — 5–7 مارس 2024'],
- ['train','التدريب المعتمد','التدريب بخبرة ميدانية 🎓\nمدرّب دورة Certified Reliability Leader (CRL) Certificate Preparation مع أبكس دبي، ومدرّب دورة TapRooT® Root Cause Analysis.']],
- ig:['البوسترات والأدوار','ME RoTIC دبي','ROTIC السعودية','Maintrel 4.0','مؤتمر ينبع','معرض عُمان','التدريب المعتمد'],
- vg:[['الدعاية الرئيسية','~41 ث'],['دعاية لكل فعالية','عمودي'],['مقاطع أصلية محسّنة','مكبّرة ومنقّاة من مصادر منخفضة الدقة']],
- vn:{'master-vertical':'عمودي — واتساب / ريلز','master-landscape':'أفقي — يوتيوب / عرض تقديمي',dubai:'ME RoTIC دبي',rotic:'ROTIC السعودية',maintrel:'Maintrel 4.0',yanbu:'مؤتمر ينبع',oman:'معرض عُمان',apex:'أبكس دبي — CRL','clip-yanbu-talk':'ينبع — عرض على المنصة','clip-yanbu-stage':'ينبع — جلسة على المنصة','clip-maintrel-highlights':'Maintrel 4.0 — لقطات من الفعالية'},lg:'English'}};
+ vn:{'master-vertical':'Vertical — WhatsApp / Reels','master-landscape':'Landscape — YouTube / presentation',dubai:'ME RoTIC Dubai',rotic:'ROTIC Saudi',maintrel:'Maintrel 4.0',yanbu:'Yanbu conference',oman:'Oman show',apex:'APEX Dubai — CRL','clip-yanbu-talk':'Yanbu — talk on stage','clip-yanbu-stage':'Yanbu — stage session','clip-maintrel-highlights':'Maintrel 4.0 — event highlights'},lg:''}};
 function t(){return T[L]}
-var SLOG_EN=T.en.slogans,SLOG_AR=T.ar.slogans;
+var SLOG_EN=T.en.slogans;
 var STATSN=4;
 var IMG_GROUPS=[
  ['Dubai · Grand Hyatt',null],['','']];
@@ -225,8 +193,8 @@ function dirA(){return L=='ar'?'rtl':'ltr'}
 /* ---------- panes ---------- */
 function renderWords(){var X=t(),h='<div class="lead">'+X.wLead+'</div>';
  h+='<h2 class="g">'+X.hSlog+'</h2><div class="grid t">';
- SLOG_EN.forEach(function(e,i){var id='w-slogan-'+(i+1),a=SLOG_AR[i];reg('words',id,X.lab.slogan+': '+(L=='ar'?a:e));COPY[id]=e+'\n'+a;
-  h+='<div class="card" data-id="'+id+'"><div class="slogan"><div class="e">'+esc(e)+'</div><div class="a">'+esc(a)+'</div></div>'+acts(id,1)+'</div>'});
+ SLOG_EN.forEach(function(e,i){var id='w-slogan-'+(i+1);reg('words',id,X.lab.slogan+': '+e);COPY[id]=e;
+  h+='<div class="card" data-id="'+id+'"><div class="slogan"><div class="e">'+esc(e)+'</div></div>'+acts(id,1)+'</div>'});
  h+='</div><h2 class="g">'+X.hBio+'</h2><div class="grid t"><div class="card" data-id="w-bio"><div class="txt" dir="'+dirA()+'"><span class="k">'+esc(X.bioT).toUpperCase()+'</span><br>'+esc(X.bio)+'</div>'+acts('w-bio',1)+'</div></div>';
  reg('words','w-bio',X.lab.bio);COPY['w-bio']=X.bio;
  h+='<h2 class="g">'+X.hNum+'</h2><div class="grid t"><div class="card" data-id="w-stats"><div class="stats">';
@@ -294,11 +262,10 @@ function curTab(){var b=document.querySelector('.tab[aria-selected=true]');retur
 function showTab(k){document.querySelectorAll('.tab').forEach(function(b){b.setAttribute('aria-selected',b.dataset.t==k)});document.querySelectorAll('.pane').forEach(function(p){p.classList.toggle('on',p.id=='p-'+k)});
  document.querySelectorAll('video').forEach(function(v){v.pause()});if(k=='decision')buildOut();window.scrollTo({top:document.querySelector('nav.tabs').offsetTop-4});try{history.replaceState(null,'','#'+k)}catch(e){}}
 function build(){var X=t();document.documentElement.lang=L;document.documentElement.dir=dirA();
- document.querySelectorAll('[data-i]').forEach(function(n){n.innerHTML=X[n.dataset.i]});$('#lg').textContent=X.lg;
+ document.querySelectorAll('[data-i]').forEach(function(n){n.innerHTML=X[n.dataset.i]});
  $('#lbp').textContent=X.prev;$('#lbf').textContent=X.next;$('#lbx').textContent=X.close;$('#lbo').textContent=X.ok;$('#lbn').textContent=X.no;
  ORDER={words:[],images:[],videos:[]};LABEL={};COPY={};IMGLIST=[];
  renderWords();renderImages();renderVideos();renderDecision();paint()}
-$('#lg').onclick=function(){L=L=='en'?'ar':'en';try{localStorage.setItem(LK,L)}catch(e){}var k=curTab();build();showTab(k)};
 document.querySelectorAll('.tab').forEach(function(b){b.onclick=function(){showTab(b.dataset.t)}});
 document.addEventListener('click',function(e){
  var d=e.target.closest('[data-d]');if(d){setD(d.closest('.card').dataset.id,d.dataset.d);return}
