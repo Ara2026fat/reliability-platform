@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0F6B3A">
+<title>عرض الدعاية HIRZ</title>
+<link rel="icon" href="../platform-favicon-32.png">
+<style>
+@font-face{font-family:PS;font-weight:500;src:url(fonts/inter-latin-500-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:PS;font-weight:700;src:url(fonts/inter-latin-700-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:PS;font-weight:800;src:url(fonts/inter-latin-800-normal.woff2);unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:PS;font-weight:500;src:url(fonts/noto-kufi-arabic-arabic-500-normal.woff2);unicode-range:U+0600-06FF,U+0750-077F,U+FB50-FDFF,U+FE70-FEFF}
+@font-face{font-family:PS;font-weight:700;src:url(fonts/noto-kufi-arabic-arabic-700-normal.woff2);unicode-range:U+0600-06FF,U+0750-077F,U+FB50-FDFF,U+FE70-FEFF}
+@font-face{font-family:PS;font-weight:800;src:url(fonts/noto-kufi-arabic-arabic-800-normal.woff2);unicode-range:U+0600-06FF,U+0750-077F,U+FB50-FDFF,U+FE70-FEFF}
+:root{--bg:#FBF6EC;--card:#fff;--ink:#1d2a22;--mute:#5d6b62;--line:#e6dcc8;--green:#0F6B3A;--gold:#D9A21B;--blue:#1F5FA8;--dark:#123D2A;--ok:#16803c;--no:#b42318;--acc:var(--green);--soft:#e9f4ee}
+@media(prefers-color-scheme:dark){:root{--bg:#0e1612;--card:#16221b;--ink:#eaf2ec;--mute:#9db0a4;--line:#26382d;--green:#3fb374;--gold:#e8b53a;--blue:#6aa6ec;--dark:#0b2a1c;--ok:#4cc27a;--no:#ff7b6e;--soft:#16281d}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:PS,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;-webkit-text-size-adjust:100%}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+header.hero{background:linear-gradient(135deg,#0b3d26 0%,#0F6B3A 55%,#1d8a4e 100%);color:#fff;padding:26px 0 70px;position:relative;overflow:hidden}
+header.hero:after{content:"";position:absolute;inset:auto -10% -60% auto;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(217,162,27,.45),rgba(217,162,27,0) 65%)}
+.brand{display:flex;align-items:center;gap:14px}
+.brand img{width:64px;height:64px;border-radius:16px;background:#FBEFDF;padding:4px}
+.brand b{display:block;font-size:13px;letter-spacing:.14em;color:var(--gold);font-weight:800}
+.brand span{font-size:12.5px;opacity:.85}
+.hero h1{margin:18px 0 6px;font-size:clamp(24px,5vw,38px);line-height:1.3;font-weight:800;max-width:760px}
+.hero p{margin:0;max-width:720px;opacity:.93;font-size:15.5px}
+.steps{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;position:relative;z-index:1}
+.steps span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);padding:5px 12px;border-radius:99px;font-size:13px}
+nav.tabs{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);margin-top:-44px;border-radius:18px 18px 0 0}
+.tabs .row{display:flex;gap:6px;overflow-x:auto;padding:10px 0 0;scrollbar-width:none}
+.tabs .row::-webkit-scrollbar{display:none}
+.tab{flex:1 0 auto;min-width:104px;border:0;background:transparent;color:var(--mute);font:inherit;font-weight:700;font-size:15px;padding:10px 14px 12px;border-bottom:4px solid transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap}
+.tab i{width:10px;height:10px;border-radius:50%;background:var(--c)}
+.tab[aria-selected=true]{color:var(--ink);border-bottom-color:var(--c)}
+.tab em{font-style:normal;font-size:11.5px;background:var(--soft);color:var(--mute);border-radius:99px;padding:1px 8px}
+.prog{height:5px;background:var(--line)}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .3s}
+.progtxt{font-size:12.5px;color:var(--mute);padding:6px 0 8px;display:flex;justify-content:space-between}
+main{padding:22px 0 80px}
+section.pane{display:none;--acc:var(--c)}
+section.pane.on{display:block}
+.lead{background:var(--card);border:1px solid var(--line);border-inline-start:6px solid var(--acc);border-radius:14px;padding:14px 18px;margin:0 0 20px;color:var(--mute);font-size:15px}
+.lead b{color:var(--ink)}
+h2.g{display:flex;align-items:center;gap:10px;font-size:20px;margin:30px 0 12px;font-weight:800}
+h2.g:before{content:"";width:8px;height:24px;border-radius:4px;background:var(--acc)}
+h2.g small{font-weight:500;color:var(--mute);font-size:13px}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.grid.t{grid-template-columns:repeat(auto-fill,minmax(310px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .2s,border-color .2s}
+.card[data-s=ok]{border-color:var(--ok);box-shadow:0 0 0 2px color-mix(in srgb,var(--ok) 30%,transparent)}
+.card[data-s=no]{border-color:var(--no);box-shadow:0 0 0 2px color-mix(in srgb,var(--no) 30%,transparent);opacity:.82}
+.media{position:relative;background:#101a14;cursor:zoom-in;aspect-ratio:4/3;overflow:hidden}
+.media img{width:100%;height:100%;object-fit:cover;display:block}
+.media.poster img{object-fit:contain;background:#0e1612}
+.media.vid{cursor:default;aspect-ratio:auto}
+.media video{width:100%;display:block;max-height:560px;background:#000}
+.badge{position:absolute;top:10px;inset-inline-start:10px;background:rgba(0,0,0,.65);color:#fff;border-radius:99px;font-size:11.5px;padding:2px 10px;font-weight:700;letter-spacing:.04em}
+.cap{padding:11px 14px 4px;font-size:14px;font-weight:700;line-height:1.5}
+.cap small{display:block;font-weight:500;color:var(--mute);font-size:12.5px}
+.txt{padding:14px 16px 4px;font-size:15.5px;line-height:1.85;white-space:pre-line}
+.txt.en{direction:ltr;text-align:left;font-size:15px}
+.txt .k{display:inline-block;font-size:11px;letter-spacing:.12em;font-weight:800;color:var(--acc);margin-bottom:4px}
+.act{display:flex;gap:8px;padding:10px 12px 12px;margin-top:auto}
+.btn{flex:1;border:1.5px solid var(--line);background:transparent;color:var(--ink);font:inherit;font-weight:700;font-size:14px;padding:8px 10px;border-radius:11px;cursor:pointer;min-height:40px}
+.btn.ok:hover,.card[data-s=ok] .btn.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.btn.no:hover,.card[data-s=no] .btn.no{background:var(--no);border-color:var(--no);color:#fff}
+.btn.cp{flex:0 0 auto;border-color:var(--acc);color:var(--acc)}
+.slogan{padding:18px 16px 6px;text-align:center}
+.slogan .e{font-size:19px;font-weight:800;direction:ltr;line-height:1.4;color:var(--acc)}
+.slogan .a{font-size:17px;margin-top:6px;font-weight:700}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;padding:16px}
+.stats div{text-align:center;background:var(--soft);border-radius:12px;padding:12px 6px}
+.stats b{display:block;font-size:30px;line-height:1.1;color:var(--acc);font-weight:800}
+.stats span{font-size:12.5px;color:var(--mute)}
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 14px}
+.tools .btn{flex:0 0 auto;padding:7px 14px;font-size:13px}
+.note{background:color-mix(in srgb,var(--gold) 16%,var(--card));border:1px solid color-mix(in srgb,var(--gold) 55%,var(--line));border-radius:14px;padding:12px 16px;font-size:14px;margin:16px 0}
+.note ul{margin:6px 0 0;padding-inline-start:20px}
+/* decision */
+.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.sum div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
+.sum b{font-size:30px;display:block;line-height:1.1}
+.sum .o b{color:var(--ok)}.sum .n b{color:var(--no)}.sum .p b{color:var(--mute)}
+.box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:16px}
+.box h3{margin:0 0 10px;font-size:17px}
+.verd{display:grid;gap:8px}
+.verd label{display:flex;gap:10px;align-items:center;border:1.5px solid var(--line);border-radius:12px;padding:11px 14px;cursor:pointer;font-weight:700}
+.verd input{accent-color:var(--green);width:18px;height:18px}
+.verd label:has(input:checked){border-color:var(--green);background:var(--soft)}
+textarea{width:100%;min-height:110px;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);font:inherit;padding:10px 12px;resize:vertical}
+.send{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.send .btn{background:var(--dark);color:#fff;border-color:var(--dark);padding:12px}
+.send .btn.wa{background:#1fa855;border-color:#1fa855}
+.send .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+pre.out{white-space:pre-wrap;background:var(--bg);border:1px dashed var(--line);border-radius:12px;padding:12px;font:inherit;font-size:13.5px;max-height:320px;overflow:auto;margin:12px 0 0}
+.lb{position:fixed;inset:0;background:rgba(5,10,7,.94);z-index:50;display:none;flex-direction:column;align-items:center;justify-content:center;padding:14px}
+.lb.on{display:flex}
+.lb img{max-width:100%;max-height:calc(100vh - 150px);object-fit:contain;border-radius:8px}
+.lb .bar{display:flex;gap:10px;margin-top:12px;align-items:center;flex-wrap:wrap;justify-content:center}
+.lb .bar .btn{flex:0 0 auto;min-width:96px;background:#16221b;color:#fff;border-color:#37503f}
+.lb .bar .btn.ok.on{background:var(--ok);border-color:var(--ok)}.lb .bar .btn.no.on{background:var(--no);border-color:var(--no)}
+.lb p{color:#dfe9e2;margin:10px 0 0;text-align:center;font-size:14px}
+.toast{position:fixed;bottom:22px;inset-inline:0;margin:auto;width:max-content;max-width:90vw;background:#123D2A;color:#fff;padding:10px 20px;border-radius:99px;font-weight:700;font-size:14px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:60}
+.toast.on{opacity:1}
+footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--mute);font-size:12.5px;text-align:center}
+@media(max-width:520px){.grid,.grid.t{grid-template-columns:1fr}.tab{min-width:92px;padding:10px 10px 12px;font-size:14px}.brand img{width:54px;height:54px}}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <div class="brand"><img src="../hirz-mark.png" alt="HIRZ"><div><b>HIRZ</b><span>Engineering Training &amp; Consultancy</span></div></div>
+  <h1>مسودة الدعاية الخاصة بك — بانتظار رأيك</h1>
+  <p>أهلًا أستاذ محمد حافظ. هذه المواد الدعائية أُعدّت من صورك ومقاطعك ومشاركاتك السابقة، في ثلاثة أشكال: كلمات وصور وفيديو. لكل مادة خياران فقط: <b>موافق</b> أو <b>غير موافق</b>، ولا يُنشر شيء قبل اعتمادك.</p>
+  <div class="steps"><span>١ تصفّح التبويبات</span><span>٢ حدّد لكل مادة</span><span>٣ أرسل قرارك من تبويب «القرار»</span></div>
+</div></header>
+
+<nav class="tabs"><div class="wrap">
+  <div class="row" role="tablist">
+    <button class="tab" role="tab" data-t="words" style="--c:var(--green)" aria-selected="true"><i></i>دعاية بالكلمات <em id="c-words">0</em></button>
+    <button class="tab" role="tab" data-t="images" style="--c:var(--gold)" aria-selected="false"><i></i>دعاية بالصور <em id="c-images">0</em></button>
+    <button class="tab" role="tab" data-t="videos" style="--c:var(--blue)" aria-selected="false"><i></i>دعاية بالفيديو <em id="c-videos">0</em></button>
+    <button class="tab" role="tab" data-t="decision" style="--c:var(--dark)" aria-selected="false"><i></i>القرار</button>
+  </div>
+  <div class="progtxt"><span id="pt">لم تُحدَّد أي مادة بعد</span><span id="pp">0٪</span></div>
+</div><div class="prog"><i id="pb"></i></div></nav>
+
+<main class="wrap">
+  <section class="pane on" id="p-words" style="--c:var(--green)"></section>
+  <section class="pane" id="p-images" style="--c:var(--gold)"></section>
+  <section class="pane" id="p-videos" style="--c:var(--blue)"></section>
+  <section class="pane" id="p-decision" style="--c:var(--dark)"></section>
+</main>
+<footer><div class="wrap">HIRZ Engineering Training &amp; Consultancy · مسودة للمراجعة الداخلية فقط · قراراتك تُحفظ في متصفحك حتى ترسلها</div></footer>
+
+<div class="lb" id="lb"><img id="lbi" alt=""><p id="lbc"></p>
+  <div class="bar"><button class="btn" id="lbp">‹ السابق</button><button class="btn ok" id="lbo">✓ موافق</button><button class="btn no" id="lbn">✕ غير موافق</button><button class="btn" id="lbx">إغلاق</button><button class="btn" id="lbf">التالي ›</button></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+var URL_PLATFORM='https://ara2026fat.github.io/reliability-platform/';
+/* ---------- content ---------- */
+var SLOGANS=[
+ ['Where field experience meets engineering excellence.','حيث تلتقي الخبرة الميدانية بالتميّز الهندسي'],
+ ['From the plant floor to the conference stage.','من أرض المصنع... إلى منصّات المؤتمرات'],
+ ['Reliability you can measure. Knowledge you can apply.','اعتمادية يمكن قياسها... ومعرفة يمكن تطبيقها'],
+ ['Practical training from a working reliability engineer.','تدريب عملي من مهندس اعتمادية على رأس العمل']
+];
+var BIO_AR='المستشار محمد حافظ — Lead Rotating Equipment Reliability & Condition Monitoring في SASREF، بخبرة تتجاوز 17 عامًا في اعتمادية المعدات الدوّارة وإدارة الأصول، قضاها في مصافي التكرير والبتروكيماويات والتعدين (MIDOR، Methanex، Ambatovy، SATORP، SASREF).\nحاصل على الماجستير في ميكانيكا الموائع (Fluid Mechanics) وماجستير إدارة الأعمال في إدارة المشاريع، ويحمل شهادات CMRP وCRL وMLA II وAPI SIRE وCMQ/OE وCQE وCAT II VA، ومدرّب TapRooT معتمد (Team Leader).';
+var BIO_EN='Mohamed Hafez is Lead Rotating Equipment Reliability & Condition Monitoring at SASREF, with 17+ years in rotating equipment reliability and asset management across refining, petrochemical and mining operations (MIDOR, Methanex, Ambatovy, SATORP, SASREF).\nHe holds a Master\'s in Fluid Mechanics and an MBA in Project Management, and is certified CMRP, CRL, MLA II, API SIRE, CMQ/OE, CQE, CAT II VA and TapRooT Team Leader.';
+var STATS=[['3','دول: الإمارات · السعودية · عُمان'],['5','مؤتمرات ومعارض كبرى'],['3','لجان تنفيذية وفنية'],['2','دورتان تدريبيتان: CRL · TapRooT']];
+var POSTS=[
+ ['w-post-master-ar','منشور رئيسي (عربي) — واتساب / لينكدإن','من أرض المصنع إلى منصّات المؤتمرات 🎤\n\nالمستشار محمد حافظ — Lead Rotating Equipment Reliability & Condition Monitoring في SASREF — متحدثًا وعضو لجان في ME RoTIC دبي، وROTIC السعودية، وMaintrel 4.0، ومؤتمر Asset Integrity & Corrosion Management، ومعرض Asset Integrity & Reliability Show في مسقط، ومدرّبًا لدورتي CRL وTapRooT.\n\nنحمل هذه الخبرة اليوم إلى منصة HIRZ لاعتمادية وسلامة الأصول الصناعية.\n🔗 '+URL_PLATFORM+'\n\n#Reliability #AssetIntegrity #RotatingEquipment #HIRZ',false],
+ ['w-post-master-en','Main post (English) — LinkedIn','From the plant floor to the conference stage 🎤\n\nMohamed Hafez — Lead Rotating Equipment Reliability & Condition Monitoring at SASREF — as speaker and committee member at ME RoTIC Dubai, ROTIC Saudi, Maintrel 4.0, the Asset Integrity & Corrosion Management Conference and the Asset Integrity & Reliability Show in Muscat, and as instructor of the CRL and TapRooT courses.\n\nThis experience now powers HIRZ, a platform for industrial asset reliability and integrity.\n🔗 '+URL_PLATFORM+'\n\n#Reliability #AssetIntegrity #RotatingEquipment #HIRZ',true],
+ ['w-post-dubai','ME RoTIC دبي','ME RoTIC دبي 🌍\nعضو لوحة نقاش «Optimizing Pump Performance»، ومدير لجلسة حوارية، ومتحدث، وعضو اللجنة التنفيذية.\nGrand Hyatt، دبي — 22–24 سبتمبر 2025',false],
+ ['w-post-rotic','ROTIC السعودية','ROTIC السعودية ⚙️\nورقة فنية بعنوان: Effect of Gas Turbine Compressor Fouling on Auxiliary System Starting Delay.\nمركز ظهران إكسبو — 28–30 سبتمبر 2026 — برعاية رئيسية من أرامكو',false],
+ ['w-post-maintrel','Maintrel 4.0','Maintrel 4.0 🤖\nعضو اللجنة التنفيذية، ومشارك في جلسة «AI-Powered Reliability»، وعرض فني عن فحص حوامل النوابض (Spring Hangers) ودراسة حالة الانفعال الساكن في غلاف مضخة.\nالخبر — 2–4 فبراير 2026',false],
+ ['w-post-yanbu','مؤتمر ينبع','مؤتمر Asset Integrity & Corrosion Management — النسخة 7 🏆\nمتحدث مميز بشهادة تقدير، وعرض عن إجهاد الأنابيب Pipe Strain (الساكن والديناميكي).\nينبع — 24–25 فبراير 2025',false],
+ ['w-post-oman','معرض عُمان','Asset Integrity & Reliability Show Middle East 🇴🇲\nمتحدث في المعرض.\nمسقط — 5–7 مارس 2024',false],
+ ['w-post-train','التدريب المعتمد','التدريب بخبرة ميدانية 🎓\nمدرّب دورة Certified Reliability Leader (CRL) Certificate Preparation مع أبكس دبي، ومدرّب دورة TapRooT® Root Cause Analysis.',false]
+];
+var IMG_GROUPS=[
+ ['البوسترات والأدوار','Posters & roles',[
+  ['fc17731c','Meet Our Speaker — ROTIC Saudi',1],['0f1c9577','Meet Our Panelist — ME RoTIC Dubai',1],['2aa3188c','Panel: Optimizing Pump Performance',1],['45679eba','Executive Committee — ME RoTIC 2025',1],['a2a712bc','Executive Committee Member — ME RoTIC Oct 2026',1],['fc9fcd84','Executive Committee — Maintrel 4.0',1],['1a58fc69','Technical Committee Member — Al Khobar',1],['73765922','Speaker card — Asset Integrity & Corrosion Conference',1],['465d40a9','Speaker — Asset Integrity & Reliability Show, Muscat',1]]],
+ ['ME RoTIC دبي','Dubai · Grand Hyatt',[
+  ['558a70d5','Panelist — Optimizing Pump Performance'],['658f59a3','Speaking on the panel'],['b87b2af7','Moderating'],['f9b3f1e3','Panel discussion'],['506ff8c6','Panel — wide stage'],['31e52ffa','SASREF recognition on stage'],['c2ea9415','Standing session'],['287ecd1d','In conversation'],['a98c2b72','Solo presentation'],['e05ac766','Moderating — SASREF slide']]],
+ ['ROTIC السعودية','Dhahran Expo Center',[
+  ['d6e3ab2e','At the ROTIC Saudi entrance'],['349a6841','Gas turbine compressor fouling talk'],['c8cb7558','Presenting on the main stage'],['6c71501b','Starting-delay troubleshooting']]],
+ ['Maintrel 4.0','Al Khobar',[
+  ['96b80caf','Spring Hanger Inspection'],['16740001','Presenting'],['b9754f11','Pump casing static strain'],['76c1ab61','Case study on stage'],['8a4560c9','Walking the audience through the case'],['41d037fe','Q&A moment'],['d88dca9a','Hot and cold position of spring hangers']]],
+ ['مؤتمر ينبع','Asset Integrity & Corrosion Management · 7th Edition KSA',[
+  ['9cdd3add','Pipe strain: static & dynamic'],['95d1d3b1','Panel discussion'],['448c6636','Panel on the gold stage'],['80947239','Speakers honoured'],['67d8dab6','Receiving the certificate'],['4afc4f3a','Certificate — Distinguished Speaker',1]]],
+ ['معرض عُمان','Muscat, Oman',[
+  ['92fa7f61','On stage in Muscat'],['3f252b5d','Reliability in practice']]],
+ ['التدريب المعتمد','APEX · Certified Reliability Leader (CRL)',[
+  ['a3f46c8b','Certificate of appreciation — CRL Preparation Course'],['e55e8492','Participants and instructor']]]
+];
+var VID_GROUPS=[
+ ['الدعاية الرئيسية','Master promo · ~41 s',[
+  ['master-vertical','عمودي — واتساب / ريلز','9:16'],['master-landscape','أفقي — يوتيوب / عرض تقديمي','16:9']]],
+ ['دعاية لكل فعالية','Per-event promos · vertical',[
+  ['dubai','ME RoTIC دبي','9:16'],['rotic','ROTIC السعودية','9:16'],['maintrel','Maintrel 4.0','9:16'],['yanbu','مؤتمر ينبع','9:16'],['oman','معرض عُمان','9:16'],['apex','أبكس دبي — CRL','9:16']]],
+ ['مقاطع أصلية محسّنة','Original clips · upscaled & denoised from low-resolution sources',[
+  ['clip-yanbu-talk','ينبع — عرض على المنصة','16:9'],['clip-yanbu-stage','ينبع — جلسة على المنصة','16:9'],['clip-maintrel-highlights','Maintrel 4.0 — لقطات من الفعالية','16:9']]]
+];
+/* ---------- state ---------- */
+var KEY='hirz_promo_review_v1',S={s:{},verdict:'',notes:''},LABEL={},ORDER={words:[],images:[],videos:[]};
+try{var raw=localStorage.getItem(KEY);if(raw)S=Object.assign(S,JSON.parse(raw))}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function $(s,r){return (r||document).querySelector(s)}
+function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function acts(id,copy){return '<div class="act"><button class="btn ok" data-d="ok">✓ موافق</button><button class="btn no" data-d="no">✕ غير موافق</button>'+(copy?'<button class="btn cp" data-cp="'+id+'">نسخ</button>':'')+'</div>'}
+function reg(tab,id,label){ORDER[tab].push(id);LABEL[id]=label}
+var COPY={};
+/* ---------- words ---------- */
+function renderWords(){
+ var h='<div class="lead"><b>دعاية بالكلمات:</b> شعارات، نبذة تعريفية، أرقام، ومنشورات جاهزة للنشر. كل ما فيها مأخوذ من بوسترات وشرائح وشهادات مشاركاتك. حدّد ما يعجبك وما لا يعجبك، ويمكنك نسخ أي نص وتعديله.</div>';
+ h+='<h2 class="g">الشعارات <small>Slogans</small></h2><div class="grid t">';
+ SLOGANS.forEach(function(s,i){var id='w-slogan-'+(i+1);reg('words',id,'شعار: '+s[1]);COPY[id]=s[0]+'\n'+s[1];
+  h+='<div class="card" data-id="'+id+'"><div class="slogan"><div class="e">'+esc(s[0])+'</div><div class="a">'+esc(s[1])+'</div></div>'+acts(id,1)+'</div>'});
+ h+='</div><h2 class="g">النبذة التعريفية <small>Short bio</small></h2><div class="grid t">';
+ [['w-bio-ar','نبذة (عربي)',BIO_AR,0],['w-bio-en','Bio (English)',BIO_EN,1]].forEach(function(b){reg('words',b[0],b[1]);COPY[b[0]]=b[2];
+  h+='<div class="card" data-id="'+b[0]+'"><div class="txt'+(b[3]?' en':'')+'"><span class="k">'+esc(b[1]).toUpperCase()+'</span><br>'+esc(b[2])+'</div>'+acts(b[0],1)+'</div>'});
+ h+='</div><h2 class="g">الأرقام <small>At a glance</small></h2><div class="grid t"><div class="card" data-id="w-stats"><div class="stats">';
+ reg('words','w-stats','لوحة الأرقام (3 دول · 5 مؤتمرات · 3 لجان · 2 دورتان)');COPY['w-stats']=STATS.map(function(x){return x[0]+' '+x[1]}).join('\n');
+ STATS.forEach(function(x){h+='<div><b>'+x[0]+'</b><span>'+x[1]+'</span></div>'});
+ h+='</div>'+acts('w-stats',1)+'</div></div>';
+ h+='<h2 class="g">منشورات جاهزة <small>Ready-to-post captions</small></h2><div class="grid t">';
+ POSTS.forEach(function(p){reg('words',p[0],'منشور: '+p[1]);COPY[p[0]]=p[2];
+  h+='<div class="card" data-id="'+p[0]+'"><div class="txt'+(p[3]?' en':'')+'"><span class="k">'+esc(p[1])+'</span><br>'+esc(p[2])+'</div>'+acts(p[0],1)+'</div>'});
+ h+='</div><div class="note"><b>نقاط للتأكيد قبل النشر:</b><ul><li>عدد سنوات الخبرة: كُتب «أكثر من 17 عامًا»، بينما تذكر إحدى الشرائح 18 عامًا. أيهما تعتمد؟</li><li>التواريخ والمواقع غير الظاهرة في المواد الأصلية (مثل دورة أبكس ودورة TapRooT) تُركت دون ذكر.</li><li>المسمّيات والجهات مأخوذة كما وردت على البوسترات والشرائح.</li></ul></div>';
+ $('#p-words').innerHTML=h;
+}
+/* ---------- images ---------- */
+var IMGLIST=[];
+function renderImages(){
+ var h='<div class="lead"><b>دعاية بالصور:</b> اضغط على أي صورة لتكبيرها. الصور المختارة تركّز عليك على المنصة وفي الجلسات، مع تجنّب صور الحضور القريبة. بعض اللقطات يظهر فيها زملاء أو متحدثون آخرون، فاستبعد ما تراه غير مناسب.</div>';
+ IMG_GROUPS.forEach(function(g){h+='<h2 class="g">'+g[0]+' <small>'+g[1]+'</small></h2><div class="grid">';
+  g[2].forEach(function(it){var id='i-'+it[0];reg('images',id,'صورة: '+g[0]+' — '+it[1]);IMGLIST.push({id:id,src:'img/'+it[0]+'.jpg',cap:g[0]+' — '+it[1]});
+   h+='<div class="card" data-id="'+id+'"><div class="media'+(it[2]?' poster':'')+'" data-zoom="'+id+'"><span class="badge">'+g[0]+'</span><img loading="lazy" src="img/'+it[0]+'.jpg" alt="'+esc(it[1])+'"></div><div class="cap">'+esc(it[1])+'</div>'+acts(id)+'</div>'});
+  h+='</div>'});
+ $('#p-images').innerHTML=h;
+}
+/* ---------- videos ---------- */
+function renderVideos(){
+ var h='<div class="lead"><b>دعاية بالفيديو:</b> الدعاية الرئيسية ودعاية مستقلة لكل فعالية، بدون صوت حاليًا (الموسيقى والتعليق الصوتي بعد الموافقة). المقاطع الأصلية الثلاثة مصدرها منخفض الدقة، وحُسّنت بإزالة التشويش والتكبير وتحسين الحدّة، ويبقى الحدّ الأقصى للجودة ما يسمح به المصدر.</div>';
+ VID_GROUPS.forEach(function(g){h+='<h2 class="g">'+g[0]+' <small>'+g[1]+'</small></h2><div class="grid t">';
+  g[2].forEach(function(v){var id='v-'+v[0];reg('videos',id,'فيديو: '+v[1]);
+   h+='<div class="card" data-id="'+id+'"><div class="media vid"><span class="badge">'+v[2]+'</span><video controls playsinline preload="none" poster="vid/'+v[0]+'.jpg" src="vid/'+v[0]+'.mp4" style="'+(v[2]=='9:16'?'aspect-ratio:9/16;max-height:520px;margin:auto':'aspect-ratio:16/9')+'"></video></div><div class="cap">'+esc(v[1])+'</div>'+acts(id)+'</div>'});
+  h+='</div>'});
+ $('#p-videos').innerHTML=h;
+}
+/* ---------- decision ---------- */
+function renderDecision(){
+ $('#p-decision').innerHTML='<div class="lead"><b>القرار:</b> راجع الملخص، اختر القرار العام، أضف ملاحظاتك، ثم أرسل النتيجة عبر واتساب أو انسخها أو احفظها كملف.</div>'
+ +'<div class="sum"><div class="o"><b id="s-ok">0</b>موافق</div><div class="n"><b id="s-no">0</b>غير موافق</div><div class="p"><b id="s-pe">0</b>لم يُحدَّد</div></div>'
+ +'<div class="box"><h3>القرار العام</h3><div class="verd">'
+ +[['all','موافق — يمكن البدء بالنشر وفق ما حدّدته'],['edit','موافق مع تعديلات — راجع ملاحظاتي'],['hold','غير موافق حاليًا — لا تنشر']].map(function(v){return '<label><input type="radio" name="vd" value="'+v[0]+'"'+(S.verdict==v[0]?' checked':'')+'>'+v[1]+'</label>'}).join('')
+ +'</div></div><div class="box"><h3>ملاحظاتك</h3><textarea id="notes" placeholder="مثال: أستبعد الصور التي يظهر فيها زملاء، أو أصحّح المسمّى الوظيفي..."></textarea></div>'
+ +'<div class="box"><h3>إرسال القرار</h3><div class="send"><button class="btn wa" id="b-wa">إرسال عبر واتساب</button><button class="btn" id="b-cp">نسخ القرار</button><button class="btn" id="b-dl">حفظ كملف نصي</button><button class="btn ghost" id="b-rs">مسح كل القرارات</button></div><pre class="out" id="out"></pre></div>';
+ $('#notes').value=S.notes||'';
+ $('#notes').addEventListener('input',function(){S.notes=this.value;save();buildOut()});
+ document.querySelectorAll('input[name=vd]').forEach(function(r){r.addEventListener('change',function(){S.verdict=this.value;save();buildOut()})});
+ $('#b-wa').onclick=function(){window.open('https://wa.me/?text='+encodeURIComponent(buildText()),'_blank','noopener')};
+ $('#b-cp').onclick=function(){copy(buildText(),'تم نسخ القرار')};
+ $('#b-dl').onclick=function(){var b=new Blob([buildText()],{type:'text/plain;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='HIRZ-promo-decision.txt';a.click();setTimeout(function(){URL.revokeObjectURL(a.href)},2000)};
+ $('#b-rs').onclick=function(){if(confirm('مسح كل القرارات والملاحظات؟')){S={s:{},verdict:'',notes:''};save();location.reload()}};
+}
+var VNAME={all:'موافق',edit:'موافق مع تعديلات',hold:'غير موافق حاليًا'};
+function buildText(){
+ var ok=[],no=[],pe=[];['words','images','videos'].forEach(function(t){ORDER[t].forEach(function(id){var s=S.s[id];(s=='ok'?ok:s=='no'?no:pe).push(LABEL[id])})});
+ var t='مراجعة دعاية HIRZ — المستشار محمد حافظ\nالقرار العام: '+(VNAME[S.verdict]||'لم يُحدَّد')+'\n\n';
+ t+='✅ موافق ('+ok.length+')\n'+(ok.length?ok.map(function(x){return '• '+x}).join('\n'):'—')+'\n\n';
+ t+='❌ غير موافق ('+no.length+')\n'+(no.length?no.map(function(x){return '• '+x}).join('\n'):'—')+'\n\n';
+ t+='⏳ لم يُحدَّد ('+pe.length+')\n';
+ if(S.notes)t+='\nملاحظات:\n'+S.notes+'\n';
+ return t;
+}
+function buildOut(){var o=$('#out');if(o)o.textContent=buildText()}
+/* ---------- sync ---------- */
+function paint(){
+ document.querySelectorAll('.card[data-id]').forEach(function(c){var s=S.s[c.dataset.id];if(s)c.dataset.s=s;else c.removeAttribute('data-s')});
+ var tot=0,done=0;['words','images','videos'].forEach(function(t){var n=ORDER[t].length,d=ORDER[t].filter(function(i){return S.s[i]}).length;tot+=n;done+=d;$('#c-'+t).textContent=d+'/'+n});
+ var ok=0,no=0;['words','images','videos'].forEach(function(t){ORDER[t].forEach(function(i){if(S.s[i]=='ok')ok++;if(S.s[i]=='no')no++})});
+ var p=tot?Math.round(done/tot*100):0;$('#pb').style.width=p+'%';$('#pp').textContent=p+'٪';
+ $('#pt').textContent=done?('حُدّد '+done+' من '+tot+' مادة'):'لم تُحدَّد أي مادة بعد';
+ if($('#s-ok')){$('#s-ok').textContent=ok;$('#s-no').textContent=no;$('#s-pe').textContent=tot-done}
+ buildOut();lbSync();
+}
+function setD(id,d){if(S.s[id]==d)delete S.s[id];else S.s[id]=d;save();paint()}
+function toast(m){var t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(function(){t.classList.remove('on')},1800)}
+function copy(txt,msg){
+ function fb(){var a=document.createElement('textarea');a.value=txt;a.style.position='fixed';a.style.opacity=0;document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(e){}a.remove()}
+ if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(txt).catch(fb);else fb();toast(msg||'تم النسخ')}
+/* ---------- lightbox ---------- */
+var li=-1;
+function lbOpen(id){li=IMGLIST.findIndex(function(x){return x.id==id});lbShow()}
+function lbShow(){var it=IMGLIST[li];$('#lbi').src=it.src;$('#lbc').textContent=it.cap;$('#lb').classList.add('on');lbSync()}
+function lbSync(){if(li<0)return;var s=S.s[IMGLIST[li].id];$('#lbo').classList.toggle('on',s=='ok');$('#lbn').classList.toggle('on',s=='no')}
+function lbGo(d){li=(li+d+IMGLIST.length)%IMGLIST.length;lbShow()}
+$('#lbx').onclick=function(){$('#lb').classList.remove('on');li=-1};
+$('#lbf').onclick=function(){lbGo(1)};$('#lbp').onclick=function(){lbGo(-1)};
+$('#lbo').onclick=function(){setD(IMGLIST[li].id,'ok')};$('#lbn').onclick=function(){setD(IMGLIST[li].id,'no')};
+document.addEventListener('keydown',function(e){if(li<0)return;if(e.key=='Escape')$('#lbx').click();if(e.key=='ArrowLeft')lbGo(1);if(e.key=='ArrowRight')lbGo(-1)});
+/* ---------- tabs + events ---------- */
+function showTab(t){document.querySelectorAll('.tab').forEach(function(b){b.setAttribute('aria-selected',b.dataset.t==t)});document.querySelectorAll('.pane').forEach(function(p){p.classList.toggle('on',p.id=='p-'+t)});
+ document.querySelectorAll('video').forEach(function(v){v.pause()});if(t=='decision')buildOut();window.scrollTo({top:document.querySelector('nav.tabs').offsetTop-4});try{history.replaceState(null,'','#'+t)}catch(e){}}
+document.querySelectorAll('.tab').forEach(function(b){b.onclick=function(){showTab(b.dataset.t)}});
+document.addEventListener('click',function(e){
+ var d=e.target.closest('[data-d]');if(d){setD(d.closest('.card').dataset.id,d.dataset.d);return}
+ var c=e.target.closest('[data-cp]');if(c){copy(COPY[c.dataset.cp]);return}
+ var z=e.target.closest('[data-zoom]');if(z)lbOpen(z.dataset.zoom)});
+renderWords();renderImages();renderVideos();renderDecision();paint();
+var h0=(location.hash||'').slice(1);if(['words','images','videos','decision'].indexOf(h0)>-1)showTab(h0);
+</script>
+</body>
+</html>
