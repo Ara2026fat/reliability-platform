@@ -272,6 +272,8 @@ document.addEventListener('click',function(e){
  var c=e.target.closest('[data-cp]');if(c){copy(COPY[c.dataset.cp]);return}
  var z=e.target.closest('[data-zoom]');if(z)lbOpen(z.dataset.zoom)});
 build();
+/* Approved by Mohamed Hafez on 2026-11-06 (all 64 items): show that state on any device that has no saved choices */
+if(!raw){['words','images','videos'].forEach(function(k){ORDER[k].forEach(function(id){S.s[id]='ok'})});S.verdict='all';save();renderDecision();paint()}
 var h0=(location.hash||'').slice(1);if(['words','images','videos','decision'].indexOf(h0)>-1)showTab(h0);
 </script>
 </body>
