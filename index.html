@@ -83,6 +83,14 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .hero .eyebrow{color:rgba(255,255,255,.65)}.hero .eyebrow::before{background:var(--hl)}
 .hub{display:flex;flex-direction:column;min-height:calc(100dvh - 170px)}
 .hub .hero{flex:none}.hub>.wrap{width:100%}
+.exq{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:10px}
+.exq h3{margin:0 0 6px;font-size:16px;line-height:1.5}.exq small{opacity:.7}
+.exo{display:block;width:100%;text-align:start;margin:8px 0 0;padding:11px 12px;border-radius:11px;border:1.5px solid var(--line);background:transparent;color:var(--ink);font:inherit;cursor:pointer}
+.exo.sel{border-color:var(--ink);font-weight:700}.exo.ok{border-color:#1d8a57;background:rgba(29,138,87,.14)}.exo.no{border-color:#c0392b;background:rgba(192,57,43,.14)}
+.exs{display:grid;gap:10px;margin-top:10px}.exs label{display:grid;gap:4px;font-size:13.5px}
+.exr{display:flex;gap:8px;margin-top:12px}.exr .btn{flex:1}
+.exbar{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin:8px 0}.exbar u{display:block;height:100%;background:#1d8a57}
+.exsc{font-size:40px;font-weight:800;margin:4px 0}
 .meet{background:var(--surface);border:1px solid var(--line);border-radius:16px;margin:14px 0 4px;overflow:hidden}
 .meet video{width:100%;display:block;background:#000;aspect-ratio:16/9}
 .meet .mb{display:flex;gap:12px;align-items:center;padding:12px 14px}
@@ -1461,9 +1469,42 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
   try{var _m=JSON.parse(localStorage.getItem('rl_mypath')||'null');if(_m&&_m.i)MY=_m}catch(e){}
   function saveMy(){try{localStorage.setItem('rl_mypath',JSON.stringify(MY))}catch(e){}}
   function lessonOf(id){var p=id.split(':'),c=COURSES.filter(function(x){return x.id===p[0]})[0];if(!c)return null;var m=c.modules[+p[1]];return m?{c:c,m:m,id:id}:null}
-  function tabs(cur){return '<div class="lt" role="tablist">'+[['','Courses'],['path','Path'],['sets','Packs'],['lib','Library'],['refs','Refs'],['promo','Promo'],['media','Media'],['mine','Mine'+(MY.i.length?' ('+MY.i.length+')':'')]].map(function(t){return '<a role="tab" aria-selected="'+(cur===t[0])+'" class="'+(cur===t[0]?'on':'')+'" href="#learn'+(t[0]?'/'+t[0]:'')+'">'+t[1]+'</a>'}).join('')+'</div>'}
+  function tabs(cur){return '<div class="lt" role="tablist">'+[['','Courses'],['path','Path'],['exam','Exam'],['sets','Packs'],['lib','Library'],['refs','Refs'],['promo','Promo'],['media','Media'],['mine','Mine'+(MY.i.length?' ('+MY.i.length+')':'')]].map(function(t){return '<a role="tab" aria-selected="'+(cur===t[0])+'" class="'+(cur===t[0]?'on':'')+'" href="#learn'+(t[0]?'/'+t[0]:'')+'">'+t[1]+'</a>'}).join('')+'</div>'}
   function promoView(){return tabs('promo')+'<div class="banner" style="margin:10px 0">Promo review for the expert: approve or reject each item, then send the decision. Private to people who unlocked the platform.</div><iframe title="Promo review" src="promo/index.html" style="width:100%;height:78vh;min-height:520px;border:1px solid #d8dee9;border-radius:14px;background:#fff"></iframe><p class="sethint"><a href="promo/index.html" target="_blank" rel="noopener">Open full screen</a></p>'}
   function mediaView(){return tabs('media')+'<iframe title="Media" src="media/index.html" style="width:100%;height:80vh;min-height:520px;border:1px solid #d8dee9;border-radius:14px;background:#fff"></iframe><p class="sethint"><a href="media/index.html" target="_blank" rel="noopener">Open full screen</a></p>'}
+
+  /* ---- exam ---- */
+  var EX={cid:'',n:20,mode:'exam',run:null};
+  function exShuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+  function exPool(cid){var p=[];COURSES.forEach(function(c){if(cid&&c.id!==cid)return;c.modules.forEach(function(m){((m.lesson||{}).qz||[]).forEach(function(q){p.push({c:c.id,ct:c.title,lt:m.t,q:q.q,o:q.o,a:q.a,w:q.w||''})})})});return p}
+  function exStart(){var pool=exShuffle(exPool(EX.cid));if(!pool.length)return;var n=EX.n>0?Math.min(EX.n,pool.length):pool.length;
+    var items=pool.slice(0,n).map(function(q){var idx=exShuffle(q.o.map(function(_,i){return i}));return {c:q.c,ct:q.ct,lt:q.lt,q:q.q,w:q.w,opts:idx.map(function(i){return q.o[i]}),ans:idx.indexOf(q.a),pick:null}});
+    EX.run={items:items,i:0,mode:EX.mode,done:false}}
+  function exSetup(){var tot=exPool('').length,h=tabs('exam')+'<div class="exq"><h3>Exam builder</h3><small>Questions come from the lessons of each course. The bank has '+tot+' questions now and grows as lessons are added.</small><div class="exs">'
+    +'<label>Course<select class="num" id="exc"><option value="">All courses ('+tot+')</option>'+COURSES.map(function(c){var n=exPool(c.id).length;return n?'<option value="'+c.id+'"'+(EX.cid===c.id?' selected':'')+'>'+esc(c.title)+' ('+n+')</option>':''}).join('')+'</select></label>'
+    +'<label>Number of questions<select class="num" id="exn">'+[10,20,40,60,0].map(function(n){return '<option value="'+n+'"'+(EX.n===n?' selected':'')+'>'+(n?n:'All available')+'</option>'}).join('')+'</select></label>'
+    +'<label>Mode<select class="num" id="exm"><option value="exam"'+(EX.mode==='exam'?' selected':'')+'>Exam: answers and explanations at the end</option><option value="practice"'+(EX.mode==='practice'?' selected':'')+'>Practice: feedback after each question</option></select></label></div>'
+    +'<div class="exr"><button class="btn" data-ex="start">Start</button></div></div>';return h+lockBtn2()}
+  function exQuestion(){var R=EX.run,it=R.items[R.i],prac=R.mode==='practice',show=prac&&it.pick!==null;
+    var h=tabs('exam')+'<div class="exq"><small>Question '+(R.i+1)+' of '+R.items.length+' &middot; '+esc(it.ct)+'</small><div class="exbar"><u style="width:'+((R.i+1)/R.items.length*100)+'%"></u></div><h3>'+esc(it.q)+'</h3>';
+    it.opts.forEach(function(o,k){var c='exo';if(show){if(k===it.ans)c+=' ok';else if(k===it.pick)c+=' no'}else if(it.pick===k)c+=' sel';h+='<button class="'+c+'" data-exo="'+k+'"'+(show?' disabled':'')+'>'+esc(o)+'</button>'});
+    if(show&&it.w)h+='<p class="note" style="margin-top:10px">'+esc(it.w)+'</p>';
+    var last=R.i===R.items.length-1;
+    h+='<div class="exr">'+(R.i>0&&!prac?'<button class="btn ghost" data-ex="prev">Previous</button>':'')+(last?'<button class="btn" data-ex="finish">Finish</button>':'<button class="btn" data-ex="next">Next</button>')+'</div></div>';return h}
+  function exResults(){var R=EX.run,ok=0,by={};R.items.forEach(function(it){var g=by[it.c]||(by[it.c]={t:it.ct,n:0,k:0});g.n++;if(it.pick===it.ans){ok++;g.k++}});
+    var pct=Math.round(ok/R.items.length*100),h=tabs('exam')+'<div class="exq"><small>Result</small><div class="exsc">'+pct+'%</div><p style="margin:0">'+ok+' correct out of '+R.items.length+'.</p><div class="exbar"><u style="width:'+pct+'%"></u></div><h3 style="margin-top:14px">By course</h3>';
+    Object.keys(by).forEach(function(k){var g=by[k];h+='<p style="margin:6px 0">'+esc(g.t)+': <b>'+g.k+'/'+g.n+'</b> ('+Math.round(g.k/g.n*100)+'%)</p>'});
+    var wr=R.items.filter(function(it){return it.pick!==it.ans});
+    h+='<h3 style="margin-top:14px">'+(wr.length?'Review the '+wr.length+' you missed':'No mistakes')+'</h3>';
+    wr.forEach(function(it){h+='<div class="exq" style="margin-top:8px"><small>'+esc(it.ct)+' &middot; '+esc(it.lt)+'</small><p style="margin:6px 0"><b>'+esc(it.q)+'</b></p><p style="margin:4px 0">Your answer: '+(it.pick===null?'<i>none</i>':esc(it.opts[it.pick]))+'</p><p style="margin:4px 0">Correct: <b>'+esc(it.opts[it.ans])+'</b></p>'+(it.w?'<p class="note" style="margin:6px 0 0">'+esc(it.w)+'</p>':'')+'</div>'});
+    return h+'<div class="exr"><button class="btn" data-ex="again">New exam</button></div></div>'}
+  function examView(){if(!EX.run)return exSetup();return EX.run.done?exResults():exQuestion()}
+  document.addEventListener('change',function(e){if(e.target.id==='exc')EX.cid=e.target.value;if(e.target.id==='exn')EX.n=+e.target.value;if(e.target.id==='exm')EX.mode=e.target.value});
+  document.addEventListener('click',function(e){var b=e.target.closest('[data-ex]'),o=e.target.closest('[data-exo]');if(!b&&!o)return;var R=EX.run;
+    if(o&&R){R.items[R.i].pick=+o.getAttribute('data-exo');renderLearn('exam');return}
+    var a=b.getAttribute('data-ex');
+    if(a==='start')exStart();else if(a==='again'){EX.run=null}else if(R){if(a==='next')R.i++;else if(a==='prev')R.i--;else if(a==='finish')R.done=true}
+    renderLearn('exam');window.scrollTo(0,0)});
   function refsView(){var R=(DATA&&DATA.refs)||[],h=tabs('refs');
     if(!R.length)return h+'<div class="refe"><div class="refc" style="--c:#2F55C8"><b>API standards</b><span>Waiting for the files</span></div><div class="refc" style="--c:#B86A1A"><b>Heinz Bloch books</b><span>Waiting for the files</span></div></div><p class="sethint">Search inside these files will work here once they are added. We need the files themselves, and confirmation from the owner that their licences allow it.</p>';
     return h+'<div class="lib"><input id="refq" type="search" placeholder="Search inside the references" aria-label="Search references"></div><div id="refout" class="refo"></div>'}
@@ -1498,7 +1539,7 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
     CUR=id||'';var box=$('learnbody');var cc0=COURSES.filter(function(x){return x.id===id})[0];if(cc0&&mod!==undefined&&DATA){var ms=cc0.modules;if(ms.some(function(m){return m.sec})){CP[id]=0;var seen=[];ms.forEach(function(m){if(seen.indexOf(m.sec)<0)seen.push(m.sec)});CP[id]=seen.indexOf(ms[+mod]&&ms[+mod].sec);if(CP[id]<0)CP[id]=0}else if(ms.length>8)CP[id]=Math.floor(+mod/8)}
     if(!DATA){box.innerHTML=lockView();renderPin();return}
     var c=COURSES.filter(function(x){return x.id===id})[0];
-    box.innerHTML=c?courseView(c):id==='lib'?libView():id==='mine'?mineView():id==='sets'?setsView():id==='path'?pathView():id==='refs'?refsView():id==='promo'?promoView():id==='media'?mediaView():coursesView();
+    box.innerHTML=c?courseView(c):id==='lib'?libView():id==='mine'?mineView():id==='sets'?setsView():id==='path'?pathView():id==='refs'?refsView():id==='promo'?promoView():id==='exam'?examView():id==='media'?mediaView():coursesView();
     [].forEach.call(box.querySelectorAll('.cimp'),function(i){i.src=IMPSRC});setTimeout(applyLang,0);
     if(c&&mod!==undefined){var li=box.querySelector('.line>li[data-i="'+mod+'"]');if(li){var dt=li.querySelector('details');if(dt)dt.open=true;setTimeout(function(){li.scrollIntoView({block:'start'})},50)}}
   }
