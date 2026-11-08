@@ -576,7 +576,7 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
         <label>Compressor isentropic efficiency, assumed (%), used only if no discharge temperature<input class="num" id="xEc" type="number" step="0.5" min="50" max="95" value="86"></label>
         <label>Generator output (MW, electrical)<input class="num" id="xW" type="number" step="0.1" min="0" value="32"></label>
         <label>Fuel flow<input class="num" id="xQ" type="number" step="any" min="0" placeholder="enter reading"></label>
-        <label>Fuel flow unit<select class="num" id="xU"><option value="kgs">kg/s</option><option value="kgh">kg/h</option><option value="th">t/h</option><option value="nm3h">Nm&sup3;/h</option><option value="lbh">lb/h</option></select></label>
+        <label>Fuel flow unit<select class="num" id="xU"><option value="kgs">kg/s</option><option value="kgh">kg/h</option><option value="th">t/h</option><option value="td">t/d (tonnes per day)</option><option value="nm3h">Nm&sup3;/h</option><option value="lbh">lb/h</option></select></label>
         <label>Gas density for Nm&sup3;/h (kg/Nm&sup3;, assumed, edit)<input class="num" id="xD" type="number" step="0.01" min="0.3" value="0.75"></label>
         <label><bdi class="lbt">Natural gas lower heating value, assumed, edit (<u data-uk="lh">MJ/kg</u>)</bdi><input class="num" id="xL" type="number" step="0.1" min="1" value="48"></label>
         <label>Reference efficiency, optional (%)<input class="num" id="xR" type="number" step="0.1" min="0" max="100" placeholder="e.g. baseline"></label>
@@ -1113,7 +1113,7 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
   function xCalc(){
     var O=$('x-out'),M=$('x-msg');if(!O)return;
     var Pa=gv('xP','p'),W=+$('xW').value,L=gv('xL','lh'),q=+$('xQ').value,u=$('xU').value,d=+$('xD').value;
-    var K={kgs:1,kgh:1/3600,th:1000/3600,nm3h:d/3600,lbh:0.45359237/3600};
+    var K={kgs:1,kgh:1/3600,th:1000/3600,td:1000/86400,nm3h:d/3600,lbh:0.45359237/3600};
     if(!(W>0)||!(q>0)||!(L>0)||!(Pa>0)||!(K[u]>0)){O.innerHTML='';M.className='msg';M.textContent='Enter the generator output and the fuel flow to see the efficiency.';return}
     var mf=q*K[u],Q=mf*L,eff=W/Q,hr=Q/W*3600,hrk=UI?1:0.947817,pf=UI?1:1/0.45359237;
     var h='<div><small>Efficiency (LHV, generator terminals)</small><b>'+(eff*100).toFixed(1)+'<i>%</i></b></div><div><small>Heat rate</small><b>'+(hr*hrk).toFixed(0)+'<i>'+(UI?'kJ/kWh':'Btu/kWh')+'</i></b></div><div><small>Fuel heat input</small><b>'+Q.toFixed(1)+'<i>MW</i></b></div><div><small>Fuel flow</small><b>'+(mf*pf).toFixed(3)+'<i>'+(UI?'kg/s':'lb/s')+'</i></b></div>';
