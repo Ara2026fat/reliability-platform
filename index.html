@@ -1175,7 +1175,7 @@ document.addEventListener('DOMContentLoaded',function(){
   var UGL={p:['bar','psia'],t:['°C','°F'],f:['kg/s','lb/s'],w:['t/h','klb/h'],lh:['MJ/kg','Btu/lb']};
   var UGC={p:[function(v){return v*14.5038},function(v){return v/14.5038},3],t:[function(v){return v*9/5+32},function(v){return (v-32)*5/9},1],f:[function(v){return v/0.45359237},function(v){return v*0.45359237},3],w:[function(v){return v/0.45359237},function(v){return v*0.45359237},2],lh:[function(v){return v*429.923},function(v){return v/429.923},0]};
   function ugLabels(){[].forEach.call(document.querySelectorAll('[data-uk]'),function(u){u.innerHTML=UGL[u.getAttribute('data-uk')][UI?0:1]})}
-  function ugConv(prev){UGF.forEach(function(f){var el=$(f[0]);if(!el||el.value==='')return;var c=UGC[f[1]],v=+el.value,si=prev?v:c[1](v),nv=UI?si:c[0](si);el.value=+nv.toFixed(c[2])});ugLabels();gtCalc();xCalc();stCalc()}
+  function ugConv(prev){UGF.forEach(function(f){var el=$(f[0]);if(!el||el.value==='')return;var c=UGC[f[1]],v=+el.value,si=prev?v:c[1](v),nv=UI?si:c[0](si);el.value=+nv.toFixed(f[1]==='lh'?(UI?2:0):c[2])});ugLabels();gtCalc();xCalc();stCalc()}
   function gv(id,kind){var v=+$(id).value;return UI?v:UGC[kind][1](v)}
   function lineSvg(id,o){
     var W=320,H=210,L=44,R=12,Tp=14,B=36,pw=W-L-R,ph=H-Tp-B,xs=o.xs,ys=o.ys,s='',i;
@@ -1198,16 +1198,17 @@ document.addEventListener('DOMContentLoaded',function(){
     var T1=Tc+273.15,T0=298.15,cpa=1.005,ka=1.4,cpg=1.15,kg=1.333,Ra=0.287,Tiso=288.15,Piso=1.01325;
     var ma=p.m*(Pb/Piso)*(Tiso/T1),r=p.r,T2=T1*(1+(Math.pow(r,(ka-1)/ka)-1)/p.ec),Wc=ma*cpa*(T2-T1),LH=p.lhv*1000*0.995,mf,T3;
     if(p.mode==='tit'){T3=p.t3+273.15;mf=ma*(cpg*(T3-T0)-cpa*(T2-T0))/(LH-cpg*(T3-T0))}
-    else{mf=p.f*ma/p.m*(1);T3=T0+(ma*cpa*(T2-T0)+mf*LH)/((ma+mf)*cpg)}
-    if(!(mf>0)||!(T3>T2))return null;
+    else{mf=p.f;T3=T0+(ma*cpa*(T2-T0)+mf*LH)/((ma+mf)*cpg)}
+    if(!(mf>0)||!(T3>T2)||!(T1>213))return null;
     var rt=(1-0.01)*r*(1-0.04)/(1+0.015),T4=T3*(1-p.et*(1-Math.pow(rt,-(kg-1)/kg))),Wt=(ma+mf)*cpg*(T3-T4),net=(Wt-Wc)*0.985;
+    if(!(net>0))return null;
     return {ma:ma,mf:mf,T2:T2-273.15,T3:T3-273.15,T4:T4-273.15,net:net,eff:net/(mf*p.lhv*1000),hr:mf*p.lhv*1000/net*3600}}
   function gtCalc(){
     var O=$('g-out'),M=$('g-msg');
     var p={m:gv('gm','f'),r:+$('gr').value,ec:+$('gec').value/100,et:+$('gey').value/100,lhv:gv('gl','lh'),mode:$('gmode').value,t3:gv('gt3','t'),f:gv('gf','f')};
     $('g-l3').style.opacity=p.mode==='tit'?1:.45;$('g-lf').style.opacity=p.mode==='fuel'?1:.45;$('gt3').disabled=p.mode!=='tit';$('gf').disabled=p.mode!=='fuel';
     var Tc=gv('gT','t'),Pb=gv('gP','p');
-    if(!(p.m>0&&p.r>1&&p.ec>.5&&p.et>.5&&p.lhv>0&&Pb>0)){O.innerHTML='';M.className='msg warn';M.textContent='Check the inputs.';return}
+    if(!(p.m>0&&p.r>1&&p.ec>.5&&p.ec<=1&&p.et>.5&&p.et<=1&&p.lhv>0&&Pb>0)){O.innerHTML='';M.className='msg warn';M.textContent='Check the inputs.';return}
     var a=gtModel(Tc,Pb,p);
     if(!a){O.innerHTML='';M.className='msg bad';M.textContent='These inputs give no valid cycle (the gas flow or inlet temperature is too low to heat the air above the compressor outlet). Raise the gas flow or the turbine inlet temperature.';return}
     var iso=gtModel(15,1.01325,p),pf=UI?1:1/0.45359237,hrk=UI?1:0.947817;
@@ -1291,7 +1292,7 @@ document.addEventListener('DOMContentLoaded',function(){
   /* ---- Weibull ---- */
   function wbCalc(){
     var O=$('w-out'),M=$('w-msg'),b=+$('wb').value,e=+$('we').value,t=+$('wt').value,r=+$('wr').value,l=+$('wl').value;
-    if(!(b>0&&e>0&&t>=0&&r>=0&&l>=0)){O.innerHTML='';M.className='msg warn';M.textContent='Enter positive shape and scale, and non-negative times.';return}
+    if(!(b>=0.1&&e>0&&t>=0&&r>=0&&l>=0)){O.innerHTML='';M.className='msg warn';M.textContent='Enter a shape of at least 0.1, a positive scale, and non-negative times.';return}
     var mtbf=e*gamma(1+1/b),R=Math.exp(-Math.pow(t/e,b)),hz=function(x){return x<=0?(b<1?Infinity:b===1?1/e:0):b/e*Math.pow(x/e,b-1)},b10=e*Math.pow(-Math.log(0.9),1/b),ai=mtbf/(mtbf+r)*100,ao=mtbf/(mtbf+r+l)*100;
     var pat=b<0.95?'Infant mortality (failure rate falling)':b<=1.05?'Constant failure rate (random)':'Wear-out (failure rate rising)';
     O.innerHTML='<div><small>Failure pattern</small><b style="font-size:15px;line-height:1.25">'+pat+'</b></div><div><small>MTBF (Weibull mean)</small><b>'+mtbf.toFixed(0)+'<i>h</i></b></div><div><small>Reliability at t</small><b>'+(R*100).toFixed(1)+'<i>%</i></b></div><div><small>Failure rate at t</small><b>'+(t>0?(hz(t)*1e6).toFixed(0):'–')+'<i>per 10⁶ h</i></b></div><div><small>B10 life</small><b>'+b10.toFixed(0)+'<i>h</i></b></div><div><small>Intrinsic availability</small><b>'+ai.toFixed(2)+'<i>%</i></b></div><div><small>Operational availability</small><b>'+ao.toFixed(2)+'<i>%</i></b></div>';
@@ -1321,7 +1322,7 @@ document.addEventListener('DOMContentLoaded',function(){
     if(bm===''&&bl!==''&&+bl>0)bm=1e6/+bl;
     var rows=[],ok=0,bad=0;
     function chip(good){return '<b style="font-size:16px;color:'+(good?'#9be3b8':'#ffb4a8')+'">'+(good?'Within limit':'Outside limit')+'</b>'}
-    function add(name,mine,bench,good,unit,dir){if(mine===''||bench===''||isNaN(+mine)||isNaN(+bench))return;(good?ok++:bad++);rows.push('<div><small>'+name+'</small>'+chip(good)+'<small style="text-transform:none;letter-spacing:0;margin-top:4px">Yours '+(+mine).toFixed(unit==='%'?2:0)+' '+unit+' • '+dir+' '+(+bench).toFixed(unit==='%'?2:0)+' '+unit+'</small></div>')}
+    function add(name,mine,bench,good,unit,dir){if(mine===''||bench===''||isNaN(+mine)||isNaN(+bench))return;(good?ok++:bad++);rows.push('<div><small>'+name+'</small>'+chip(good)+'<small style="text-transform:none;letter-spacing:0;margin-top:4px">Yours '+(+mine).toFixed(unit==='%'?2:(name==='MTTR'?2:0))+' '+unit+' • '+dir+' '+(+bench).toFixed(unit==='%'?2:(name==='MTTR'?2:0))+' '+unit+'</small></div>')}
     add('MTBF',m,bm,+m>=+bm,'h','minimum');add('MTTR',r,br,+r<=+br,'h','maximum');add('Availability',a,ba,+a>=+ba,'%','minimum');
     O.innerHTML=rows.join('');
     if(!rows.length){M.className='msg';M.textContent='Enter your asset values and at least one benchmark limit to compare.'}
