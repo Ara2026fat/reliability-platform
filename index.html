@@ -401,6 +401,20 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
 .brand,.brand .logo{cursor:pointer}.flag{position:fixed;left:0;right:0;z-index:60;background:#FBEFDF;opacity:0;transition:opacity .3s;display:flex;align-items:center;justify-content:center;overflow:hidden}.flag[hidden]{display:none}.flag.in{opacity:1}.flag img{width:96%;height:min(96%,123vw);object-fit:fill;display:block;transform:scale(.6);transition:transform .45s cubic-bezier(.2,.8,.2,1)}.flag.in img{transform:scale(1)}
 
 .atag{display:inline-block;margin:8px auto 0;background:linear-gradient(120deg,#B86A1A,#D2462E);color:#fff;border-radius:99px;padding:7px 14px;font:700 14px/1.2 var(--font-display)}
+/* mobile audit */
+.brand .by{color:var(--ochre)}
+html[data-mode=dark] .dnav a.ask:not(.on){color:var(--tx)}
+a:focus-visible,[tabindex]:focus-visible,[role=tab]:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.tabbar a:not(.ask){min-height:48px;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.hb button#setb,.hb button.hav{width:44px;min-width:44px;height:44px}
+.sheeth button{width:44px;height:44px}
+.seg button,.usg button,.gt button,.lt a{min-height:44px}
+.lt a{display:flex;align-items:center;justify-content:center}
+.chip{min-height:44px}
+.flink{min-height:44px;padding:2px 8px}
+.mlink{min-height:44px}
+input[type=range]{min-height:44px;background:transparent}
+/* /mobile audit */
 </style>
 </head>
 <body>
@@ -1609,5 +1623,8 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
 })();
 </script>
 
+<script>/* mobile audit: numeric keypad for number inputs */
+(function(){function f(r){[].forEach.call((r||document).querySelectorAll('input[type=number]:not([inputmode])'),function(i){i.setAttribute('inputmode','decimal')})}f();try{new MutationObserver(function(){f()}).observe(document.body,{childList:true,subtree:true})}catch(e){}})();
+</script>
 </body>
 </html>
