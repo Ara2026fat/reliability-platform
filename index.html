@@ -426,6 +426,7 @@ html[data-mode=dark] .hm-strip i{color:var(--hl)}
 .hm-play svg{width:28px;height:28px;fill:#fff;margin-inline-start:3px}
 .hm-play[hidden],.hm-cap[hidden]{display:none}
 .hm-cap{position:absolute;left:0;right:0;bottom:0;padding:26px 14px 10px;font-size:12.5px;font-weight:600;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.72));pointer-events:none}
+.hm-meet .mh{margin:0;padding:0 16px 12px;display:grid;gap:8px}.hm-meet .mh dt{font:700 .72rem var(--font-display);letter-spacing:.08em;text-transform:uppercase;opacity:.65}.hm-meet .mh dd{margin:2px 0 0;font-size:13.5px;line-height:1.6}
 .hm-meet .mb{padding:14px 16px 8px}
 .hm-meet .mb img{border:2px solid var(--gold)}
 .hm-meet .mb b{font:700 1.02rem var(--font-display)}
@@ -453,12 +454,13 @@ html[dir=rtl] .hm-go,html[data-lang=ar] .hm-go{transform:scaleX(-1)}
   .hm-play{width:58px;height:58px;margin:-29px 0 0 -29px}
 }
 @media (min-width:900px){
-  .hm-meet{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);grid-template-rows:auto 1fr auto;align-items:start}
-  .hm-meet .hm-vid{grid-row:1/4;grid-column:1;align-self:stretch}
+  .hm-meet{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);grid-template-rows:auto auto auto 1fr;align-items:start}
+  .hm-meet .hm-vid{grid-row:1/6;grid-column:2;align-self:stretch}
+  .hm-meet .mh{grid-column:1}
   .hm-meet .hm-vid video{height:100%;min-height:100%}
-  .hm-meet .mb{grid-column:2;padding-top:22px}
-  .hm-meet .mt{grid-column:2}
-  .hm-meet button.mlink{grid-column:2;justify-self:start;align-self:end}
+  .hm-meet .mb{grid-column:1;padding-top:22px}
+  .hm-meet .mt{grid-column:1}
+  .hm-meet button.mlink{grid-column:1;justify-self:start;align-self:end}
   .hubcards{grid-template-columns:repeat(3,1fr);grid-auto-rows:auto}
   .cardlink{padding:20px 20px;min-height:120px;align-items:end}
   .cardlink .w{align-self:end}
@@ -538,10 +540,15 @@ input[type=range]{min-height:44px;background:transparent}
     <li><button type="button" data-go="tools"><i><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></i><b>Calculate with the working shown</b><span>Formulas and assumptions beside every number</span></button></li>
     <li><button type="button" data-go="cases"><i><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg></i><b>Investigate a real case</b><span>Work through a failure step by step</span></button></li>
   </ul></div>
-  <div class="wrap"><div class="meet hm-meet" id="meet"><div class="hm-vid"><video controls playsinline preload="none" poster="promo/vid/master-landscape.jpg" src="promo/vid/master-landscape.mp4" aria-label="Promo video"></video><button type="button" class="hm-play" aria-label="Play the promo video"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></button></div>
+  <div class="wrap"><div class="meet hm-meet" id="meet">
     <div class="mb"><img src="owner.jpg" alt="" width="56" height="56"><div><b>Eng. Mohamed Hafez</b><span>Industry Expert in Mechanical Engineering, Quality &amp; Reliability</span></div></div>
-    <div class="mt">With 18 years in rotating equipment reliability and asset management across refining, petrochemical and mining operations. Speaker and committee member at ME RoTIC Dubai, ROTIC Saudi, Maintrel 4.0 and the Asset Integrity &amp; Corrosion Management Conference, and instructor of the CRL and TapRooT&reg; courses.</div>
-    <button class="mlink" data-about="0" type="button">About the expert</button></div></div>
+    <div class="mt">With 18 years in rotating equipment reliability and asset management across refining, petrochemical and mining operations. Speaker and committee member at leading reliability conferences, and instructor of the CRL and TapRooT&reg; courses.</div>
+    <dl class="mh"><div><dt>Education</dt><dd>Master&rsquo;s in Fluid Mechanics &middot; MBA in Project Management</dd></div>
+    <div><dt>Certifications</dt><dd>CMRP &middot; CRL &middot; MLA II &middot; API SIRE &middot; CMQ/OE &middot; CQE &middot; CAT II VA &middot; TapRooT&reg; Team Leader</dd></div>
+    <div><dt>Industry experience</dt><dd>MIDOR &middot; Methanex &middot; Ambatovy &middot; SATORP &middot; SASREF</dd></div>
+    <div><dt>Conferences</dt><dd>ME RoTIC Dubai 2025: panelist, moderator, speaker, Executive Committee<br>Asset Integrity &amp; Corrosion Management, Yanbu 2025: Distinguished Speaker<br>Maintrel 4.0, Al Khobar 2026: Executive Committee and speaker<br>ROTIC Saudi, Dhahran 2026: speaker<br>Asset Integrity &amp; Reliability Show, Muscat 2024: speaker</dd></div></dl>
+    <button class="mlink" data-about="0" type="button">About the expert</button>
+    <div class="hm-vid"><video controls playsinline preload="none" poster="promo/vid/master-landscape.jpg" src="promo/vid/master-landscape.mp4" aria-label="Promo video"></video><button type="button" class="hm-play" aria-label="Play the promo video"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></button></div></div></div>
   <div class="wrap" id="cont"></div>
   <div class="wrap hubcards">
     <button class="cardlink d1" data-go="learn"><span class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4-9-4zM7 10v5c0 1.5 2.2 3 5 3s5-1.5 5-3v-5"/></svg></span><span class="w">Learn<small id="learnSub">Expert courses</small><em class="hm-tz">Follow a course map and track progress on this device</em></span><svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
