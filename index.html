@@ -476,6 +476,20 @@ html[dir=rtl] .hm-go,html[data-lang=ar] .hm-go{transform:scaleX(-1)}
   @keyframes hmrise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 }
 @media (prefers-reduced-motion:reduce){.hm-strip button,.cardlink,.hm-play{transition:none}.hm-strip button:hover,.cardlink:hover,.hm-play:hover{transform:none}}
+/* mobile audit */
+.brand .by{color:var(--ochre)}
+html[data-mode=dark] .dnav a.ask:not(.on){color:var(--tx)}
+a:focus-visible,[tabindex]:focus-visible,[role=tab]:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.tabbar a:not(.ask){min-height:48px;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.hb button#setb,.hb button.hav{width:44px;min-width:44px;height:44px}
+.sheeth button{width:44px;height:44px}
+.seg button,.usg button,.gt button,.lt a{min-height:44px}
+.lt a{display:flex;align-items:center;justify-content:center}
+.chip{min-height:44px}
+.flink{min-height:44px;padding:2px 8px}
+.mlink{min-height:44px}
+input[type=range]{min-height:44px;background:transparent}
+/* /mobile audit */
 </style>
 </head>
 <body>
@@ -1752,5 +1766,8 @@ document.addEventListener('DOMContentLoaded',function(){
 })();
 </script>
 
+<script>/* mobile audit: numeric keypad for number inputs */
+(function(){function f(r){[].forEach.call((r||document).querySelectorAll('input[type=number]:not([inputmode])'),function(i){i.setAttribute('inputmode','decimal')})}f();try{new MutationObserver(function(){f()}).observe(document.body,{childList:true,subtree:true})}catch(e){}})();
+</script>
 </body>
 </html>
