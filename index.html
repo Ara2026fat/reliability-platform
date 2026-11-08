@@ -401,6 +401,79 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
 .brand,.brand .logo{cursor:pointer}.flag{position:fixed;left:0;right:0;z-index:60;background:#FBEFDF;opacity:0;transition:opacity .3s;display:flex;align-items:center;justify-content:center;overflow:hidden}.flag[hidden]{display:none}.flag.in{opacity:1}.flag img{width:96%;height:min(96%,123vw);object-fit:fill;display:block;transform:scale(.6);transition:transform .45s cubic-bezier(.2,.8,.2,1)}.flag.in img{transform:scale(1)}
 
 .atag{display:inline-block;margin:8px auto 0;background:linear-gradient(120deg,#B86A1A,#D2462E);color:#fff;border-radius:99px;padding:7px 14px;font:700 14px/1.2 var(--font-display)}
+
+/* HOME (hm-) */
+.hero .hm-value{font-size:clamp(15.5px,2.1vw,19px);line-height:1.5;color:rgba(255,255,255,.92);max-width:60ch;margin-top:12px;font-weight:500}
+.hero p.sub{margin-top:14px;font-size:clamp(13.5px,1.7vw,15.5px);color:rgba(255,255,255,.7)}
+#p-home .hero h1{max-width:18ch}
+.hm-strip-w{padding-top:16px}
+.hm-strip{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.hm-strip button{width:100%;height:100%;display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:start;background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:14px;padding:12px 14px;color:var(--ink);cursor:pointer;transition:transform .18s,border-color .18s,box-shadow .18s}
+.hm-strip button:hover{transform:translateY(-2px);border-color:var(--act);box-shadow:0 6px 18px rgba(11,27,82,.12)}
+.hm-strip button:focus-visible,.hm-play:focus-visible,.hm-ask:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.hm-strip i{width:30px;height:30px;border-radius:9px;background:var(--sage);color:var(--tx2);display:grid;place-items:center;margin-bottom:2px}
+.hm-strip i svg{width:18px;height:18px}
+.hm-strip b{font:700 .95rem/1.25 var(--font-display);font-stretch:108%}
+.hm-strip span{font-size:.82rem;line-height:1.4;color:var(--mut)}
+html[data-mode=dark] .hm-strip i{color:var(--hl)}
+.hm-meet{margin:18px 0 0;box-shadow:0 1px 0 rgba(11,27,82,.04),0 10px 28px -14px rgba(11,27,82,.25)}
+.hm-vid{position:relative;background:#000}
+.hm-vid video{aspect-ratio:16/9;object-fit:cover}
+.hm-play{position:absolute;left:50%;top:50%;width:68px;height:68px;margin:-34px 0 0 -34px;border-radius:50%;border:2px solid rgba(255,255,255,.85);background:rgba(11,27,82,.62);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:grid;place-items:center;cursor:pointer;transition:transform .18s,background .18s}
+.hm-play:hover{transform:scale(1.07);background:rgba(11,27,82,.8)}
+.hm-play svg{width:28px;height:28px;fill:#fff;margin-inline-start:3px}
+.hm-play[hidden],.hm-cap[hidden]{display:none}
+.hm-cap{position:absolute;left:0;right:0;bottom:0;padding:26px 14px 10px;font-size:12.5px;font-weight:600;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.72));pointer-events:none}
+.hm-meet .mb{padding:14px 16px 8px}
+.hm-meet .mb img{border:2px solid var(--gold)}
+.hm-meet .mb b{font:700 1.02rem var(--font-display)}
+.hm-meet .mt{padding:0 16px 14px;max-width:70ch}
+.hm-meet button.mlink{margin:0 16px 16px;background:var(--navy);border-color:var(--navy);color:#fff}
+html[data-mode=dark] .hm-meet button.mlink{background:var(--act);border-color:var(--act)}
+#cont:empty{display:none}
+#cont{padding-top:2px}
+.hubcards{grid-template-rows:none;grid-auto-rows:minmax(84px,1fr);padding-top:18px}
+.cardlink{padding:12px 16px;transition:transform .18s,box-shadow .18s}
+.cardlink:hover{transform:translateY(-2px);box-shadow:0 8px 20px -8px rgba(11,27,82,.5)}
+.cardlink .w small{margin-top:2px}
+.cardlink .hm-tz{display:block;font:400 .8rem/1.4 var(--font-body);font-style:normal;opacity:.7;margin-top:5px}
+.hm-ask{position:relative;padding-inline-end:40px;margin-top:12px;margin-bottom:22px;transition:border-color .18s}
+.hm-ask:hover{border-color:var(--act)}
+.hm-go{position:absolute;inset-inline-end:14px;top:50%;margin-top:-10px;width:20px;height:20px;stroke:var(--mut);fill:none;stroke-width:2}
+.hm-ask b{color:var(--tx)}
+html[dir=rtl] .hm-go,html[data-lang=ar] .hm-go{transform:scaleX(-1)}
+@media (max-width:640px){
+  .hm-strip{grid-template-columns:1fr;gap:8px}
+  .hm-strip button{flex-direction:row;flex-wrap:wrap;align-items:center;column-gap:12px;row-gap:0;padding:10px 12px}
+  .hm-strip i{margin:0;flex:none}
+  .hm-strip b{flex:1 1 0;min-width:0}
+  .hm-strip span{display:none}
+  .hm-play{width:58px;height:58px;margin:-29px 0 0 -29px}
+}
+@media (min-width:900px){
+  .hm-meet{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);grid-template-rows:auto 1fr auto;align-items:start}
+  .hm-meet .hm-vid{grid-row:1/4;grid-column:1;align-self:stretch}
+  .hm-meet .hm-vid video{height:100%;min-height:100%}
+  .hm-meet .mb{grid-column:2;padding-top:22px}
+  .hm-meet .mt{grid-column:2}
+  .hm-meet button.mlink{grid-column:2;justify-self:start;align-self:end}
+  .hubcards{grid-template-columns:repeat(3,1fr);grid-auto-rows:auto}
+  .cardlink{padding:20px 20px;min-height:120px;align-items:end}
+  .cardlink .w{align-self:end}
+}
+@media (prefers-reduced-motion:no-preference){
+  #p-home.on .hero .wrap>*{animation:hmrise .55s cubic-bezier(.2,.7,.2,1) both}
+  #p-home.on .hero .wrap>*:nth-child(2){animation-delay:.05s}
+  #p-home.on .hero .wrap>*:nth-child(3){animation-delay:.1s}
+  #p-home.on .hero .wrap>*:nth-child(4){animation-delay:.15s}
+  #p-home.on .hero .wrap>*:nth-child(5){animation-delay:.2s}
+  #p-home.on .hm-strip li,#p-home.on .hm-meet,#p-home.on .hubcards .cardlink,#p-home.on .hm-ask{animation:hmrise .55s cubic-bezier(.2,.7,.2,1) both}
+  #p-home.on .hm-strip li:nth-child(1){animation-delay:.18s}#p-home.on .hm-strip li:nth-child(2){animation-delay:.24s}#p-home.on .hm-strip li:nth-child(3){animation-delay:.3s}
+  #p-home.on .hm-meet{animation-delay:.34s}
+  #p-home.on .cardlink.d1{animation-delay:.4s}#p-home.on .cardlink.d2{animation-delay:.46s}#p-home.on .cardlink.d3{animation-delay:.52s}#p-home.on .hm-ask{animation-delay:.58s}
+  @keyframes hmrise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+}
+@media (prefers-reduced-motion:reduce){.hm-strip button,.cardlink,.hm-play{transition:none}.hm-strip button:hover,.cardlink:hover,.hm-play:hover{transform:none}}
 </style>
 </head>
 <body>
@@ -434,6 +507,7 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
     <div class="wrap">
       <div class="eyebrow">HIRZ &middot; Industrial Asset Reliability &amp; Integrity Platform</div>
       <h1>What do you <em>need</em> today?</h1>
+      <p class="hm-value">Practical reliability and integrity know-how from a working expert: courses, calculation tools that show their work, practice cases, and a direct way to ask the expert.</p>
       <p class="sub">Describe the problem in a few words, or pick a starting point.</p>
       <div class="finder">
         <label for="q">Describe your problem</label>
@@ -443,18 +517,35 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
       </div>
     </div>
   </div>
-  <div class="wrap"><div class="meet" id="meet"><video controls playsinline preload="none" poster="promo/vid/master-landscape.jpg" src="promo/vid/master-landscape.mp4" aria-label="Promo video"></video>
+  <div class="wrap hm-strip-w"><ul class="hm-strip" aria-label="What you can do here">
+    <li><button type="button" data-go="learn"><i><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4-9-4zM7 10v5c0 1.5 2.2 3 5 3s5-1.5 5-3v-5"/></svg></i><b>Learn from an expert</b><span>Follow a course map and tick modules off</span></button></li>
+    <li><button type="button" data-go="tools"><i><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></i><b>Calculate with the working shown</b><span>Formulas and assumptions beside every number</span></button></li>
+    <li><button type="button" data-go="cases"><i><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg></i><b>Investigate a real case</b><span>Work through a failure step by step</span></button></li>
+  </ul></div>
+  <div class="wrap"><div class="meet hm-meet" id="meet"><div class="hm-vid"><video controls playsinline preload="none" poster="promo/vid/master-landscape.jpg" src="promo/vid/master-landscape.mp4" aria-label="Promo video"></video><button type="button" class="hm-play" aria-label="Play the promo video"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></button></div>
     <div class="mb"><img src="owner.jpg" alt="" width="56" height="56"><div><b>Eng. Mohamed Hafez</b><span>Industry Expert in Mechanical Engineering, Quality &amp; Reliability</span></div></div>
     <div class="mt">With 18 years in rotating equipment reliability and asset management across refining, petrochemical and mining operations. Speaker and committee member at ME RoTIC Dubai, ROTIC Saudi, Maintrel 4.0 and the Asset Integrity &amp; Corrosion Management Conference, and instructor of the CRL and TapRooT&reg; courses.</div>
     <button class="mlink" data-about="0" type="button">About the expert</button></div></div>
   <div class="wrap" id="cont"></div>
   <div class="wrap hubcards">
-    <button class="cardlink d1" data-go="learn"><span class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4-9-4zM7 10v5c0 1.5 2.2 3 5 3s5-1.5 5-3v-5"/></svg></span><span class="w">Learn<small id="learnSub">Expert courses</small></span><svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
-    <button class="cardlink d2" data-go="cases"><span class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="w">Practice<small>Investigate a real case</small></span><svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
-    <button class="cardlink d3" data-go="tools"><span class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><span class="w">Analyze<small>Tools that show their work</small></span><svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+    <button class="cardlink d1" data-go="learn"><span class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4-9-4zM7 10v5c0 1.5 2.2 3 5 3s5-1.5 5-3v-5"/></svg></span><span class="w">Learn<small id="learnSub">Expert courses</small><em class="hm-tz">Follow a course map and track progress on this device</em></span><svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+    <button class="cardlink d2" data-go="cases"><span class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="w">Practice<small>Investigate a real case</small><em class="hm-tz" id="hmCase">A worked case from the field</em></span><svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+    <button class="cardlink d3" data-go="tools"><span class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><span class="w">Analyze<small>Tools that show their work</small><em class="hm-tz" id="hmTools">Calculators with formulas and assumptions</em></span><svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
   </div>
-    <div class="wrap"><button class="toolcard" data-go="ask"><b>Ask the expert</b><span>Build a structured request for the expert</span></button></div>
+    <div class="wrap"><button class="toolcard hm-ask" data-go="ask"><b>Ask the expert</b><span>Build a structured request for the expert</span><svg class="hm-go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div>
   </div>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var h=document.getElementById('p-home');if(!h)return;
+  function q(s){return document.querySelector(s)}
+  var t=document.querySelectorAll('#p-tools .seg button[data-tool]'),te=document.getElementById('hmTools');
+  if(te&&t.length){var n=[].slice.call(t).slice(0,3).map(function(b){return b.textContent.trim()});te.textContent=t.length+' tools: '+n.join(', ')+' and more'}
+  var ch=q('#p-cases .phead .h'),ce=document.getElementById('hmCase');
+  if(ce&&ch&&ch.textContent.trim()){ce.textContent='Worked case: '+ch.textContent.replace(/^Case:\s*/,'').trim()}
+  var pl=q('.hm-play'),v=q('.hm-vid video');
+  if(pl&&v){pl.addEventListener('click',function(){var r=v.play();if(r&&r.catch)r.catch(function(){v.controls=true})});v.addEventListener('play',function(){pl.hidden=true;});v.addEventListener('pause',function(){if(!v.ended)return});v.addEventListener('ended',function(){pl.hidden=false})}
+});
+</script>
 </section>
 
 <!-- LEARN -->
