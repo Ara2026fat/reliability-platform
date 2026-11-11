@@ -91,6 +91,12 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .exo.sel{border-color:var(--ink);font-weight:700}.exo.ok{border-color:#1d8a57;background:rgba(29,138,87,.14)}.exo.no{border-color:#c0392b;background:rgba(192,57,43,.14)}
 .exs{display:grid;gap:10px;margin-top:10px}.exs label{display:grid;gap:4px;font-size:13.5px}
 .exr{display:flex;gap:8px;margin-top:12px}.exr .btn{flex:1}
+/* ---- pinned result bar ---- */
+.stickres{position:fixed;left:8px;right:8px;z-index:35;max-width:760px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--navy);color:#fff;border:1.5px solid var(--gold);border-radius:14px;box-shadow:0 6px 24px rgba(0,0,0,.3);cursor:pointer;bottom:calc(10px + env(safe-area-inset-bottom,0px))}
+.stickres[hidden]{display:none}
+.stickres span{flex:1;min-width:0}.stickres small{display:block;font:10px var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:#9fb0d8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.stickres b{font:700 18px/1.1 var(--font-display);white-space:nowrap}
+.stickres i{font:600 11px var(--font-display);font-style:normal;color:var(--gold);white-space:nowrap}
+@media (max-width:900px){.stickres{bottom:calc(76px + env(safe-area-inset-bottom,0px))}}
 /* ---- lecture mode ---- */
 .pres{position:fixed;inset:0;z-index:9999;background:#070f2e;color:#fff;display:flex;flex-direction:column;font-family:var(--font-body)}
 .pres[hidden]{display:none}
@@ -979,6 +985,7 @@ document.addEventListener('DOMContentLoaded',function(){
 </section>
 </main>
 
+<div class="stickres" id="stickres" hidden role="button" tabindex="0" aria-label="Jump to the results"></div>
 <div class="pres" id="pres" hidden role="dialog" aria-label="Lecture mode"></div>
 <footer>&copy; 2026 Mohamed Hafez &mdash; All Rights Reserved<br><button class="flink" data-about="4">Terms</button> &middot; <button class="flink" data-about="5">Privacy</button> &middot; <button class="flink" data-about="0">About the expert</button></footer>
 <nav class="tabbar" id="tabbar" aria-label="Main"></nav>
@@ -1798,6 +1805,18 @@ document.addEventListener('DOMContentLoaded',function(){
   function presDeck(c,m,mode){if(m&&m.all){var out=[],k=0;c.modules.forEach(function(mm,i){presBuild(c,mm,mode).forEach(function(s){s.u=++k;out.push(s)})});return out}return presBuild(c,m,mode)}
   document.addEventListener('click',function(e){var t=e.target.closest('#trb');if(t)location.hash='#trainer'});
   document.addEventListener('click',function(e){var s=e.target.closest&&e.target.closest('.pstage');if(!s||!PR||PR.pen)return;var tg=e.target;if(tg.closest('.pq'))return;var r=s.getBoundingClientRect();presGo(e.clientX-r.left>r.width*0.3?1:-1)});
+  /* pinned result bar for calculators */
+  (function(){var bar=$('stickres'),tgt=null,tk=0;if(!bar)return;
+    function upd(){tk=0;var P=[].slice.call(document.querySelectorAll('.tool')).filter(function(t){return t.offsetParent!==null})[0];tgt=null;
+      if(!P||PR){bar.hidden=true;return}
+      var R=[].slice.call(P.querySelectorAll('.read')).filter(function(r){return r.children.length&&r.offsetParent!==null})[0];
+      if(!R){bar.hidden=true;return}var r=R.getBoundingClientRect(),pr=P.getBoundingClientRect();
+      if(r.top>innerHeight-90&&pr.top<innerHeight-120){tgt=R;var it=[].slice.call(R.children).slice(0,3).map(function(d){var sm=d.querySelector('small'),bb=d.querySelector('b');return sm&&bb?'<span><small>'+sm.innerHTML+'</small><b>'+bb.innerHTML+'</b></span>':''}).join('');
+        bar.innerHTML=it+'<i>Results &darr;</i>';bar.hidden=!it}else bar.hidden=true}
+    function q(){if(!tk)tk=requestAnimationFrame(upd)}
+    ['scroll','resize'].forEach(function(ev){window.addEventListener(ev,q,{passive:true})});['input','change','click'].forEach(function(ev){document.addEventListener(ev,function(){setTimeout(q,60)})});window.addEventListener('hashchange',function(){setTimeout(q,120)});
+    function go(){if(tgt)tgt.scrollIntoView({block:'center',behavior:'smooth'})}
+    bar.addEventListener('click',go);bar.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})})();
   /* ---- exam ---- */
   var EX={cid:'',n:20,mode:'exam',lv:'',tp:'',run:null},LVN={b:'Beginner',a:'Advanced',p:'Professional'};
   function exShuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
