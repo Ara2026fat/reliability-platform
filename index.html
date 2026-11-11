@@ -89,6 +89,41 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .exo.sel{border-color:var(--ink);font-weight:700}.exo.ok{border-color:#1d8a57;background:rgba(29,138,87,.14)}.exo.no{border-color:#c0392b;background:rgba(192,57,43,.14)}
 .exs{display:grid;gap:10px;margin-top:10px}.exs label{display:grid;gap:4px;font-size:13.5px}
 .exr{display:flex;gap:8px;margin-top:12px}.exr .btn{flex:1}
+/* ---- lecture mode ---- */
+.pres{position:fixed;inset:0;z-index:9999;background:#070f2e;color:#fff;display:flex;flex-direction:column;font-family:var(--font-body)}
+.pres[hidden]{display:none}
+.ptool{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:6px 10px;background:#0b1b52;border-bottom:1px solid rgba(255,255,255,.12);font-size:13px}
+.ptool b{font-family:var(--font-display);margin-right:auto;font-size:13px;opacity:.9;max-width:34%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ptool button{min-height:36px;min-width:36px;padding:4px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.25);background:transparent;color:#fff;font:600 12px var(--font-display);cursor:pointer}
+.ptool button.on{background:var(--gold);color:#0b1b52;border-color:var(--gold)}
+.ptool .pc{width:30px;min-width:30px;padding:0;border-radius:50%}
+.ptool .sep{width:1px;height:22px;background:rgba(255,255,255,.2)}
+.pmain{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:8px}
+.pstage{position:relative;width:min(100%,calc((100vh - 120px)*16/9));aspect-ratio:16/9;background:#0b1b52;border-radius:10px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.5)}
+.pstage.light{background:#fff;color:#0b1b52}
+.ps{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:4% 6%;overflow:auto}
+.ps h2{font:800 clamp(18px,3.4vw,44px)/1.15 var(--font-display);margin:0 0 .5em;color:var(--hl)}
+.ps p,.ps li{font-size:clamp(16px,3.3vw,42px);line-height:1.4;margin:.3em 0}
+.ps small{opacity:.75;font-size:clamp(11px,1.5vw,18px)}
+.ps.t h2{font-size:clamp(22px,4.6vw,60px);color:#fff}
+.ps img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff}
+.ps .ld{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:.7}
+.pcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(40%,1fr));gap:2%}
+.pcards div{background:rgba(255,255,255,.08);border-radius:10px;padding:2% 3%}
+.pcards b{display:block;color:var(--hl);font-size:clamp(14px,2.3vw,28px)}
+.pcards span{font-size:clamp(12px,1.9vw,24px);line-height:1.35}
+.pq{display:grid;gap:1.2%;margin-top:1%}
+.pq button{text-align:left;padding:1.2% 2%;border-radius:10px;border:2px solid rgba(255,255,255,.25);background:rgba(255,255,255,.06);color:#fff;font:500 clamp(13px,2.3vw,28px)/1.3 var(--font-body);cursor:pointer}
+.pq button.ok{border-color:#2fbf7a;background:rgba(47,191,122,.25)}
+.pq button.no{border-color:#e5534b;background:rgba(229,83,75,.25)}
+.pw{margin-top:1.5%;font-size:clamp(12px,2vw,24px);color:#cfe0ff}
+.pcv{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
+.pcv.off{pointer-events:none}.pcv.pen{cursor:crosshair}
+.pfoot{display:flex;align-items:center;justify-content:space-between;padding:4px 12px 8px;font-size:12px;opacity:.8}
+.pfoot i{flex:1;height:4px;margin:0 12px;background:rgba(255,255,255,.15);border-radius:2px;overflow:hidden}.pfoot u{display:block;height:100%;background:var(--gold)}
+.pcol{width:24px;height:24px;border-radius:50%;border:2px solid rgba(255,255,255,.5);padding:0;min-width:24px!important;min-height:24px!important}.pcol.on{outline:2px solid #fff}
+@media (max-width:640px){.ptool b{display:none}}
+
 .exbar{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin:8px 0}.exbar u{display:block;height:100%;background:#1d8a57}
 .exsc{font-size:40px;font-weight:800;margin:4px 0}
 .meet{background:var(--surface);border:1px solid var(--line);border-radius:16px;margin:14px 0 4px;overflow:hidden}
@@ -395,7 +430,7 @@ footer{background:var(--sage);color:var(--mut);border-top:2px solid var(--tx);te
 .acopy{margin:12px 0 0;font-size:12.5px;color:var(--mut)}
 .ahirz{display:block;margin:2px auto 8px;width:132px;height:132px;border-radius:22px;box-shadow:0 6px 18px rgba(15,107,58,.25)}.expcard .mono{background:#FDF6EB;color:#0F6B3A}
 
-.hb button#setb,.hb button.hav{width:38px;min-width:38px;height:38px;padding:0;border-radius:50%;border:2px solid var(--gold)}.hb button#setb{display:grid;place-items:center;color:var(--tx)}.hb #setb svg{display:block}.hav{width:36px;height:36px;min-width:36px;padding:0;border:2px solid var(--gold);overflow:hidden;background:var(--surface)}.hav img{width:100%;height:100%;object-fit:cover;display:block}
+.hb button#setb,.hb button#trb,.hb button.hav{width:38px;min-width:38px;height:38px;padding:0;border-radius:50%;border:2px solid var(--gold)}.hb button#trb{display:grid;place-items:center;color:var(--tx)}.hb button#setb{display:grid;place-items:center;color:var(--tx)}.hb #setb svg{display:block}.hav{width:36px;height:36px;min-width:36px;padding:0;border:2px solid var(--gold);overflow:hidden;background:var(--surface)}.hav img{width:100%;height:100%;object-fit:cover;display:block}
 .amono .aph{position:relative;width:92px;height:92px;border-radius:50%;object-fit:cover}
 .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.kpis>div{background:var(--navy);color:#fff;border-radius:12px;padding:10px 8px;display:flex;flex-direction:column;gap:2px}.kpis small{font:600 10.5px var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--hl)}.kpis b{font:800 18px var(--font-display)}.kpis em{font-style:normal;font-size:12.5px;opacity:.85}
 .refe{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 8px}.refc{background:var(--c);color:#fff;border-radius:16px;padding:18px 14px;min-height:110px;display:flex;flex-direction:column;justify-content:flex-end;gap:3px}.refc b{font:800 20px/1.1 var(--font-display)}.refc span{font-size:13px;opacity:.9}
@@ -483,7 +518,7 @@ html[dir=rtl] .hm-go,html[data-lang=ar] .hm-go{transform:scaleX(-1)}
 html[data-mode=dark] .dnav a.ask:not(.on){color:var(--tx)}
 a:focus-visible,[tabindex]:focus-visible,[role=tab]:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .tabbar a:not(.ask){min-height:48px;display:flex;align-items:center;justify-content:center;flex-direction:column}
-.hb button#setb,.hb button.hav{width:44px;min-width:44px;height:44px}
+.hb button#setb,.hb button#trb,.hb button.hav{width:44px;min-width:44px;height:44px}
 .sheeth button{width:44px;height:44px}
 .seg button,.usg button,.gt button,.lt a{min-height:44px}
 .lt a{display:flex;align-items:center;justify-content:center}
@@ -504,7 +539,7 @@ input[type=range]{min-height:44px;background:transparent}
       <span><b>HIRZ</b><small>Engineering Training &amp; Consultancy</small><small class="by">Founded by Mohamed Hafez</small></span>
     </a>
     <nav class="dnav" id="dnav" aria-label="Main"></nav>
-    <div class="hb"><button class="hav" data-about="0" type="button" aria-label="About the expert"><img src="owner.jpg" alt="" width="34" height="34"></button><button id="setb" type="button" aria-label="Settings"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 8h9M19 8h1"/><circle cx="16" cy="8" r="2.6"/><path d="M4 16h1M11 16h9"/><circle cx="8" cy="16" r="2.6"/></svg></button></div>
+    <div class="hb"><button class="hav" data-about="0" type="button" aria-label="About the expert"><img src="owner.jpg" alt="" width="34" height="34"></button><button id="trb" type="button" aria-label="Trainer studio" title="Trainer studio"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M12 16v4M8 20h8"/></svg></button><button id="setb" type="button" aria-label="Settings"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 8h9M19 8h1"/><circle cx="16" cy="8" r="2.6"/><path d="M4 16h1M11 16h9"/><circle cx="8" cy="16" r="2.6"/></svg></button></div>
     <span class="pill">Prototype v1</span>
   </div>
 </header>
@@ -581,6 +616,12 @@ document.addEventListener('DOMContentLoaded',function(){
 <section class="page" id="p-team">
   <div class="phead"><div class="wrap"><div class="eyebrow">Team area</div><h2 class="h">Owner and advisor</h2><p class="lede">Promo review and approved media. Private to people who unlocked the platform.</p></div></div>
   <div class="wrap sect pgbody" id="teambody"></div>
+</section>
+
+<!-- TRAINER STUDIO -->
+<section class="page" id="p-trainer">
+  <div class="phead"><div class="wrap"><div class="eyebrow">Trainer studio</div><h2 class="h">Teach a live session</h2><p class="lede">For the trainer only. Pick a course or a lesson and present it full screen, with the original slides and a whiteboard. Share this browser window on Teams or Zoom, and learners see only the lecture.</p></div></div>
+  <div class="wrap sect pgbody" id="trainerbody"></div>
 </section>
 
 <!-- TOOLS -->
@@ -936,19 +977,20 @@ document.addEventListener('DOMContentLoaded',function(){
 </section>
 </main>
 
+<div class="pres" id="pres" hidden role="dialog" aria-label="Lecture mode"></div>
 <footer>&copy; 2026 Mohamed Hafez &mdash; All Rights Reserved<br><button class="flink" data-about="4">Terms</button> &middot; <button class="flink" data-about="5">Privacy</button> &middot; <button class="flink" data-about="0">About the expert</button></footer>
 <nav class="tabbar" id="tabbar" aria-label="Main"></nav>
 
 <script>
 (function(){
-  var PAGES=[['home','Home'],['learn','Learn'],['ask','Ask the expert'],['tools','Tools'],['cases','Cases'],['structure','Principles'],['team','Team']];
+  var PAGES=[['home','Home'],['learn','Learn'],['ask','Ask the expert'],['tools','Tools'],['cases','Cases'],['structure','Principles'],['team','Team'],['trainer','Trainer']];
   function $(i){return document.getElementById(i)}
   /* routing */
   var dn=$('dnav'),tb=$('tabbar');
   function lnk(id,cls){var l=PAGES.filter(function(p){return p[0]===id})[0][1];return '<a href="#'+id+'" data-p="'+id+'"'+(cls?' class="'+cls+'"':'')+'>'+l+'</a>'}
   dn.innerHTML=['home','learn','tools','cases','structure'].map(function(i){return lnk(i)}).join('')+lnk('ask','ask');
   function tbuild(){tb.innerHTML=lnk('home')+lnk('learn')+lnk('tools')+lnk('cases')+'<a href="#ask" data-p="ask">Ask</a>';[].forEach.call(document.querySelectorAll('[data-p]'),function(a){a.classList.toggle('on',a.getAttribute('data-p')===((location.hash||'#home').slice(1).split('/')[0]||'home'))})}tbuild();var _unusedTb='<a href="#ask" data-p="ask" class="ask"><span class="orb"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4V5z"/><path d="M9 10h6"/></svg></span>Ask</a>'+lnk('tools')+lnk('cases');
-  function route(){var parts=(location.hash||'#home').slice(1).split('/'),h=parts[0];if(!PAGES.some(function(p){return p[0]===h}))h='home';if(h==='learn'&&(parts[1]==='promo'||parts[1]==='media')){location.replace('#team/'+(parts[1]==='promo'?'promo':''));return}if(h==='team'){$('learnbody').innerHTML='';renderTeam(parts[1])}else $('teambody').innerHTML='';if(h==='learn')renderLearn(parts[1],parts[2]);
+  function route(){var parts=(location.hash||'#home').slice(1).split('/'),h=parts[0];if(!PAGES.some(function(p){return p[0]===h}))h='home';if(h==='learn'&&(parts[1]==='promo'||parts[1]==='media')){location.replace('#team/'+(parts[1]==='promo'?'promo':''));return}if(h==='team'){$('learnbody').innerHTML='';renderTeam(parts[1])}else $('teambody').innerHTML='';if(h==='trainer')renderTrainer();else if($('trainerbody'))$('trainerbody').innerHTML='';if(h==='learn')renderLearn(parts[1],parts[2]);
     [].forEach.call(document.querySelectorAll('.page'),function(s){s.classList.toggle('on',s.id==='p-'+h)});
     [].forEach.call(document.querySelectorAll('[data-p]'),function(a){a.classList.toggle('on',a.getAttribute('data-p')===h)});
     if(h==='home')homeCont();setTimeout(applyLang,0);if(h==='structure'||h==='cases')pgTab(h,0);window.scrollTo(0,0);}
@@ -1680,6 +1722,80 @@ document.addEventListener('DOMContentLoaded',function(){
   function promoView(){return teamTabs('promo')+'<div class="banner" style="margin:10px 0">Promo review for the expert: approve or reject each item, then send the decision. Private to people who unlocked the platform.</div><iframe title="Promo review" src="promo/index.html" style="width:100%;height:78vh;min-height:520px;border:1px solid #d8dee9;border-radius:14px;background:#fff"></iframe><p class="sethint"><a href="promo/index.html" target="_blank" rel="noopener">Open full screen</a></p>'}
   function mediaView(){return teamTabs('')+'<iframe title="Media" src="media/index.html" style="width:100%;height:80vh;min-height:520px;border:1px solid #d8dee9;border-radius:14px;background:#fff"></iframe><p class="sethint"><a href="media/index.html" target="_blank" rel="noopener">Open full screen</a></p>'}
 
+
+  /* ---- lecture mode: presenter and whiteboard ---- */
+  var SLIDES={},IMGKEY=null,IMGSALT='',IMGC={},PR=null;
+  function imgKey(code){if(!IMGSALT||!(window.crypto&&crypto.subtle))return;crypto.subtle.importKey('raw',new TextEncoder().encode(code),'PBKDF2',false,['deriveKey']).then(function(k){return crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(IMGSALT),iterations:100000,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,['decrypt'])}).then(function(k){IMGKEY=k}).catch(function(){})}
+  function slideUrl(cid,n){var id=cid+n;if(IMGC[id])return IMGC[id];
+    IMGC[id]=fetch('slides/'+cid+'/'+('00'+n).slice(-3)+'.bin').then(function(r){if(!r.ok)throw 0;return r.arrayBuffer()}).then(function(b){return crypto.subtle.decrypt({name:'AES-GCM',iv:new Uint8Array(b,0,12)},IMGKEY,b.slice(12))}).then(function(d){return URL.createObjectURL(new Blob([d],{type:'image/webp'}))});
+    IMGC[id].catch(function(){delete IMGC[id]});return IMGC[id]}
+  function pgRange(pg){var m=/(\d+)(?:\s*to\s*(\d+))?/.exec(pg||'');return m?[+m[1],+(m[2]||m[1])]:null}
+  function presBuild(c,m,mode){var L=m.lesson||{},S=[],uid=0,T=function(o){o.u=++uid;S.push(o)};
+    T({k:'title',h:m.t,sub:c.title});
+    var r=pgRange(m.pg),n=SLIDES[c.id]||0;
+    if(mode!=='notes'&&n&&r)for(var p=r[0];p<=Math.min(r[1],n);p++)T({k:'img',cid:c.id,n:p});
+    if(mode!=='orig'){
+      if(L.idea)T({k:'text',h:'Key idea',b:[L.idea]});
+      (L.points||[]).forEach(function(x,i){T({k:'text',h:'Key point '+(i+1)+' of '+L.points.length,b:[x]})});
+      var bl=[];if(L.rv)bl.push({t:L.rv_t,items:L.rv});(L.rvx||[]).forEach(function(b){bl.push(b)});
+      bl.forEach(function(b){for(var i=0;i<b.items.length;i+=4)T({k:'terms',h:b.t,it:b.items.slice(i,i+4)})});
+      (L.qz||[]).forEach(function(q,i){T({k:'quiz',h:'Question '+(i+1)+' of '+L.qz.length,q:q,pick:null})})}
+    T({k:'end',h:'End of lesson',sub:m.t});return S}
+  function presOpen(id,blank){var o=null,c=null,m=null;if(/:\*$/.test(id)){c=COURSES.filter(function(x){return x.id===id.split(':')[0]})[0];m={t:c.title,pg:'',all:true}}else{o=lessonOf(id);c=o?o.c:null;m=o?o.m:null}
+    PR={c:c,m:m,mode:'all',S:[],i:0,pen:false,col:'#ffd97a',sz:4,hl:false,ink:{},t0:Date.now(),tm:null};
+    if(blank){PR.S=[{k:'board',u:1,paper:'dark'}];PR.mode='board'}else PR.S=presDeck(c,m,'all');
+    $('pres').hidden=false;document.body.style.overflow='hidden';presRender();PR.tm=setInterval(function(){var e=$('ptm');if(e){var s=Math.floor((Date.now()-PR.t0)/1000);e.textContent=Math.floor(s/60)+':'+('0'+s%60).slice(-2)}},1000)}
+  function presClose(){if(!PR)return;clearInterval(PR.tm);PR=null;$('pres').hidden=true;$('pres').innerHTML='';document.body.style.overflow='';try{if(document.fullscreenElement)document.exitFullscreen()}catch(e){}}
+  function presRender(){var P=PR,s=P.S[P.i],h='',COL=['#ffd97a','#ffffff','#ff6b6b','#4dd0e1','#7ddc8a','#0b1b52'];
+    var hasImg=P.c&&SLIDES[P.c.id]&&(P.m.all||pgRange(P.m.pg)),modes=P.c?[['all','All'],['orig','Original'],['notes','Notes']]:[];
+    h+='<div class="ptool"><b>'+esc(P.m?P.m.t:'Whiteboard')+'</b>'+(P.c?modes.filter(function(x){return hasImg||x[0]==='notes'||x[0]==='all'}).map(function(x){return '<button data-pm="'+x[0]+'" class="'+(P.mode===x[0]?'on':'')+'">'+x[1]+'</button>'}).join('')+'<span class="sep"></span>':'')
+      +'<button data-pp="pen" class="'+(P.pen?'on':'')+'" title="Pen (P)">Pen</button><button data-pp="hl" class="'+(P.hl?'on':'')+'">Marker</button><button data-pp="er" class="'+(P.er?'on':'')+'">Eraser</button>'
+      +COL.map(function(x){return '<button class="pcol'+(P.col===x&&!P.er?' on':'')+'" data-pc="'+x+'" style="background:'+x+'" aria-label="Colour"></button>'}).join('')
+      +'<button data-pp="sz">'+['S','M','L'][[3,6,12].indexOf(P.sz)>=0?[3,6,12].indexOf(P.sz):1]+'</button><button data-pp="undo">Undo</button><button data-pp="clr">Clear</button><button data-pp="board" title="Add a blank board (B)">+ Board</button>'
+      +'<span class="sep"></span><span id="ptm" style="min-width:38px;text-align:center">0:00</span><button data-pp="fs" title="Full screen (F)">Full</button><button data-pp="x" title="Close (Esc)">Close</button></div>';
+    h+='<div class="pmain"><div class="pstage'+(s.k==='board'&&s.paper==='light'?' light':'')+'" id="pstage"><div class="ps'+(s.k==='title'||s.k==='end'?' t':'')+'" id="pbody"></div><canvas class="pcv '+(P.pen?'pen':'off')+'" id="pcv"></canvas></div></div>';
+    h+='<div class="pfoot"><span>'+(P.i+1)+' / '+P.S.length+'</span><i><u style="width:'+((P.i+1)/P.S.length*100)+'%"></u></i><span>Arrows or Space: next, Esc: close</span></div>';
+    $('pres').innerHTML=h;var b=$('pbody'),x='';
+    if(s.k==='title'||s.k==='end')x='<h2>'+esc(s.h)+'</h2><p>'+esc(s.sub||'')+'</p>';
+    else if(s.k==='text')x='<h2>'+esc(s.h)+'</h2>'+s.b.map(function(t){return '<p>'+esc(t)+'</p>'}).join('');
+    else if(s.k==='terms')x='<h2>'+esc(s.h)+'</h2><div class="pcards">'+s.it.map(function(r){return '<div><b>'+esc(r[0])+'</b><span>'+esc(r[1])+'</span></div>'}).join('')+'</div>';
+    else if(s.k==='quiz'){var q=s.q,sh=s.pick!==null;x='<h2>'+esc(s.h)+'</h2><p>'+esc(q.q)+'</p><div class="pq">'+q.o.map(function(o,j){var c=sh?(j===q.a?' ok':(j===s.pick?' no':'')):'';return '<button class="'+c.trim()+'" data-pq="'+j+'">'+'ABCD'[j]+'. '+esc(o)+'</button>'}).join('')+'</div>'+(sh?'<p class="pw">'+esc(q.w||'')+'</p>':'')}
+    else if(s.k==='img'){x='<div class="ld">Loading slide '+s.n+'...</div>';if(!IMGKEY)x='<div class="ld">Slides open after you enter the code.</div>';
+      else slideUrl(s.cid,s.n).then(function(u){if(PR&&PR.S[PR.i]===s){b.innerHTML='<img alt="Slide '+s.n+'" src="'+u+'">'}}).catch(function(){if(PR&&PR.S[PR.i]===s)b.innerHTML='<div class="ld">This slide is not available.</div>'});
+      var nx=P.S[P.i+1];if(nx&&nx.k==='img'&&IMGKEY)slideUrl(nx.cid,nx.n).catch(function(){})}
+    b.innerHTML=x;presInk()}
+  function presInk(){var cv=$('pcv'),st=$('pstage');if(!cv)return;var dpr=window.devicePixelRatio||1,w=st.clientWidth,h=st.clientHeight;cv.width=w*dpr;cv.height=h*dpr;var g=cv.getContext('2d');g.scale(dpr,dpr);g.lineCap='round';g.lineJoin='round';
+    var u=PR.S[PR.i].u,L=PR.ink[u]||[];L.forEach(function(s){presStroke(g,s,w,h)})}
+  function presStroke(g,s,w,h){if(!s.p.length)return;g.save();g.globalCompositeOperation=s.e?'destination-out':'source-over';g.globalAlpha=s.a||1;g.strokeStyle=s.c;g.lineWidth=s.w;g.beginPath();g.moveTo(s.p[0][0]*w,s.p[0][1]*h);if(s.p.length===1)g.lineTo(s.p[0][0]*w+.1,s.p[0][1]*h);for(var i=1;i<s.p.length;i++)g.lineTo(s.p[i][0]*w,s.p[i][1]*h);g.stroke();g.restore()}
+  function presGo(d){if(!PR)return;var s=PR.S[PR.i];if(d>0&&s.k==='quiz'&&s.pick===null){s.pick=-1;presRender();return}var n=PR.i+d;if(n<0||n>=PR.S.length)return;PR.i=n;presRender()}
+  function presMode(m){var cur=PR.S[PR.i],keep=PR.S.filter(function(s){return s.k==='board'});PR.mode=m;PR.S=presDeck(PR.c,PR.m,m);PR.i=0;presRender()}
+  (function(){var drawing=null;
+    document.addEventListener('pointerdown',function(e){if(!PR||!PR.pen)return;var cv=e.target;if(cv.id!=='pcv')return;e.preventDefault();cv.setPointerCapture(e.pointerId);var r=cv.getBoundingClientRect(),u=PR.S[PR.i].u;(PR.ink[u]=PR.ink[u]||[]);
+      var st={p:[[(e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height]],c:PR.col,w:PR.er?PR.sz*3:(PR.hl?PR.sz*3:PR.sz),a:PR.hl?0.4:1,e:!!PR.er};PR.ink[u].push(st);drawing=st});
+    document.addEventListener('pointermove',function(e){if(!drawing||!PR)return;var cv=$('pcv');if(!cv)return;var r=cv.getBoundingClientRect();drawing.p.push([(e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height]);var g=cv.getContext('2d'),w=r.width,h=r.height,dpr=window.devicePixelRatio||1;g.setTransform(dpr,0,0,dpr,0,0);g.lineCap='round';g.lineJoin='round';var pp=drawing.p,n=pp.length;g.save();g.globalCompositeOperation=drawing.e?'destination-out':'source-over';g.globalAlpha=drawing.a;g.strokeStyle=drawing.c;g.lineWidth=drawing.w;g.beginPath();g.moveTo(pp[n-2][0]*w,pp[n-2][1]*h);g.lineTo(pp[n-1][0]*w,pp[n-1][1]*h);g.stroke();g.restore()});
+    function up(){if(drawing&&PR&&drawing.a<1)presInk();drawing=null}
+    document.addEventListener('pointerup',up);document.addEventListener('pointercancel',up)})();
+  document.addEventListener('click',function(e){var t=e.target.closest('[data-pres]');if(t){presOpen(t.getAttribute('data-pres'));return}
+    if(e.target.closest('[data-board]')){presOpen('',true);return}
+    if(!PR)return;var b=e.target.closest('[data-pm]');if(b){presMode(b.getAttribute('data-pm'));return}
+    b=e.target.closest('[data-pc]');if(b){PR.col=b.getAttribute('data-pc');PR.er=false;PR.pen=true;presRender();return}
+    b=e.target.closest('[data-pq]');if(b){var s=PR.S[PR.i];if(s.pick===null||s.pick===-1){s.pick=+b.getAttribute('data-pq');presRender()}return}
+    b=e.target.closest('[data-pp]');if(!b)return;var a=b.getAttribute('data-pp'),u=PR.S[PR.i].u;
+    if(a==='pen'){PR.pen=!PR.pen;PR.er=false;PR.hl=false}else if(a==='hl'){PR.hl=true;PR.pen=true;PR.er=false}else if(a==='er'){PR.er=!PR.er;PR.pen=true}
+    else if(a==='sz'){PR.sz=PR.sz===3?6:PR.sz===6?12:3}else if(a==='undo'){(PR.ink[u]||[]).pop()}else if(a==='clr'){PR.ink[u]=[]}
+    else if(a==='board'){var id=Math.max.apply(null,PR.S.map(function(s){return s.u}))+1;PR.S.splice(PR.i+1,0,{k:'board',u:id,paper:'dark'});PR.i++;PR.pen=true}
+    else if(a==='fs'){var el=$('pres');try{if(document.fullscreenElement)document.exitFullscreen();else el.requestFullscreen()}catch(x){}return}
+    else if(a==='x'){presClose();return}
+    if(PR.S[PR.i].k==='board'&&(a==='pen'&&false)){}presRender()});
+  document.addEventListener('keydown',function(e){if(!PR)return;var k=e.key;if(k==='Escape')presClose();else if(k==='ArrowRight'||k===' '||k==='PageDown'){e.preventDefault();presGo(1)}else if(k==='ArrowLeft'||k==='PageUp'){e.preventDefault();presGo(-1)}else if(k==='p'||k==='P'){PR.pen=!PR.pen;presRender()}else if(k==='b'||k==='B'){var id=Math.max.apply(null,PR.S.map(function(s){return s.u}))+1;PR.S.splice(PR.i+1,0,{k:'board',u:id,paper:'dark'});PR.i++;PR.pen=true;presRender()}else if(k==='f'||k==='F'){try{if(document.fullscreenElement)document.exitFullscreen();else $('pres').requestFullscreen()}catch(x){}}else if(k==='u'||k==='U'){(PR.ink[PR.S[PR.i].u]||[]).pop();presInk()}});
+  window.addEventListener('resize',function(){if(PR)presInk()});
+  function renderTrainer(){var box=$('trainerbody');if(!box)return;if(!DATA){box.innerHTML=lockView();renderPin();return}
+    var h='<div class="exr" style="margin:0 0 14px"><button class="btn" data-board="1">Open the whiteboard</button></div><p class="note" style="margin:0 0 12px">Keys during a lecture: arrows or Space to move, P pen, B new board, U undo, F full screen, Esc to close. Share the browser window, not the whole desktop.</p>';
+    COURSES.forEach(function(c){h+='<div class="exq" style="margin-bottom:12px"><h3 style="margin:0 0 4px">'+esc(c.title)+'</h3><small>'+c.modules.length+' lessons'+(SLIDES[c.id]?' &middot; original slides included':' &middot; notes and quizzes')+'</small><div class="exr" style="margin:8px 0"><button class="btn" data-pres="'+c.id+':*">Present the whole course</button></div><details><summary style="cursor:pointer;font-weight:600">Lessons</summary>'+c.modules.map(function(m,i){return '<p style="margin:6px 0;display:flex;gap:8px;align-items:center"><span style="flex:1">'+(i+1)+'. '+esc(m.t)+'</span><button type="button" class="btn ghost" data-pres="'+c.id+':'+i+'" style="padding:4px 10px;min-height:0">Present</button></p>'}).join('')+'</details></div>'});
+    box.innerHTML=h;tabFit(box)}
+  function presDeck(c,m,mode){if(m&&m.all){var out=[],k=0;c.modules.forEach(function(mm,i){presBuild(c,mm,mode).forEach(function(s){s.u=++k;out.push(s)})});return out}return presBuild(c,m,mode)}
+  document.addEventListener('click',function(e){var t=e.target.closest('#trb');if(t)location.hash='#trainer'});
+  document.addEventListener('click',function(e){var s=e.target.closest&&e.target.closest('.pstage');if(!s||!PR||PR.pen)return;var tg=e.target;if(tg.closest('.pq'))return;var r=s.getBoundingClientRect();presGo(e.clientX-r.left>r.width*0.3?1:-1)});
   /* ---- exam ---- */
   var EX={cid:'',n:20,mode:'exam',lv:'',tp:'',run:null},LVN={b:'Beginner',a:'Advanced',p:'Professional'};
   function exShuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
@@ -1786,7 +1902,7 @@ document.addEventListener('DOMContentLoaded',function(){
       .then(function(key){return crypto.subtle.decrypt({name:'AES-GCM',iv:b64(VAULT.i)},key,b64(VAULT.c))})
       .then(function(buf){return JSON.parse(new TextDecoder().decode(buf))})}
   function setSub(){$('learnSub').textContent=DATA?COURSES.length+(COURSES.length===1?' expert course':' expert courses'):'Locked. Enter the code'}
-  function unlocked(d,code){DATA=d;COURSES=d.courses;ART=d.art;PATHS=d.stages||[];SETS=d.sets||[];try{sessionStorage.setItem('rl_code',code)}catch(e){}setSub();renderLearn(CUR);if(/^#team/.test(location.hash))route()}
+  function unlocked(d,code){imgKey(code);DATA=d;COURSES=d.courses;ART=d.art;PATHS=d.stages||[];SETS=d.sets||[];try{sessionStorage.setItem('rl_code',code)}catch(e){}setSub();renderLearn(CUR);if(/^#team/.test(location.hash))route()}
   function lmsg(t){var m=$('lockmsg');if(!m)return;m.hidden=!t;m.textContent=t||''}
   function renderPin(){var p=$('pin');if(!p)return;var h='';for(var k=0;k<8;k++)h+='<i class="'+(k<PIN.length?'on':'')+'"></i>';p.innerHTML=h}
   function submitPin(){
