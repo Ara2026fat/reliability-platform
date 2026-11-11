@@ -41,7 +41,7 @@ html[data-mode=dark] img.lg,html[data-mode=dark] .hav img{filter:none}
 #sbody h3{font:800 12.5px var(--font-display);letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:14px 0 0}#sbody small{display:block;color:var(--mut);font-size:13px;line-height:1.4;margin-top:-10px;margin-bottom:14px}
 .sw{display:inline-flex;gap:3px;vertical-align:middle;margin-inline-end:6px}.sw i{width:11px;height:11px;border-radius:50%;display:block}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:auto}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.45;padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 a{color:inherit}
 h1,h2,h3{font-family:var(--font-display);font-stretch:106%;margin:0;text-wrap:balance;letter-spacing:-.005em}
@@ -64,7 +64,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);display:none;border-top:1px solid var(--line);padding:6px max(6px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(6px,env(safe-area-inset-left,0px))}
 .tabbar a{flex:1;text-align:center;font-size:12px;padding:9px 2px;color:var(--tx)}
 .tabbar a.on{background:var(--act);color:#fff}
-@media (max-width:760px){.dnav{display:none}.tabbar{display:flex}.top .pill{display:none}}
+@media (max-width:900px){.dnav{display:none}.tabbar{display:flex}}
+@media (max-width:1100px){.top .pill{display:none}}
+@media (min-width:901px){body{padding-bottom:0}}
 .tabbar{align-items:flex-end}
 .tabbar a.ask{position:relative;flex:none;width:80px;background:transparent;color:var(--tx);padding-top:0;font-weight:700}
 .tabbar a.ask .orb{display:grid;place-items:center;width:58px;height:58px;margin:-30px auto 3px;border-radius:50%;background:var(--navy2);border:3px solid var(--surface);box-shadow:0 8px 18px -6px rgba(11,27,82,.6)}
@@ -993,7 +995,7 @@ document.addEventListener('DOMContentLoaded',function(){
   function route(){var parts=(location.hash||'#home').slice(1).split('/'),h=parts[0];if(!PAGES.some(function(p){return p[0]===h}))h='home';if(h==='learn'&&(parts[1]==='promo'||parts[1]==='media')){location.replace('#team/'+(parts[1]==='promo'?'promo':''));return}if(h==='team'){$('learnbody').innerHTML='';renderTeam(parts[1])}else $('teambody').innerHTML='';if(h==='trainer')renderTrainer();else if($('trainerbody'))$('trainerbody').innerHTML='';if(h==='learn')renderLearn(parts[1],parts[2]);
     [].forEach.call(document.querySelectorAll('.page'),function(s){s.classList.toggle('on',s.id==='p-'+h)});
     [].forEach.call(document.querySelectorAll('[data-p]'),function(a){a.classList.toggle('on',a.getAttribute('data-p')===h)});
-    if(h==='home')homeCont();setTimeout(applyLang,0);if(h==='structure'||h==='cases')pgTab(h,0);window.scrollTo(0,0);}
+    if(h==='home')homeCont();setTimeout(applyLang,0);if(h==='structure'||h==='cases')pgTab(h,0);window.scrollTo({top:0,left:0,behavior:'instant'});}
   window.addEventListener('hashchange',route);
   function go(p,sub){location.hash='#'+p;if(sub)setTool(sub)}
   document.addEventListener('click',function(e){setTimeout(function(){if(LANG==='ar')applyLang()},30);var b=e.target.closest('[data-go]');if(b){go(b.getAttribute('data-go'),b.getAttribute('data-sub'))}});
@@ -1833,7 +1835,7 @@ document.addEventListener('DOMContentLoaded',function(){
     if(o&&R){R.items[R.i].pick=+o.getAttribute('data-exo');renderLearn('exam');return}
     var a=b.getAttribute('data-ex');
     if(a==='start')exStart();else if(a==='again'){EX.run=null}else if(R){if(a==='next')R.i++;else if(a==='prev')R.i--;else if(a==='finish')R.done=true}
-    renderLearn('exam');window.scrollTo(0,0)});
+    renderLearn('exam');window.scrollTo({top:0,left:0,behavior:'instant'})});
   function refsView(){var R=(DATA&&DATA.refs)||[],h=tabs('refs');
     if(!R.length)return h+'<div class="refe"><div class="refc" style="--c:#2F55C8"><b>API standards</b><span>Waiting for the files</span></div><div class="refc" style="--c:#B86A1A"><b>Heinz Bloch books</b><span>Waiting for the files</span></div></div><p class="sethint">Search inside these files will work here once they are added. We need the files themselves, and confirmation from the owner that their licences allow it.</p>';
     return h+'<div class="lib"><input id="refq" type="search" placeholder="Search inside the references" aria-label="Search references"></div><div id="refout" class="refo"></div>'}
